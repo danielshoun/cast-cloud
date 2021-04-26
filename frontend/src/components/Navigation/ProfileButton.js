@@ -1,10 +1,8 @@
-import {useDispatch} from "react-redux";
-import * as sessionActions from '../../store/session'
 import {useEffect, useState} from "react";
+import ProfileMenu from "./ProfileMenu";
 
 export default function ProfileButton({ user }) {
     const [visible, setVisible] = useState(false);
-    const dispatch = useDispatch();
 
     useEffect(() => {
         if(visible) {
@@ -22,17 +20,8 @@ export default function ProfileButton({ user }) {
 
     return (
         <>
-            <button onClick={openMenu}>
-                <i className='fas fa-user-circle'/>
-            </button>
-            {visible &&
-                <ul>
-                    <li>{user.username}</li>
-                    <li>{user.email}</li>
-                    <li>
-                        <button onClick={() => dispatch(sessionActions.logout())}>Log Out</button>
-                    </li>
-                </ul>}
+            <i onClick={openMenu} className='fas fa-user-circle profileButton'/>
+            {visible && <ProfileMenu user={user}/>}
         </>
     )
 }

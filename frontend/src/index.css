@@ -2,9 +2,22 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
 
 html {
+    box-sizing: border-box;
     background-color: #1e1e24;
     font-family: 'Roboto', sans-serif;
     color: #f0f3f5;
     max-width: 1400px;
     margin: 0 auto;
+}
+
+.buttonPrimary {
+    background-color: #1e1e24;
+    color: #f35b04;
+    border: 1px solid #f35b04;
+}
+
+.buttonSecondary {
+    background-color: #1e1e24;
+    color: #f18701;
+    border: 1px solid #f18701;
 }

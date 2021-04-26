@@ -25,29 +25,31 @@ export default function LoginFormPage() {
     }
 
     return (
-        <form onSubmit={handleSubmit}>
-            <label>
-                Username/Email
+        <div className='logInContainer'>
+            <div className='formLogoContainer'>CastCloud</div>
+            <form onSubmit={handleSubmit}>
                 <input
+                    className='formInput'
                     type='text'
+                    placeholder='Username'
                     value={credential}
                     onChange={event => setCredential(event.target.value)}
                     required
                 />
-            </label>
-            <label>
-                Password
                 <input
+                    className='formInput'
                     type='password'
+                    placeholder='Password'
                     value={password}
                     onChange={event => setPassword(event.target.value)}
                     required
                 />
-            </label>
-            <button type='submit'>Log In</button>
-            <ul>
-                {errors.map((error, idx) => <li key={idx}>{error}</li>)}
-            </ul>
-        </form>
+                <button className='formButton buttonPrimary' type='submit'>Log In</button>
+                <button className='formButton buttonSecondary'>Demo</button>
+                <ul>
+                    {errors.map((error, idx) => <li key={idx}>{error}</li>)}
+                </ul>
+            </form>
+        </div>
     )
 }

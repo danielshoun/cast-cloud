@@ -3,5 +3,5 @@ Colors
     Light Gray: #46464c;
     Red: #ba1b1d
     White: #f0f3f5
-    Orange: #f18701
-    Light Orange: #f35b04
+    Orange: #f35b04
+    Light Orange: #f18701
