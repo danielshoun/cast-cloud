@@ -48,3 +48,16 @@
 .podcastTab:hover {
     cursor: pointer;
 }
+
+.episodeContainer {
+    margin: 32px 0;
+}
+
+.episodeHeader {
+    display: flex;
+    justify-content: space-between;
+}
+
+.episodeDescription {
+    white-space: pre-wrap;
+}

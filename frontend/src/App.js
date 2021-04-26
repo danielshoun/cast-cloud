@@ -7,6 +7,7 @@ import SignupFormPage from "./components/SignupFormPage";
 import Navigation from "./components/Navigation";
 import SearchResults from "./components/SearchResults";
 import PodcastDetails from "./components/PodcastDetails";
+import Footer from "./components/Footer";
 
 function App() {
 	const [isLoaded, setIsLoaded] = useState(false);
@@ -34,6 +35,7 @@ function App() {
 					<SignupFormPage/>
 				</Route>
 			</Switch>
+			<Footer/>
 		</>
 	);
 }

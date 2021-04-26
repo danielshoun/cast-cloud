@@ -1,0 +1,12 @@
+.player {
+    display: flex;
+    justify-content: center;
+}
+
+.song {
+    display: inline;
+}
+
+.controls {
+    display: inline;
+}
