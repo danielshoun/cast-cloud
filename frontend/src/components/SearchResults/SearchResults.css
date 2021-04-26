@@ -1,0 +1,18 @@
+.searchResultTable {
+    border-collapse: separate;
+    border-spacing: 16px;
+    margin: 0 auto;
+}
+
+.tableTitle {
+    display: block;
+    margin: 0 auto;
+    text-align: center;
+    width: 80%;
+}
+
+.tableCount {
+    display: block;
+    margin: 0 auto;
+    text-align: center;
+}

@@ -5,6 +5,7 @@ import LoginFormPage from './components/LoginFormPage';
 import * as sessionActions from './store/session';
 import SignupFormPage from "./components/SignupFormPage";
 import Navigation from "./components/Navigation";
+import SearchResults from "./components/SearchResults";
 
 function App() {
 	const [isLoaded, setIsLoaded] = useState(false);
@@ -19,6 +20,9 @@ function App() {
 		<>
 			<Navigation isLoaded={isLoaded}/>
 			<Switch>
+				<Route path='/search'>
+					<SearchResults/>
+				</Route>
 				<Route path='/login'>
 					<LoginFormPage/>
 				</Route>
