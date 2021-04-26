@@ -15,8 +15,8 @@ router.get('/search', asyncHandler(async (req, res) => {
     return res.json(itunesData.results);
 }))
 
-router.get('/', asyncHandler(async (req, res) => {
-    const itunesId = req.query.itunesId;
+router.get('/:itunesId', asyncHandler(async (req, res) => {
+    const itunesId = req.params.itunesId;
     let podcast = await Podcast.findOne({where: {itunesId}});
     if(!podcast) {
         const itunesRes = await fetch(`https://itunes.apple.com/lookup?id=${itunesId}`);
@@ -28,7 +28,7 @@ router.get('/', asyncHandler(async (req, res) => {
         podcast = await Podcast.create({
             title: itunesPodcast.collectionName,
             artist: itunesPodcast.artistName,
-            description: feedData.description,
+            description: feedData.description || feedData.itunes.summary,
             artworkUrl: itunesPodcast.artworkUrl600,
             itunesId: itunesPodcast.collectionId,
             rssUrl: itunesPodcast.feedUrl
@@ -36,6 +36,14 @@ router.get('/', asyncHandler(async (req, res) => {
     }
 
     return res.json(podcast);
+}))
+
+router.get('/:itunesId/episodes', asyncHandler(async (req, res) => {
+    const itunesId = req.params.itunesId;
+    const podcast = await Podcast.findOne({where: {itunesId}});
+    const feedData = await parser.parseURL(podcast.rssUrl);
+
+    return res.json(feedData);
 }))
 
 module.exports = router;

@@ -8,18 +8,19 @@ function useQuery() {
 
 export default function SearchResults() {
     const query = useQuery();
+    const term = query.get('term');
     const history = useHistory();
     const [podcasts, setPodcasts] = useState([]);
 
     useEffect(() => {
         async function fetchData() {
-            const res = await fetch(`/api/podcasts/search?term=${query.get('term')}`);
+            const res = await fetch(`/api/podcasts/search?term=${term}`);
             const data = await res.json();
             console.log(data);
             setPodcasts(data);
         }
         fetchData().then();
-    }, [query.get('term')])
+    }, [term])
     return (
         <table className='searchResultTable'>
             <thead>
@@ -32,9 +33,9 @@ export default function SearchResults() {
             <tbody>
                 {podcasts.map(podcast => {
                     return (
-                        <tr className='resultRow' onClick={() => history.push(`/podcasts/${podcast.collectionId}`)}>
+                        <tr key={podcast.collectionId} className='resultRow' onClick={() => history.push(`/podcasts/${podcast.collectionId}`)}>
                             <td>
-                                <img src={podcast.artworkUrl100}/>
+                                <img src={podcast.artworkUrl100} alt={podcast.collectionName}/>
                             </td>
                             <td>
                                 <span className='tableTitle'>{podcast.collectionName}</span>
