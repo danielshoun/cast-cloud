@@ -1,4 +1,4 @@
-import { useLocation } from 'react-router-dom';
+import {useHistory, useLocation} from 'react-router-dom';
 import {useEffect, useState} from "react";
 import './SearchResults.css';
 
@@ -8,6 +8,7 @@ function useQuery() {
 
 export default function SearchResults() {
     const query = useQuery();
+    const history = useHistory();
     const [podcasts, setPodcasts] = useState([]);
 
     useEffect(() => {
@@ -17,7 +18,7 @@ export default function SearchResults() {
             console.log(data);
             setPodcasts(data);
         }
-        fetchData();
+        fetchData().then();
     }, [query.get('term')])
     return (
         <table className='searchResultTable'>
@@ -31,7 +32,7 @@ export default function SearchResults() {
             <tbody>
                 {podcasts.map(podcast => {
                     return (
-                        <tr className='resultRow'>
+                        <tr className='resultRow' onClick={() => history.push(`/podcasts/${podcast.collectionId}`)}>
                             <td>
                                 <img src={podcast.artworkUrl100}/>
                             </td>

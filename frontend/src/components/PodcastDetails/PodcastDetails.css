@@ -1,0 +1,50 @@
+.podcastDetailsContainer {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 32px;
+    border: 1px solid #46464c;
+    border-radius: 5px;
+}
+
+.podcastDetailsHeader {
+    display: flex;
+}
+
+.podcastArtwork {
+    width: 200px;
+    height: auto;
+}
+
+.podcastInfo {
+    display: flex;
+    flex-flow: column;
+    justify-content: space-between;
+    margin-left: 16px;
+}
+
+.podcastTitle {
+    display: block;
+    font-size: 32px;
+}
+
+.podcastArtist {
+    display: block;
+    color: #46464c;
+}
+
+.podcastDescription {
+    display: block;
+}
+
+.podcastTabMenu {
+    display: flex;
+    justify-content: center;
+}
+
+.podcastTab {
+    margin: 32px 24px;
+}
+
+.podcastTab:hover {
+    cursor: pointer;
+}
