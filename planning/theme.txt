@@ -1,0 +1,7 @@
+Colors
+    Black: #1e1e24
+    Light Gray: #46464c;
+    Red: #ba1b1d
+    White: #f0f3f5
+    Orange: #f18701
+    Light Orange: #f35b04

@@ -1,1 +1,10 @@
 /* TODO Add site wide styles */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+
+html {
+    background-color: #1e1e24;
+    font-family: 'Roboto', sans-serif;
+    color: #f0f3f5;
+    max-width: 1400px;
+    margin: 0 auto;
+}

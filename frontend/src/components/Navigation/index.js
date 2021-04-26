@@ -8,17 +8,28 @@ export default function Navigation({ isLoaded }) {
 
     return (
         <nav>
-            <ul>
-                <li>
-                    <NavLink to='/'>Home</NavLink>
+            <div className='logoContainer'>
+                CastCloud
+            </div>
+            <div className='searchContainer'>
+                <i className="fas fa-search searchIcon"/>
+                <input className='navSearch' type='text'/>
+                <button className='searchButton'>Search</button>
+            </div>
+            <ul className='navList'>
+                <li className='navItem'>
+                    <NavLink className='navLink' to='/'>Home</NavLink>
                 </li>
-                {isLoaded && (sessionUser ? <li><ProfileButton user={sessionUser}/></li> :
+                <li className='navItem'>
+                    <NavLink className='navLink' to='/feed'>Feed</NavLink>
+                </li>
+                {isLoaded && (sessionUser ? <li className='navItem'><ProfileButton user={sessionUser}/></li> :
                     <>
-                        <li>
-                            <NavLink to='/login'>Log In</NavLink>
+                        <li className='navItem'>
+                            <NavLink className='navLink' to='/login'>Log In</NavLink>
                         </li>
-                        <li>
-                            <NavLink to='/signup'>Sign Up</NavLink>
+                        <li className='navItem'>
+                            <NavLink className='navLink' to='/signup'>Sign Up</NavLink>
                         </li>
                     </>)}
             </ul>
