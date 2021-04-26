@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Redirect } from 'react-router-dom';
+import {Link, Redirect} from 'react-router-dom';
 import * as sessionActions from '../../store/session';
 import './SignupForm.css';
 
@@ -30,47 +30,48 @@ export default function SignupFormPage() {
     }
 
     return (
-        <form onSubmit={handleSubmit}>
-            <label>
-                Email
+        <div className='signUpContainer'>
+            <div className='formLogoContainer'>CastCloud</div>
+            <form onSubmit={handleSubmit}>
                 <input
+                    className='formInput'
                     type='text'
+                    placeholder='Email'
                     value={email}
                     onChange={event => setEmail(event.target.value)}
                     required
                 />
-            </label>
-            <label>
-                Username
                 <input
+                    className='formInput'
                     type='text'
+                    placeholder='Username'
                     value={username}
                     onChange={event => setUsername(event.target.value)}
                     required
                 />
-            </label>
-            <label>
-                Password
                 <input
+                    className='formInput'
                     type='password'
+                    placeholder='Password'
                     value={password}
                     onChange={event => setPassword(event.target.value)}
                     required
                 />
-            </label>
-            <label>
-                Confirm Password
                 <input
+                    className='formInput'
                     type='password'
+                    placeholder='Confirm Password'
                     value={confirmPassword}
                     onChange={event => setConfirmPassword(event.target.value)}
                     required
                 />
-            </label>
-            <button type='submit'>Sign Up</button>
-            <ul>
-                {errors.map((error, idx) => <li key={idx}>{error}</li>)}
-            </ul>
-        </form>
+                <button className='formButton buttonPrimary' type='submit'>Sign Up</button>
+                <button className='formButton buttonSecondary'>Demo</button>
+                <Link className='formLink' to='/login'>Already registered? Go to login.</Link>
+                <ul>
+                    {errors.map((error, idx) => <li key={idx}>{error}</li>)}
+                </ul>
+            </form>
+        </div>
     )
 }

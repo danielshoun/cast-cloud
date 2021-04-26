@@ -46,8 +46,13 @@
     margin: 8px auto;
     display: block;
     height: 28px;
-    /*background-color: #1e1e24;*/
-    /*color: #f35b04;*/
-    /*border: 1px solid #f35b04;*/
     border-radius: 3px;
+}
+
+.formLink {
+    display: block;
+    margin: 16px auto;
+    text-align: center;
+    text-decoration: none;
+    color: #46464c;
 }

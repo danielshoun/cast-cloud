@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Redirect } from 'react-router-dom';
+import {Link, Redirect} from 'react-router-dom';
 import * as sessionActions from '../../store/session';
 import './LoginForm.css';
 
@@ -46,6 +46,7 @@ export default function LoginFormPage() {
                 />
                 <button className='formButton buttonPrimary' type='submit'>Log In</button>
                 <button className='formButton buttonSecondary'>Demo</button>
+                <Link className='formLink' to='/signup'>Not registered? Go to sign up.</Link>
                 <ul>
                     {errors.map((error, idx) => <li key={idx}>{error}</li>)}
                 </ul>
