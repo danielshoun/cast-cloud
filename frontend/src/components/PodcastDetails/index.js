@@ -13,7 +13,6 @@ export default function PodcastDetails() {
         async function fetchData() {
             const res = await fetch(`/api/podcasts/${itunesId}`);
             const data = await res.json();
-            console.log(data);
             setPodcastData(data);
         }
         fetchData().then();

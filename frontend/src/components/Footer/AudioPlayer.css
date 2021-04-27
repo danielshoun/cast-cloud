@@ -1,0 +1,22 @@
+.audioPlayerContainer {
+    display: flex;
+    align-items: center;
+}
+
+.controlButton {
+    font-size: 40px;
+    color: #f35b04;
+}
+
+.controlButton:hover {
+    cursor: pointer;
+}
+
+.footerDiv {
+    width: 33%;
+    text-align: right;
+}
+
+.controlButton.inactive {
+    color: gray;
+}

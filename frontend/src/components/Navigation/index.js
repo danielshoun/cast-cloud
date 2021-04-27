@@ -16,7 +16,12 @@ export default function Navigation({ isLoaded }) {
     return (
         <nav>
             <div className='logoContainer'>
-                <Link className='logoLink' to='/'>CastCloud</Link>
+                <Link className='logoLink' to='/'>
+                    <div className='logoContainer'>
+                        <img src='/logo.png' className='logoImage'/>
+                        <span>CastCloud</span>
+                    </div>
+                </Link>
             </div>
             <div className='searchContainer'>
                 <i className="fas fa-search searchIcon"/>

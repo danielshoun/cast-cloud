@@ -7,12 +7,21 @@ nav {
 }
 
 .logoContainer {
+    display: flex;
+    align-items: center;
     color: #f35b04;
+}
+
+.logoImage {
+    height: 48px;
+    width: auto;
+    margin-right: 8px;
 }
 
 .logoLink {
     text-decoration: none;
     color: #f35b04;
+    font-size: 24px;
 }
 
 .searchIcon {

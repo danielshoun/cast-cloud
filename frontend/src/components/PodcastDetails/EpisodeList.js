@@ -1,4 +1,4 @@
-import {useEffect, useRef, useState} from "react";
+import {useEffect, useState} from "react";
 import { useDispatch } from "react-redux";
 import {changeTrack} from "../../store/audio";
 
@@ -6,13 +6,11 @@ export default function EpisodeList({ itunesId }) {
     const dispatch = useDispatch();
     const [episodeList, setEpisodeList] = useState([]);
     const [activeEpisode, setActiveEpisode] = useState(null);
-    const ref = useRef(null);
 
     useEffect(() => {
         async function fetchData() {
             const res = await fetch(`/api/podcasts/${itunesId}/episodes`);
             const data = await res.json();
-            console.log(data);
             setEpisodeList(data);
         }
         fetchData().then();
