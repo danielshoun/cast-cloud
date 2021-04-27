@@ -1,5 +1,4 @@
 import './Footer.css';
-import AudioPlayer from "../Audio";
 import {useSelector} from "react-redux";
 import React, {useEffect, useRef} from "react";
 
