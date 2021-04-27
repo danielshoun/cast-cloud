@@ -18,7 +18,7 @@ export default function Navigation({ isLoaded }) {
             <div className='logoContainer'>
                 <Link className='logoLink' to='/'>
                     <div className='logoContainer'>
-                        <img src='/logo.png' className='logoImage'/>
+                        <img alt='CastCloud Logo' src='/logo.png' className='logoImage'/>
                         <span>CastCloud</span>
                     </div>
                 </Link>

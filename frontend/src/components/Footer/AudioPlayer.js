@@ -13,7 +13,6 @@ export default function AudioPlayer() {
     const[duration, setDuration] = useState(null);
     const [curTime, setCurTime] = useState(null);
     const [percentListened, setPercentListened] = useState(0);
-    const [currentVolume, setCurrentVolume] = useState(1);
 
     useEffect(() => {
         const currentAudioRef = audioRef.current;
