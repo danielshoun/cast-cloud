@@ -20,3 +20,39 @@
 .controlButton.inactive {
     color: gray;
 }
+
+.bar {
+    user-select: none;
+    width: 300px;
+    display: flex;
+    align-items: center;
+}
+
+.barProgress {
+    flex: 1;
+    border-radius: 5px;
+    margin: 0 24px;
+    height: 10px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+.progressKnob {
+    position: relative;
+    height: 16px;
+    width: 16px;
+    border-radius: 50%;
+    box-shadow: -3px 0 10px #333333;
+    background-color: #f35b04;
+}
+
+.barTime {
+    font-size: 12px;
+}
+
+.volumeButton {
+    margin-left: 16px;
+    font-size: 24px;
+    color: #f35b04;
+}
