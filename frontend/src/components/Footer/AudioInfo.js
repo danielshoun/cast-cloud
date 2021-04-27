@@ -9,7 +9,6 @@ export default function AudioInfo() {
     const titleRef = useRef(null);
 
     function calcOverflowAmount() {
-        if(titleRef.current) console.log(titleRef.current.scrollWidth, textRef.current.clientWidth);
         if(titleRef.current && titleRef.current.scrollWidth > textRef.current.clientWidth) {
             setOverflowAmount((titleRef.current.scrollWidth - textRef.current.clientWidth) + 10);
         } else {

@@ -7,6 +7,7 @@
 .controlButton {
     font-size: 40px;
     color: #f35b04;
+    transition: color 0.25s ease;
 }
 
 .controlButton:hover {
@@ -45,7 +46,12 @@
 }
 
 .barTime {
+    transition: color 0.25s ease;
     font-size: 12px;
+}
+
+.inactiveTime {
+    color: #a1a1a1;
 }
 
 .volumeButtonContainer {
@@ -56,6 +62,15 @@
     margin-left: 16px;
     font-size: 24px;
     color: #f35b04;
+    transition: color 0.25s ease;
+}
+
+.inactiveButton {
+    color: #1e1e24;
+}
+
+.inactiveKnob {
+    background-color: #1e1e24;
 }
 
 .sliderContainer {

@@ -34,11 +34,11 @@ export default function ProgressBar({duration, curTime, percentListened, audioRe
                 onMouseDown={handleTimeDrag}
                 style={{background: `linear-gradient(to right, #f35b04 ${percentListened}%, #1e1e24 0`}}>
                     <span
-                        className='progressKnob'
+                        className={`progressKnob${audioRef.current ? '' : ' inactiveKnob'}`}
                         style={{left: `${percentListened - 2}%`}}
                     />
             </div>
-            <span className='barTime'>{curTime || '00:00:00'} | {duration || '00:00:00'}</span>
+            <span className={`barTime${audioRef.current ? '' : ' inactiveTime'}`}>{curTime || '00:00:00'} | {duration || '00:00:00'}</span>
         </div>
     )
 }

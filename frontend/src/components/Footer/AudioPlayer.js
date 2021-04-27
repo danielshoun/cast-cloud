@@ -75,6 +75,7 @@ export default function AudioPlayer() {
             <PlaybackController
                 playing={audioState.playing}
                 playAudio={playAudio}
+                audioRef={audioRef}
             />
             <ProgressBar
                 duration={duration}

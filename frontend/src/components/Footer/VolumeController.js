@@ -55,13 +55,13 @@ export default function VolumeController({audioRef}) {
     return (
         <div
             className='volumeControllerContainer'
-            onMouseOver={() => setShowingSlider(true)}
+            onMouseOver={audioRef.current && (() => setShowingSlider(true))}
             onMouseLeave={() => setShowingSlider(false)}
         >
             <div className='volumeButtonContainer'>
                 {isMuted ?
-                    <i className="fas fa-volume-mute volumeButton" onClick={toggleMute}/> :
-                    <i className="fas fa-volume-up volumeButton" onClick={toggleMute}/>
+                    <i className={`fas fa-volume-mute volumeButton${audioRef.current ? '' : ' inactiveButton'}`} onClick={toggleMute}/> :
+                    <i className={`fas fa-volume-up volumeButton${audioRef.current ? '' : ' inactiveButton'}`} onClick={toggleMute}/>
                 }
             </div>
             {showingSlider ? (
