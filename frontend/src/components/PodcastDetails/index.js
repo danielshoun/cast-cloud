@@ -25,6 +25,7 @@ export default function PodcastDetails() {
         )
     }
     else {
+
         return (
             <div className='podcastDetailsContainer'>
                 <div className='podcastDetailsHeader'>
@@ -44,7 +45,11 @@ export default function PodcastDetails() {
                     <span className='podcastTab' onClick={() => setTabOption('reviews')}>Reviews</span>
                 </div>
                 <div className='podcastList'>
-                    {tabOption === 'reviews' ? <ReviewList itunesId={itunesId}/> : <EpisodeList itunesId={itunesId}/>}
+                    {tabOption === 'reviews' ? <ReviewList itunesId={itunesId}/> :
+                        <EpisodeList
+                            podcastTitle={podcastData.title}
+                            artworkUrl={podcastData.artworkUrl}
+                            itunesId={itunesId}/>}
                 </div>
             </div>
         )

@@ -1,6 +1,7 @@
 .audioPlayerContainer {
     display: flex;
     align-items: center;
+    justify-content: center;
 }
 
 .controlButton {
@@ -12,10 +13,7 @@
     cursor: pointer;
 }
 
-.footerDiv {
-    width: 33%;
-    text-align: right;
-}
+
 
 .controlButton.inactive {
     color: gray;
@@ -32,10 +30,15 @@
     flex: 1;
     border-radius: 5px;
     margin: 0 24px;
-    height: 10px;
+    height: 4px;
     display: flex;
     align-items: center;
     cursor: pointer;
+    transition: height 0.25s ease;
+}
+
+.barProgress:hover {
+    height: 8px;
 }
 
 .progressKnob {

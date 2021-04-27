@@ -19,3 +19,11 @@
 .footerIcon:hover {
     cursor: pointer;
 }
+
+.footerDiv {
+    width: 33%;
+}
+
+.rightFooter {
+    text-align: right;
+}

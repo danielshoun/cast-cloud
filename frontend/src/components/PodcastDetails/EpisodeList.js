@@ -2,7 +2,7 @@ import {useEffect, useState} from "react";
 import { useDispatch } from "react-redux";
 import {changeTrack} from "../../store/audio";
 
-export default function EpisodeList({ itunesId }) {
+export default function EpisodeList({ itunesId, podcastTitle, artworkUrl }) {
     const dispatch = useDispatch();
     const [episodeList, setEpisodeList] = useState([]);
     const [activeEpisode, setActiveEpisode] = useState(null);
@@ -25,10 +25,10 @@ export default function EpisodeList({ itunesId }) {
             setActiveEpisode(null);
         } else {
             setActiveEpisode(episode.guid)
-            dispatch(changeTrack({url: episode.enclosure.url, type: episode.enclosure.type}))
+            dispatch(changeTrack({podcastTitle, artworkUrl, title: episode.title, url: episode.enclosure.url, type: episode.enclosure.type}))
         }
     }
-
+    console.log(artworkUrl);
     return (
         <>
             {episodeList.items.map(episode => {

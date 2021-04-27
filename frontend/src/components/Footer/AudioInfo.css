@@ -1,0 +1,42 @@
+.audioInfoContainer {
+    display: flex;
+    align-items: center;
+    margin-left: 16px;
+}
+
+.nowPlayingImage {
+    width: 48px;
+    height: 48px;
+}
+
+.nowPlayingText {
+    display: flex;
+    flex-flow: column nowrap;
+    margin-left: 8px;
+    overflow: hidden;
+}
+
+.nowPlayingTitle {
+    white-space: nowrap;
+    max-width: 80%;
+    font-size: 14px;
+    animation-name: bounce;
+    animation-duration: 15s;
+    animation-iteration-count: infinite;
+}
+
+@keyframes bounce {
+    0% {  transform: translateX(0%)    }
+    50% { transform: translateX(0%) }
+    75%   {  transform: translateX(-33%) }
+    100% {  transform: translateX(0%)    }
+}
+
+.nowPlayingArtist {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 80%;
+    font-size: 12px;
+    color: #a1a1a1;
+}

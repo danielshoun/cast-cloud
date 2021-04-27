@@ -13,6 +13,8 @@ export default function AudioPlayer() {
     const [percentListened, setPercentListened] = useState(0);
 
     useEffect(() => {
+        const currentAudioRef = audioRef.current;
+
         function getTime(time) {
             let hours = Math.floor(time / 3600);
             time = time - hours * 3600;
@@ -27,11 +29,11 @@ export default function AudioPlayer() {
 
         function readyPlayerState() {
             setPercentListened(0);
-            setCurTime(getTime(audioRef.current.currentTime));
-            setDuration(getTime(audioRef.current.duration));
-            audioRef.current.play();
+            setCurTime(getTime(currentAudioRef.currentTime));
+            setDuration(getTime(currentAudioRef.duration));
+            currentAudioRef.play();
             dispatch(togglePlaying(true));
-            audioRef.current.removeEventListener('canplay', readyPlayerState);
+            currentAudioRef.removeEventListener('canplay', readyPlayerState);
         }
 
         function updateTime(e) {
@@ -39,13 +41,13 @@ export default function AudioPlayer() {
             setCurTime(getTime(e.target.currentTime));
         }
 
-        audioRef.current.pause();
-        audioRef.current.load();
-        audioRef.current.addEventListener('canplay', readyPlayerState);
-        audioRef.current.addEventListener('timeupdate', updateTime);
+        currentAudioRef.pause();
+        currentAudioRef.load();
+        currentAudioRef.addEventListener('canplay', readyPlayerState);
+        currentAudioRef.addEventListener('timeupdate', updateTime);
 
         return () => {
-            audioRef.current.removeEventListener('timeupdate', updateTime);
+            currentAudioRef.removeEventListener('timeupdate', updateTime);
         }
     }, [audioState.currentTrack?.url, dispatch])
 
@@ -59,17 +61,15 @@ export default function AudioPlayer() {
         }
     }
 
-
-
-
-
     return (
         <div className='audioPlayerContainer'>
-            <audio controls ref={audioRef}>
+            <audio ref={audioRef}>
                 <source id='footerPlayer' src={audioState.currentTrack?.url}/>
             </audio>
-            {audioState.playing ? <i className='fas fa-pause-circle controlButton' onClick={playAudio}/>
-                : <i className='fas fa-play-circle controlButton' onClick={playAudio}/>
+            {
+                audioState.playing ?
+                <i className='fas fa-pause-circle controlButton' onClick={playAudio}/> :
+                <i className='fas fa-play-circle controlButton' onClick={playAudio}/>
             }
             <ProgressBar duration={duration} curTime={curTime} percentListened={percentListened} audioRef={audioRef}/>
             <i className="fas fa-volume-up volumeButton"/>
