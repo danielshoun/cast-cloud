@@ -3,6 +3,8 @@ import {useDispatch, useSelector} from "react-redux";
 import {togglePlaying} from "../../store/audio";
 import './AudioPlayer.css';
 import ProgressBar from "./ProgressBar";
+import PlaybackController from "./PlaybackController";
+import VolumeController from "./VolumeController";
 
 export default function AudioPlayer() {
     const audioState = useSelector(state => state.audio);
@@ -11,6 +13,7 @@ export default function AudioPlayer() {
     const[duration, setDuration] = useState(null);
     const [curTime, setCurTime] = useState(null);
     const [percentListened, setPercentListened] = useState(0);
+    const [currentVolume, setCurrentVolume] = useState(1);
 
     useEffect(() => {
         const currentAudioRef = audioRef.current;
@@ -66,13 +69,17 @@ export default function AudioPlayer() {
             <audio ref={audioRef}>
                 <source id='footerPlayer' src={audioState.currentTrack?.url}/>
             </audio>
-            {
-                audioState.playing ?
-                <i className='fas fa-pause-circle controlButton' onClick={playAudio}/> :
-                <i className='fas fa-play-circle controlButton' onClick={playAudio}/>
-            }
-            <ProgressBar duration={duration} curTime={curTime} percentListened={percentListened} audioRef={audioRef}/>
-            <i className="fas fa-volume-up volumeButton"/>
+            <PlaybackController
+                playing={audioState.playing}
+                playAudio={playAudio}
+            />
+            <ProgressBar
+                duration={duration}
+                curTime={curTime}
+                percentListened={percentListened}
+                audioRef={audioRef}
+            />
+            <VolumeController audioRef={audioRef}/>
         </div>
 
     )

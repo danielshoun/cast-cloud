@@ -25,12 +25,12 @@
     animation-iteration-count: infinite;
 }
 
-@keyframes bounce {
-    0% {  transform: translateX(0%)    }
-    50% { transform: translateX(0%) }
-    75%   {  transform: translateX(-33%) }
-    100% {  transform: translateX(0%)    }
-}
+/*@keyframes bounce {*/
+/*    0% {  transform: translateX(0%)    }*/
+/*    50% { transform: translateX(0%) }*/
+/*    75%   {  transform: translateX(-33%) }*/
+/*    100% {  transform: translateX(0%)    }*/
+/*}*/
 
 .nowPlayingArtist {
     white-space: nowrap;

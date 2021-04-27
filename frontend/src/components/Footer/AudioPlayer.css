@@ -13,12 +13,6 @@
     cursor: pointer;
 }
 
-
-
-.controlButton.inactive {
-    color: gray;
-}
-
 .bar {
     user-select: none;
     width: 300px;
@@ -54,8 +48,45 @@
     font-size: 12px;
 }
 
+.volumeButtonContainer {
+    width: 48px;
+}
+
 .volumeButton {
     margin-left: 16px;
     font-size: 24px;
     color: #f35b04;
+}
+
+.sliderContainer {
+    position: absolute;
+    bottom: 40px;
+    height: 150px;
+    width: 30px;
+    background-color: #46464c;
+    box-shadow: -1px 1px 10px #333;
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+    user-select: none;
+}
+
+.volumeSlider {
+    flex: 1;
+    border-radius: 5px;
+    margin: 8px 0;
+    width: 4px;
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+    cursor: pointer;
+}
+
+.volumeKnob {
+    position: relative;
+    height: 16px;
+    width: 16px;
+    border-radius: 50%;
+    box-shadow: 0 3px 10px #333333;
+    background-color: #f35b04;
 }
