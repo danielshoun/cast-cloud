@@ -12,16 +12,18 @@ export default function ProgressBar({duration, curTime, percentListened, audioRe
     }
 
     function handleTimeDrag(e) {
-        audioRef.current.currentTime = getClickedTime(e);
-
-        function moveUpdate(e) {
+        if(audioRef.current) {
             audioRef.current.currentTime = getClickedTime(e);
-        }
 
-        document.addEventListener('mousemove', moveUpdate);
-        document.addEventListener('mouseup', () => {
-            document.removeEventListener('mousemove', moveUpdate);
-        })
+            function moveUpdate(e) {
+                audioRef.current.currentTime = getClickedTime(e);
+            }
+
+            document.addEventListener('mousemove', moveUpdate);
+            document.addEventListener('mouseup', () => {
+                document.removeEventListener('mousemove', moveUpdate);
+            })
+        }
     }
 
     return (

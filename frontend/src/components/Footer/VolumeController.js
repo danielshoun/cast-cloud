@@ -15,36 +15,40 @@ export default function VolumeController({audioRef}) {
     }
 
     function handleVolumeDrag(e) {
-        if(isMuted) setIsMuted(false)
-        const clickVol = getClickedVolume(e);
-        if(clickVol >= 0 && clickVol <= 1) {
-            audioRef.current.volume = getClickedVolume(e);
-            setCurrentVolume(audioRef.current.volume * 100);
-        }
+        if(audioRef.current) {
+            if(isMuted) setIsMuted(false)
+            const clickVol = getClickedVolume(e);
+            if(clickVol >= 0 && clickVol <= 1) {
+                audioRef.current.volume = getClickedVolume(e);
+                setCurrentVolume(audioRef.current.volume * 100);
+            }
 
-        function moveUpdate(e) {
-            if(sliderRef.current) {
-                const dragVol = getClickedVolume(e);
-                if(dragVol >= 0 && dragVol <= 1) {
-                    audioRef.current.volume = dragVol;
-                    setCurrentVolume(audioRef.current.volume * 100);
+            function moveUpdate(e) {
+                if(sliderRef.current) {
+                    const dragVol = getClickedVolume(e);
+                    if(dragVol >= 0 && dragVol <= 1) {
+                        audioRef.current.volume = dragVol;
+                        setCurrentVolume(audioRef.current.volume * 100);
+                    }
                 }
             }
-        }
 
-        document.addEventListener('mousemove', moveUpdate);
-        document.addEventListener('mouseup', () => {
-            document.removeEventListener('mousemove', moveUpdate)
-        })
+            document.addEventListener('mousemove', moveUpdate);
+            document.addEventListener('mouseup', () => {
+                document.removeEventListener('mousemove', moveUpdate)
+            })
+        }
     }
 
     function toggleMute() {
-        if(isMuted) {
-            audioRef.current.volume = currentVolume / 100;
-            setIsMuted(false);
-        } else {
-            audioRef.current.volume = 0;
-            setIsMuted(true);
+        if(audioRef.current) {
+            if(isMuted) {
+                audioRef.current.volume = currentVolume / 100;
+                setIsMuted(false);
+            } else {
+                audioRef.current.volume = 0;
+                setIsMuted(true);
+            }
         }
     }
 
