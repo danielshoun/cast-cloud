@@ -8,14 +8,18 @@ export default function AudioInfo() {
     const textRef = useRef(null);
     const titleRef = useRef(null);
 
-    useEffect(() => {
+    function calcOverflowAmount() {
         if(titleRef.current) console.log(titleRef.current.scrollWidth, textRef.current.clientWidth);
         if(titleRef.current && titleRef.current.scrollWidth > textRef.current.clientWidth) {
             setOverflowAmount((titleRef.current.scrollWidth - textRef.current.clientWidth) + 10);
         } else {
             setOverflowAmount(0);
         }
-    }, [audioState.currentTrack, titleRef.current])
+    }
+
+    useEffect(calcOverflowAmount, [audioState.currentTrack, titleRef.current, calcOverflowAmount])
+
+    window.addEventListener('resize', calcOverflowAmount);
 
     if(!audioState.currentTrack) {
         return (
