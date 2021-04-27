@@ -1,4 +1,4 @@
-import {useEffect, useState} from "react";
+import {useEffect, useRef, useState} from "react";
 import { useDispatch } from "react-redux";
 import {changeTrack} from "../../store/audio";
 
@@ -6,6 +6,7 @@ export default function EpisodeList({ itunesId }) {
     const dispatch = useDispatch();
     const [episodeList, setEpisodeList] = useState([]);
     const [activeEpisode, setActiveEpisode] = useState(null);
+    const ref = useRef(null);
 
     useEffect(() => {
         async function fetchData() {
@@ -33,17 +34,16 @@ export default function EpisodeList({ itunesId }) {
     return (
         <>
             {episodeList.items.map(episode => {
+
                 return (
+
                     <div key={episode.guid} className='episodeContainer' onClick={() => handleActive(episode)}>
                         <div className='episodeHeader'>
                             <span className='episodeTitle'>{episode.title}</span>
-                            <span className='episodeDuration'>{episode.itunes.duration}</span>
+                            <span className='episodeDuration'>{episode.duration}</span>
                         </div>
                         {activeEpisode === episode.guid && (
                             <div>
-                                {/*<audio controls>*/}
-                                {/*    <source src={episode.enclosure.url} type={episode.enclosure.type}/>*/}
-                                {/*</audio>*/}
                                 <div className='episodeDescription'>{episode.itunes.summary || episode.contentSnippet}</div>
                             </div>
                         )}
