@@ -25,7 +25,7 @@ export default function EpisodeList({ itunesId, podcastTitle, artworkUrl }) {
             setActiveEpisode(null);
         } else {
             setActiveEpisode(episode.guid)
-            dispatch(changeTrack({podcastTitle, artworkUrl, title: episode.title, url: episode.enclosure.url, type: episode.enclosure.type}))
+            dispatch(changeTrack({podcastTitle, artworkUrl, itunesId, title: episode.title, url: episode.enclosure.url, type: episode.enclosure.type}))
         }
     }
     console.log(artworkUrl);
