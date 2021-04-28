@@ -50,14 +50,42 @@
 }
 
 .episodeContainer {
-    margin: 32px 0;
+    padding: 16px 0;
+    border-top: 1px solid #46464c;
 }
 
 .episodeHeader {
     display: flex;
     justify-content: space-between;
+    color: #6a6a6a;
+    transition: color 0.25s ease;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.episodeHeader:hover,
+.activeEpisode {
+    color: #f0f3f5;
+}
+
+.titleCaret {
+    margin: 0 8px;
+}
+
+.episodeTitle {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-right: 24px;
 }
 
 .episodeDescription {
+    margin-top: 16px;
     white-space: pre-wrap;
+}
+
+.episodeButton {
+    margin: 0 4px;
+    font-size: 20px;
 }

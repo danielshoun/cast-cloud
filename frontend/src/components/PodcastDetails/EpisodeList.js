@@ -1,8 +1,9 @@
-import {useEffect, useState} from "react";
-import { useDispatch } from "react-redux";
-import {changeTrack} from "../../store/audio";
+import React, {useEffect, useState} from "react";
+import {useDispatch, useSelector} from "react-redux";
+import {changeTrack, togglePlaying} from "../../store/audio";
 
 export default function EpisodeList({ itunesId, podcastTitle, artworkUrl }) {
+    const audioState = useSelector(state => state.audio);
     const dispatch = useDispatch();
     const [episodeList, setEpisodeList] = useState([]);
     const [activeEpisode, setActiveEpisode] = useState(null);
@@ -25,20 +26,39 @@ export default function EpisodeList({ itunesId, podcastTitle, artworkUrl }) {
             setActiveEpisode(null);
         } else {
             setActiveEpisode(episode.guid)
+        }
+    }
+
+    function playTrack(episode) {
+        if(audioState.currentTrack.url === episode.enclosure.url) {
+            dispatch(togglePlaying(true));
+        } else {
             dispatch(changeTrack({podcastTitle, artworkUrl, itunesId, title: episode.title, url: episode.enclosure.url, type: episode.enclosure.type}))
         }
     }
-    console.log(artworkUrl);
+
+    function pauseTrack() {
+        dispatch(togglePlaying(false));
+    }
+
     return (
         <>
             {episodeList.items.map(episode => {
-
                 return (
+                    <div key={episode.guid} className='episodeContainer'>
+                        <div className={`episodeHeader${activeEpisode === episode.guid ? ' activeEpisode' : ''}`}>
+                            <span className='episodeTitle' onClick={() => handleActive(episode)}>
+                                {activeEpisode === episode.guid ? <i className="fas fa-angle-down titleCaret"/> :
+                                <i className="fas fa-angle-right titleCaret"/> }
+                                {episode.title}
+                            </span>
+                            <div className='episodeControls'>
+                                {audioState.currentTrack.url === episode.enclosure.url && audioState.playing ?
+                                    <i className={`fas fa-pause-circle episodeButton`} onClick={() => pauseTrack()}/> :
+                                    <i className={`fas fa-play-circle episodeButton`} onClick={() => playTrack(episode)}/>}
+                                <i className="fas fa-plus-circle episodeButton"/>
+                            </div>
 
-                    <div key={episode.guid} className='episodeContainer' onClick={() => handleActive(episode)}>
-                        <div className='episodeHeader'>
-                            <span className='episodeTitle'>{episode.title}</span>
-                            <span className='episodeDuration'>{episode.duration}</span>
                         </div>
                         {activeEpisode === episode.guid && (
                             <div>

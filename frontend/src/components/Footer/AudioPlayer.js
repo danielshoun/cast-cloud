@@ -15,6 +15,14 @@ export default function AudioPlayer() {
     const [percentListened, setPercentListened] = useState(0);
 
     useEffect(() => {
+        if(audioState.playing && audioRef.current) {
+            audioRef.current.play();
+        } else if(audioRef.current) {
+            audioRef.current.pause();
+        }
+    }, [audioState.playing])
+
+    useEffect(() => {
         if(audioRef.current) {
             const currentAudioRef = audioRef.current;
 
@@ -34,7 +42,7 @@ export default function AudioPlayer() {
                 setPercentListened(0);
                 setCurTime(getTime(currentAudioRef.currentTime));
                 setDuration(getTime(currentAudioRef.duration));
-                currentAudioRef.play();
+                // currentAudioRef.play();
                 dispatch(togglePlaying(true));
                 currentAudioRef.removeEventListener('canplay', readyPlayerState);
             }
@@ -44,7 +52,7 @@ export default function AudioPlayer() {
                 setCurTime(getTime(e.target.currentTime));
             }
 
-            currentAudioRef.pause();
+            dispatch(togglePlaying(false))
             currentAudioRef.load();
             currentAudioRef.addEventListener('canplay', readyPlayerState);
             currentAudioRef.addEventListener('timeupdate', updateTime);
@@ -57,10 +65,10 @@ export default function AudioPlayer() {
 
     function playAudio() {
         if(audioState.currentTrack && audioState.playing) {
-            audioRef.current.pause();
+            // audioRef.current.pause();
             dispatch(togglePlaying(false));
         } else if(audioState.currentTrack) {
-            audioRef.current.play()
+            // audioRef.current.play()
             dispatch(togglePlaying(true));
         }
     }
@@ -85,7 +93,7 @@ export default function AudioPlayer() {
             />
             <VolumeController audioRef={audioRef}/>
             <i className={`far fa-comment-alt commentButton${audioRef.current ? '' : ' inactiveButton'}`}/>
-            <i className={`far fa-list-alt playlistButton${audioRef.current ? '' : ' inactiveButton'}`}/>
+            <i className={`fas fa-list playlistButton${audioRef.current ? '' : ' inactiveButton'}`}/>
         </div>
 
     )
