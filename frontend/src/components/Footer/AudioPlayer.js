@@ -58,13 +58,19 @@ export default function AudioPlayer() {
                 dispatch(goToNextSong());
             }
 
+            function changeDuration() {
+                setDuration(getTime(currentAudioRef.duration))
+            }
+
             dispatch(togglePlaying(false))
             currentAudioRef.load();
             currentAudioRef.addEventListener('canplay', readyPlayerState);
+            currentAudioRef.addEventListener('durationchange', changeDuration);
             currentAudioRef.addEventListener('timeupdate', updateTime);
             currentAudioRef.addEventListener('ended', nextSong);
 
             return () => {
+                currentAudioRef.removeEventListener('durationchange', changeDuration);
                 currentAudioRef.removeEventListener('timeupdate', updateTime);
                 currentAudioRef.removeEventListener('ended', nextSong);
             }
@@ -101,7 +107,7 @@ export default function AudioPlayer() {
             />
             <VolumeController audioRef={audioRef}/>
             <i className={`far fa-comment-alt commentButton${audioState.currentTrack?.url ? '' : ' inactiveButton'}`}/>
-            <i className={`fas fa-list playlistButton${audioState.currentTrack?.url ? '' : ' inactiveButton'}`}/>
+            <i className={`fas fa-list queueButton${audioState.currentTrack?.url ? '' : ' inactiveButton'}`}/>
         </div>
 
     )
