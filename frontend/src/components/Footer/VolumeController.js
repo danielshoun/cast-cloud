@@ -1,6 +1,8 @@
 import React, {useRef, useState} from "react";
+import {useSelector} from "react-redux";
 
 export default function VolumeController({audioRef}) {
+    const audioState = useSelector(state => state.audio);
     const [showingSlider, setShowingSlider] = useState(false);
     const [currentVolume, setCurrentVolume] = useState(100);
     const [isMuted, setIsMuted] = useState(false);
@@ -55,13 +57,13 @@ export default function VolumeController({audioRef}) {
     return (
         <div
             className='volumeControllerContainer'
-            onMouseOver={audioRef.current && (() => setShowingSlider(true))}
+            onMouseOver={audioState.currentTrack?.url && (() => setShowingSlider(true))}
             onMouseLeave={() => setShowingSlider(false)}
         >
             <div className='volumeButtonContainer'>
                 {isMuted ?
-                    <i className={`fas fa-volume-mute volumeButton${audioRef.current ? '' : ' inactiveButton'}`} onClick={toggleMute}/> :
-                    <i className={`fas fa-volume-up volumeButton${audioRef.current ? '' : ' inactiveButton'}`} onClick={toggleMute}/>
+                    <i className={`fas fa-volume-mute volumeButton${audioState.currentTrack?.url ? '' : ' inactiveButton'}`} onClick={toggleMute}/> :
+                    <i className={`fas fa-volume-up volumeButton${audioState.currentTrack?.url ? '' : ' inactiveButton'}`} onClick={toggleMute}/>
                 }
             </div>
             {showingSlider ? (

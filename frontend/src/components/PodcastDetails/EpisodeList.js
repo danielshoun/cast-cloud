@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {changeTrack, togglePlaying} from "../../store/audio";
+import {addToQueue, changeTrack, togglePlaying} from "../../store/audio";
 
 export default function EpisodeList({ itunesId, podcastTitle, artworkUrl }) {
     const audioState = useSelector(state => state.audio);
@@ -30,7 +30,7 @@ export default function EpisodeList({ itunesId, podcastTitle, artworkUrl }) {
     }
 
     function playTrack(episode) {
-        if(audioState.currentTrack.url === episode.enclosure.url) {
+        if(audioState.currentTrack?.url === episode.enclosure.url) {
             dispatch(togglePlaying(true));
         } else {
             dispatch(changeTrack({podcastTitle, artworkUrl, itunesId, title: episode.title, url: episode.enclosure.url, type: episode.enclosure.type}))
@@ -39,6 +39,10 @@ export default function EpisodeList({ itunesId, podcastTitle, artworkUrl }) {
 
     function pauseTrack() {
         dispatch(togglePlaying(false));
+    }
+
+    function addTrack(episode) {
+        dispatch(addToQueue({podcastTitle, artworkUrl, itunesId, title: episode.title, url: episode.enclosure.url, type: episode.enclosure.type}));
     }
 
     return (
@@ -53,10 +57,10 @@ export default function EpisodeList({ itunesId, podcastTitle, artworkUrl }) {
                                 {episode.title}
                             </span>
                             <div className='episodeControls'>
-                                {audioState.currentTrack.url === episode.enclosure.url && audioState.playing ?
+                                {audioState.currentTrack?.url === episode.enclosure.url && audioState.playing ?
                                     <i className={`fas fa-pause-circle episodeButton`} onClick={() => pauseTrack()}/> :
                                     <i className={`fas fa-play-circle episodeButton`} onClick={() => playTrack(episode)}/>}
-                                <i className="fas fa-plus-circle episodeButton"/>
+                                <i className="fas fa-plus-circle episodeButton" onClick={() => addTrack(episode)}/>
                             </div>
 
                         </div>

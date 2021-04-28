@@ -1,6 +1,6 @@
 import React, {useEffect, useRef, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {togglePlaying} from "../../store/audio";
+import {goToNextSong, togglePlaying} from "../../store/audio";
 import './AudioPlayer.css';
 import ProgressBar from "./ProgressBar";
 import PlaybackController from "./PlaybackController";
@@ -42,7 +42,6 @@ export default function AudioPlayer() {
                 setPercentListened(0);
                 setCurTime(getTime(currentAudioRef.currentTime));
                 setDuration(getTime(currentAudioRef.duration));
-                // currentAudioRef.play();
                 dispatch(togglePlaying(true));
                 currentAudioRef.removeEventListener('canplay', readyPlayerState);
             }
@@ -52,13 +51,22 @@ export default function AudioPlayer() {
                 setCurTime(getTime(e.target.currentTime));
             }
 
+            function nextSong() {
+                setPercentListened(0);
+                setCurTime(null);
+                setDuration(null);
+                dispatch(goToNextSong());
+            }
+
             dispatch(togglePlaying(false))
             currentAudioRef.load();
             currentAudioRef.addEventListener('canplay', readyPlayerState);
             currentAudioRef.addEventListener('timeupdate', updateTime);
+            currentAudioRef.addEventListener('ended', nextSong);
 
             return () => {
                 currentAudioRef.removeEventListener('timeupdate', updateTime);
+                currentAudioRef.removeEventListener('ended', nextSong);
             }
         }
     }, [audioState.currentTrack?.url, dispatch])
@@ -92,8 +100,8 @@ export default function AudioPlayer() {
                 audioRef={audioRef}
             />
             <VolumeController audioRef={audioRef}/>
-            <i className={`far fa-comment-alt commentButton${audioRef.current ? '' : ' inactiveButton'}`}/>
-            <i className={`fas fa-list playlistButton${audioRef.current ? '' : ' inactiveButton'}`}/>
+            <i className={`far fa-comment-alt commentButton${audioState.currentTrack?.url ? '' : ' inactiveButton'}`}/>
+            <i className={`fas fa-list playlistButton${audioState.currentTrack?.url ? '' : ' inactiveButton'}`}/>
         </div>
 
     )

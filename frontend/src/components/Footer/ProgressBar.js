@@ -1,6 +1,8 @@
 import React, {useRef} from "react";
+import {useSelector} from "react-redux";
 
 export default function ProgressBar({duration, curTime, percentListened, audioRef}) {
+    const audioState = useSelector(state => state.audio);
     const barRef = useRef(null);
 
     function getClickedTime(e) {
@@ -13,10 +15,15 @@ export default function ProgressBar({duration, curTime, percentListened, audioRe
 
     function handleTimeDrag(e) {
         if(audioRef.current) {
-            audioRef.current.currentTime = getClickedTime(e);
-
-            function moveUpdate(e) {
+            let clickedTime = getClickedTime(e);
+            if(clickedTime >= 0 && clickedTime < audioRef.current.duration) {
                 audioRef.current.currentTime = getClickedTime(e);
+            }
+            function moveUpdate(e) {
+                let clickedTime = getClickedTime(e);
+                if(clickedTime >= 0 && clickedTime < audioRef.current.duration) {
+                    audioRef.current.currentTime = getClickedTime(e);
+                }
             }
 
             document.addEventListener('mousemove', moveUpdate);
@@ -34,11 +41,11 @@ export default function ProgressBar({duration, curTime, percentListened, audioRe
                 onMouseDown={handleTimeDrag}
                 style={{background: `linear-gradient(to right, #f35b04 ${percentListened}%, #1e1e24 0`}}>
                     <span
-                        className={`progressKnob${audioRef.current ? '' : ' inactiveKnob'}`}
+                        className={`progressKnob${audioState.currentTrack?.url ? '' : ' inactiveKnob'}`}
                         style={{left: `${percentListened - 2}%`}}
                     />
             </div>
-            <span className={`barTime${audioRef.current ? '' : ' inactiveTime'}`}>{curTime || '00:00:00'} | {duration || '00:00:00'}</span>
+            <span className={`barTime${audioState.currentTrack?.url ? '' : ' inactiveTime'}`}>{curTime || '00:00:00'} | {duration || '00:00:00'}</span>
         </div>
     )
 }
