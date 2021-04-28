@@ -10,8 +10,8 @@ export default function AudioPopups() {
     return (
         <>
             <div className='popupButtonsContainer'>
-                <i className={`far fa-comment-alt commentButton${audioState.currentTrack?.url ? '' : ' inactiveButton'}`}/>
-                <i className={`fas fa-list queueButton${audioState.currentTrack?.url ? '' : ' inactiveButton'}`} onClick={() => setShowingQueue(prevState => !prevState)}/>
+                <i className={`far fa-comment-alt commentButton${audioState.currentTrack !== null ? '' : ' inactiveButton'}`}/>
+                <i className={`fas fa-list queueButton${audioState.currentTrack !== null ? '' : ' inactiveButton'}`} onClick={() => setShowingQueue(prevState => !prevState)}/>
             </div>
             {showingQueue && <QueuePopup/>}
         </>

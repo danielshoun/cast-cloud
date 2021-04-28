@@ -34,21 +34,21 @@ export default function audioReducer(state = { currentTrack: null, playing: fals
     let newState = Object.assign({}, state);
     switch(action.type) {
         case CHANGE_TRACK:
-            newState.currentTrack = action.newSrc;
+            newState.queue.push(action.newSrc);
+            newState.currentTrack = newState.queue.length - 1;
             return newState;
         case TOGGLE_AUDIO_PLAYING:
             newState.playing = action.playing;
             return newState;
         case ADD_TO_QUEUE:
+            newState.queue.push(action.track);
             if(!newState.currentTrack) {
-                newState.currentTrack = action.track;
-            } else {
-                newState.queue.push(action.track);
+                newState.currentTrack = 0;
             }
             return newState;
         case GO_TO_NEXT:
-            if(newState.queue.length > 0) {
-                newState.currentTrack = newState.queue.shift();
+            if(newState.queue.length > state.currentTrack + 1) {
+                newState.currentTrack = state.currentTrack + 1;
             } else {
                 newState.currentTrack = null;
                 newState.playing = false;

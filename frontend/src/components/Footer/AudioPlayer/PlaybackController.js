@@ -8,8 +8,8 @@ export default function PlaybackController({ playing, playAudio }) {
         <>
             {
                 playing ?
-                    <i className={`fas fa-pause-circle controlButton${audioState.currentTrack?.url ? '' : ' inactiveButton'}`} onClick={playAudio}/> :
-                    <i className={`fas fa-play-circle controlButton${audioState.currentTrack?.url ? '' : ' inactiveButton'}`} onClick={playAudio}/>
+                    <i className={`fas fa-pause-circle controlButton${audioState.currentTrack !== null ? '' : ' inactiveButton'}`} onClick={playAudio}/> :
+                    <i className={`fas fa-play-circle controlButton${audioState.currentTrack !== null ? '' : ' inactiveButton'}`} onClick={playAudio}/>
             }
         </>
     )

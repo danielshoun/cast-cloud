@@ -76,23 +76,21 @@ export default function AudioPlayer() {
                 currentAudioRef.removeEventListener('ended', nextSong);
             }
         }
-    }, [audioState.currentTrack?.url, dispatch])
+    }, [audioState.currentTrack, dispatch])
 
     function playAudio() {
         if(audioState.currentTrack && audioState.playing) {
-            // audioRef.current.pause();
             dispatch(togglePlaying(false));
         } else if(audioState.currentTrack) {
-            // audioRef.current.play()
             dispatch(togglePlaying(true));
         }
     }
 
     return (
         <div className='audioPlayerContainer'>
-            {audioState.currentTrack &&
+            {audioState.currentTrack !== null &&
                 <audio ref={audioRef}>
-                    <source id='footerPlayer' src={audioState.currentTrack?.url}/>
+                    <source id='footerPlayer' src={audioState.queue[audioState.currentTrack].url}/>
                 </audio>
             }
             <PlaybackController

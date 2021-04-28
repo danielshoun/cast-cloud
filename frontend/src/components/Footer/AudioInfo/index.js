@@ -21,7 +21,7 @@ export default function AudioInfo() {
 
     window.addEventListener('resize', calcOverflowAmount);
 
-    if(!audioState.currentTrack) {
+    if(audioState.currentTrack === null) {
         return (
             <>
             </>
@@ -41,10 +41,10 @@ export default function AudioInfo() {
                         }`
                     }
                 </style>}
-            <img alt='Album Artwork' className='nowPlayingImage' src={audioState.currentTrack.artworkUrl}/>
+            <img alt='Album Artwork' className='nowPlayingImage' src={audioState.queue[audioState.currentTrack].artworkUrl}/>
             <div className='nowPlayingText' ref={textRef}>
-                <div className='nowPlayingTitle' ref={titleRef}>{audioState.currentTrack.title}</div>
-                <div className='nowPlayingArtist'><Link className='artistLink' to={`/podcasts/${audioState.currentTrack.itunesId}`}>{audioState.currentTrack.podcastTitle}</Link></div>
+                <div className='nowPlayingTitle' ref={titleRef}>{audioState.queue[audioState.currentTrack].title}</div>
+                <div className='nowPlayingArtist'><Link className='artistLink' to={`/podcasts/${audioState.queue[audioState.currentTrack].itunesId}`}>{audioState.queue[audioState.currentTrack].podcastTitle}</Link></div>
             </div>
         </div>
     )
