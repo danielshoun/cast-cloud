@@ -84,6 +84,8 @@ export default function AudioPlayer() {
                 audioRef={audioRef}
             />
             <VolumeController audioRef={audioRef}/>
+            <i className={`far fa-comment-alt commentButton${audioRef.current ? '' : ' inactiveButton'}`}/>
+            <i className={`far fa-list-alt playlistButton${audioRef.current ? '' : ' inactiveButton'}`}/>
         </div>
 
     )
