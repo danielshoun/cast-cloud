@@ -17,7 +17,7 @@ export default function AudioInfo() {
         }
     }
 
-    useEffect(calcOverflowAmount, [audioState.currentTrack, titleRef.current, calcOverflowAmount])
+    useEffect(calcOverflowAmount, [audioState.queue[audioState.currentTrack], titleRef.current, calcOverflowAmount])
 
     window.addEventListener('resize', calcOverflowAmount);
 

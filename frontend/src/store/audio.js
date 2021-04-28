@@ -2,6 +2,7 @@ const CHANGE_TRACK = 'audio/changeTrack';
 const TOGGLE_AUDIO_PLAYING = 'audio/togglePlaying';
 const ADD_TO_QUEUE = 'audio/addToQueue';
 const GO_TO_NEXT = 'audio/goToNextSong';
+const REMOVE_FROM_QUEUE = 'audio/removeFromQueue';
 
 export const changeTrack = (newSrc) => {
     return {
@@ -30,6 +31,13 @@ export const goToNextSong = () => {
     }
 }
 
+export const removeFromQueue = (index) => {
+    return {
+        type: REMOVE_FROM_QUEUE,
+        index
+    }
+}
+
 export default function audioReducer(state = { currentTrack: null, playing: false, queue: []}, action) {
     let newState = Object.assign({}, state);
     switch(action.type) {
@@ -47,11 +55,34 @@ export default function audioReducer(state = { currentTrack: null, playing: fals
             }
             return newState;
         case GO_TO_NEXT:
-            if(newState.queue.length > state.currentTrack + 1) {
-                newState.currentTrack = state.currentTrack + 1;
+            if(newState.queue.length > 1) {
+                newState.queue.splice(state.currentTrack, 1)
+                if(newState.currentTrack === newState.queue.length) {
+                    newState.currentTrack = 0;
+                }
             } else {
+                newState.queue = [];
                 newState.currentTrack = null;
                 newState.playing = false;
+            }
+            return newState;
+        case REMOVE_FROM_QUEUE:
+            if(action.index === newState.currentTrack) {
+                if(newState.queue.length > 1) {
+                    newState.queue.splice(state.currentTrack, 1)
+                    if(newState.currentTrack === newState.queue.length) {
+                        newState.currentTrack = 0;
+                    }
+                } else {
+                    newState.queue = [];
+                    newState.currentTrack = null;
+                    newState.playing = false;
+                }
+            } else {
+                newState.queue.splice(action.index, 1);
+                if(action.index < newState.currentTrack) {
+                    newState.currentTrack = state.currentTrack - 1;
+                }
             }
             return newState;
         default:

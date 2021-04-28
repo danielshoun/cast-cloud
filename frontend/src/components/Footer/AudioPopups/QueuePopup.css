@@ -3,10 +3,11 @@
     right: 0;
     bottom: 64px;
     width: 550px;
-    min-height: 500px;
+    height: 500px;
     background-color: #46464c;
     /*border: 1px solid #1e1e24;*/
     box-shadow: 0 3px 5px #333;
+    overflow-y: scroll;
 }
 
 .queueHeader {

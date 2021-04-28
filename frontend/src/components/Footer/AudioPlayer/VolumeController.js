@@ -57,7 +57,7 @@ export default function VolumeController({audioRef}) {
     return (
         <div
             className='volumeControllerContainer'
-            onMouseOver={audioState.currentTrack !== null ? undefined : (() => setShowingSlider(true))}
+            onMouseOver={audioState.currentTrack === null ? undefined : (() => setShowingSlider(true))}
             onMouseLeave={() => setShowingSlider(false)}
         >
             <div className='volumeButtonContainer'>

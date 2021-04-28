@@ -24,6 +24,13 @@ export default function AudioPlayer() {
     }, [audioState.playing])
 
     useEffect(() => {
+        if(!audioState.queue[audioState.currentTrack]) {
+            setPercentListened(0);
+            setCurTime(null);
+            setDuration(null);
+            return;
+        }
+
         if(audioRef.current) {
             const currentAudioRef = audioRef.current;
 
@@ -76,7 +83,7 @@ export default function AudioPlayer() {
                 currentAudioRef.removeEventListener('ended', nextSong);
             }
         }
-    }, [audioState.currentTrack, dispatch])
+    }, [audioState.queue[audioState.currentTrack], dispatch])
 
     function playAudio() {
         if(audioState.currentTrack && audioState.playing) {

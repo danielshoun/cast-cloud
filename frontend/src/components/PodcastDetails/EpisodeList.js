@@ -42,7 +42,9 @@ export default function EpisodeList({ itunesId, podcastTitle, artworkUrl }) {
     }
 
     function addTrack(episode) {
-        dispatch(addToQueue({podcastTitle, artworkUrl, itunesId, title: episode.title, url: episode.enclosure.url, type: episode.enclosure.type, guid: episode.guid}));
+        if(!audioState.queue.find(el => el.guid === episode.guid)) {
+            dispatch(addToQueue({podcastTitle, artworkUrl, itunesId, title: episode.title, url: episode.enclosure.url, type: episode.enclosure.type, guid: episode.guid}));
+        }
     }
 
     return (
@@ -57,7 +59,7 @@ export default function EpisodeList({ itunesId, podcastTitle, artworkUrl }) {
                                 {episode.title}
                             </span>
                             <div className='episodeControls'>
-                                {audioState.queue[audioState.currentTrack].url === episode.enclosure.url && audioState.playing ?
+                                {audioState.queue[audioState.currentTrack]?.url === episode.enclosure.url && audioState.playing ?
                                     <i className={`fas fa-pause-circle episodeButton`} onClick={() => pauseTrack()}/> :
                                     <i className={`fas fa-play-circle episodeButton`} onClick={() => playTrack(episode)}/>}
                                 <i className="fas fa-plus-circle episodeButton" onClick={() => addTrack(episode)}/>
