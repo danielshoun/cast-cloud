@@ -34,12 +34,26 @@
 }
 
 .queueItemText {
-    margin-left: 16px;
+    margin: 0 16px;
     overflow: hidden;
-    text-overflow: ellipsis;
 }
 
 .queueItemTitle,
 .queueItemArtist{
+    overflow: hidden;
+    text-overflow: ellipsis;
     white-space: nowrap;
+}
+
+.queueItemArtist {
+    color: #6a6a6a;
+}
+
+.queueItemActions {
+    margin: 0 0 0 auto;
+}
+
+.queueItemButton {
+    display: inline;
+    margin-left: 16px;
 }

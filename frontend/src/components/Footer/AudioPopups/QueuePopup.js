@@ -19,7 +19,11 @@ export default function QueuePopup() {
                                     <img alt='Album Artwork' className='queueItemImage' src={episode.artworkUrl}/>
                                     <div className='queueItemText'>
                                         <div className='queueItemTitle'>{episode.title}</div>
-                                        <div className='queueItemArtist'>{audioState.currentTrack.podcastTitle}</div>
+                                        <div className='queueItemArtist'>{episode.podcastTitle}</div>
+                                    </div>
+                                    <div className='queueItemActions'>
+                                        <i className="fas fa-ellipsis-v queueItemButton"/>
+                                        <i className="fas fa-trash-alt queueItemButton"/>
                                     </div>
                                 </div>
                             )
