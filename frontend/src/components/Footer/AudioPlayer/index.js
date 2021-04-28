@@ -1,6 +1,6 @@
 import React, {useEffect, useRef, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {goToNextSong, togglePlaying} from "../../store/audio";
+import {goToNextSong, togglePlaying} from "../../../store/audio";
 import './AudioPlayer.css';
 import ProgressBar from "./ProgressBar";
 import PlaybackController from "./PlaybackController";
@@ -13,6 +13,7 @@ export default function AudioPlayer() {
     const[duration, setDuration] = useState(null);
     const [curTime, setCurTime] = useState(null);
     const [percentListened, setPercentListened] = useState(0);
+
 
     useEffect(() => {
         if(audioState.playing && audioRef.current) {
@@ -106,8 +107,6 @@ export default function AudioPlayer() {
                 audioRef={audioRef}
             />
             <VolumeController audioRef={audioRef}/>
-            <i className={`far fa-comment-alt commentButton${audioState.currentTrack?.url ? '' : ' inactiveButton'}`}/>
-            <i className={`fas fa-list queueButton${audioState.currentTrack?.url ? '' : ' inactiveButton'}`}/>
         </div>
 
     )

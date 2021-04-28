@@ -1,0 +1,45 @@
+.queuePopupContainer {
+    position: absolute;
+    right: 0;
+    bottom: 64px;
+    width: 550px;
+    min-height: 500px;
+    background-color: #46464c;
+    /*border: 1px solid #1e1e24;*/
+    box-shadow: 0 3px 5px #333;
+}
+
+.queueHeader {
+    margin: 16px;
+    padding-bottom: 8px;
+    color: #a1a1a1;
+    border-bottom: 1px solid #a1a1a1;
+}
+
+.emptyQueueContent {
+    margin-top: 200px;
+    color: #a1a1a1;
+    text-align: center;
+}
+
+.queueListItem {
+    margin: 16px;
+    display: flex;
+    align-items: center;
+}
+
+.queueItemImage {
+    width: 50px;
+    height: 50px;
+}
+
+.queueItemText {
+    margin-left: 16px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.queueItemTitle,
+.queueItemArtist{
+    white-space: nowrap;
+}

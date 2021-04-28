@@ -33,7 +33,7 @@ export default function EpisodeList({ itunesId, podcastTitle, artworkUrl }) {
         if(audioState.currentTrack?.url === episode.enclosure.url) {
             dispatch(togglePlaying(true));
         } else {
-            dispatch(changeTrack({podcastTitle, artworkUrl, itunesId, title: episode.title, url: episode.enclosure.url, type: episode.enclosure.type}))
+            dispatch(changeTrack({podcastTitle, artworkUrl, itunesId, title: episode.title, url: episode.enclosure.url, type: episode.enclosure.type, guid: episode.guid}))
         }
     }
 
@@ -42,7 +42,7 @@ export default function EpisodeList({ itunesId, podcastTitle, artworkUrl }) {
     }
 
     function addTrack(episode) {
-        dispatch(addToQueue({podcastTitle, artworkUrl, itunesId, title: episode.title, url: episode.enclosure.url, type: episode.enclosure.type}));
+        dispatch(addToQueue({podcastTitle, artworkUrl, itunesId, title: episode.title, url: episode.enclosure.url, type: episode.enclosure.type, guid: episode.guid}));
     }
 
     return (
