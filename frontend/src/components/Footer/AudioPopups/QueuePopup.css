@@ -24,9 +24,19 @@
 }
 
 .queueListItem {
-    margin: 16px;
+    padding: 16px;
     display: flex;
     align-items: center;
+}
+
+.activeItem {
+    background-color: #1e1e24;
+}
+
+.clickSpace {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
 }
 
 .queueItemImage {

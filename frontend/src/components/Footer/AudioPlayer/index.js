@@ -86,9 +86,9 @@ export default function AudioPlayer() {
     }, [audioState.queue[audioState.currentTrack], dispatch])
 
     function playAudio() {
-        if(audioState.currentTrack && audioState.playing) {
+        if(audioState.currentTrack !== null && audioState.playing) {
             dispatch(togglePlaying(false));
-        } else if(audioState.currentTrack) {
+        } else if(audioState.currentTrack !== null) {
             dispatch(togglePlaying(true));
         }
     }

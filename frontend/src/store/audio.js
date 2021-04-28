@@ -3,6 +3,7 @@ const TOGGLE_AUDIO_PLAYING = 'audio/togglePlaying';
 const ADD_TO_QUEUE = 'audio/addToQueue';
 const GO_TO_NEXT = 'audio/goToNextSong';
 const REMOVE_FROM_QUEUE = 'audio/removeFromQueue';
+const SKIP_TO_SONG = 'audio/skipToSong';
 
 export const changeTrack = (newSrc) => {
     return {
@@ -34,6 +35,13 @@ export const goToNextSong = () => {
 export const removeFromQueue = (index) => {
     return {
         type: REMOVE_FROM_QUEUE,
+        index
+    }
+}
+
+export const skipToSong = (index) => {
+    return {
+        type: SKIP_TO_SONG,
         index
     }
 }
@@ -84,6 +92,9 @@ export default function audioReducer(state = { currentTrack: null, playing: fals
                     newState.currentTrack = state.currentTrack - 1;
                 }
             }
+            return newState;
+        case SKIP_TO_SONG:
+            newState.currentTrack = action.index;
             return newState;
         default:
             return state;
