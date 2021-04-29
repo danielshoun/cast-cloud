@@ -1,6 +1,7 @@
 import './CommentPopup.css';
 import React, {useEffect, useState} from "react";
 import {useSelector} from "react-redux";
+import {csrfFetch} from "../../../store/csrf";
 
 export default function CommentPopup() {
     const userState = useSelector(state => state.session);
@@ -26,7 +27,14 @@ export default function CommentPopup() {
             text: newCommentText,
             timestamp: audioState.timestamp
         }
-        console.log(comment);
+        const res = await csrfFetch(`/api/episodes/${audioState.queue[audioState.currentTrack].id}/comments`, {
+            method: 'POST',
+            body: JSON.stringify(comment),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+        const data = await res.json();
     }
 
     return (
@@ -37,8 +45,13 @@ export default function CommentPopup() {
                     <div className='emptyCommentContent'>
                         {audioState.currentTrack !== null ? 'No comments for this episode yet.' : 'You must select an episode first.'}
                     </div> :
-                    <div>
-                    </div>
+                    comments.map(comment => {
+                        return (
+                            <div key={comment.id}>
+                                {comment.text}
+                            </div>
+                        )
+                    })
                 }
             </div>
             <div className='newCommentContainer'>

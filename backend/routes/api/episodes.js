@@ -19,7 +19,7 @@ router.post('/:episodeId/comments', requireAuth, asyncHandler(async (req, res) =
         episodeId,
         timestamp: req.body.timestamp,
         text: req.body.text
-    })
+    });
 
     return res.json(newComment);
 }));
