@@ -26,7 +26,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     timestamp: {
       allowNull: false,
-      type:DataTypes.NUMERIC
+      type:DataTypes.DOUBLE
     },
     text: {
       allowNull: false,

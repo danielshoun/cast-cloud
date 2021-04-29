@@ -7,7 +7,7 @@ const router = express.Router();
 
 router.get('/:episodeId/comments', asyncHandler(async (req, res) => {
     const episodeId = req.params.episodeId;
-    const comments = await Comment.findAll({where: {episodeId}, include: User})
+    const comments = await Comment.findAll({where: {episodeId}, include: User, order: [['timestamp', 'ASC']]});
     return res.json(comments);
 }))
 

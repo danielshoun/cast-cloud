@@ -24,7 +24,7 @@ module.exports = {
       },
       timestamp: {
         allowNull: false,
-        type: Sequelize.NUMERIC
+        type: Sequelize.DOUBLE
       },
       text: {
         allowNull: false,
