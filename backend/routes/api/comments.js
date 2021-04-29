@@ -15,4 +15,12 @@ router.put('/:commentId', requireAuth, asyncHandler(async (req, res) => {
     }
 }))
 
+router.delete('/:commentId', requireAuth, asyncHandler(async (req, res) => {
+    let comment = await Comment.findByPk(req.params.commentId);
+    if(comment.userId === req.user.id) {
+        await comment.destroy();
+        return res.sendStatus(200);
+    }
+}))
+
 module.exports = router;

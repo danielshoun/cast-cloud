@@ -2,7 +2,7 @@ import React, {useState} from "react";
 import {useSelector} from "react-redux";
 import {csrfFetch} from "../../../store/csrf";
 
-export default function Comment({comment, handleEditComment}) {
+export default function Comment({comment, handleEditComment, handleDeleteComment}) {
     const userState = useSelector(state => state.session);
     const [isEditing, setIsEditing] = useState(false);
     const [editInputValue, setEditInputValue] = useState(comment.text);
@@ -38,6 +38,13 @@ export default function Comment({comment, handleEditComment}) {
         }
     }
 
+    async function handleDeleteButton(comment) {
+        const res = await csrfFetch(`/api/comments/${comment.id}`, {
+            method: 'DELETE'
+        })
+        handleDeleteComment(comment);
+    }
+
     return (
         <div className='commentListItem'>
             <div className='commentItemHeader'>
@@ -45,8 +52,14 @@ export default function Comment({comment, handleEditComment}) {
                 <span className='commentTimestamp'>
                                         {userState.user.id === comment.User.id &&
                                         <span className='commentUserButtonContainer'>
-                                                <i className="fas fa-pencil-alt commentUserButton" onClick={() => setIsEditing(true)}/>
-                                                <i className="fas fa-times commentUserButton"/>
+                                                <i
+                                                    className="fas fa-pencil-alt commentUserButton"
+                                                    onClick={() => setIsEditing(true)}
+                                                />
+                                                <i
+                                                    className="fas fa-times commentUserButton"
+                                                    onClick={() => handleDeleteButton(comment)}
+                                                />
                                             </span>
                                         }
                     {getTime(comment.timestamp)}
