@@ -1,11 +1,9 @@
 import './QueuePopup.css';
 import {useSelector, useDispatch} from "react-redux";
 import {removeFromQueue, skipToSong} from "../../../store/audio";
-import {Link, useHistory} from "react-router-dom";
 import React from "react";
 
 export default function QueuePopup() {
-    const history = useHistory();
     const audioState = useSelector(state => state.audio);
     const dispatch = useDispatch();
 
