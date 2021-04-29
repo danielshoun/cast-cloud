@@ -38,6 +38,11 @@ export default function CommentPopup() {
         setComments(prevState => [...prevState.slice(0, insertPoint), data, ...prevState.slice(insertPoint, prevState.length)]);
     }
 
+    function handleEditComment(data) {
+        const replacePoint = comments.findIndex(el => el.id === data.id);
+        setComments(prevState => [...prevState.slice(0, replacePoint), data, ...prevState.slice(replacePoint + 1, prevState.length)]);
+    }
+
     console.log(comments);
 
     return (
@@ -50,7 +55,7 @@ export default function CommentPopup() {
                     </div> :
                     comments.map(comment => {
                         return (
-                            <Comment key={comment.id} comment={comment}/>
+                            <Comment key={comment.id} comment={comment} handleEditComment={handleEditComment}/>
                         )
                     })
                 }

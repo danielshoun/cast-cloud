@@ -1,7 +1,7 @@
 import React, {useState} from "react";
 import {useSelector} from "react-redux";
 
-export default function Comment({comment}) {
+export default function Comment({comment, handleEditComment}) {
     const userState = useSelector(state => state.session);
     const [isEditing, setIsEditing] = useState(false);
     const [editInputValue, setEditInputValue] = useState(comment.text);
@@ -14,6 +14,27 @@ export default function Comment({comment}) {
         return `${hours < 10 ? '0' + hours.toString(10) : hours}:` +
             `${minutes < 10 ? '0' + minutes.toString(10) : minutes}:` +
             `${seconds < 10 ? '0' + seconds.toString(10) : seconds}`;
+    }
+
+    async function handleEditInputKeys(event) {
+        if(event.key === 'Enter') {
+            const updatedComment = {
+                commentId: comment.id,
+                text: editInputValue
+            }
+            const res = await fetch(`/comments/${comment.id}`, {
+                method: 'PUT',
+                body: JSON.stringify(updatedComment),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            const data = await res.json();
+            handleEditComment(data)
+        } else if(event.key === 'Escape') {
+            setIsEditing(false);
+            setEditInputValue(comment.text);
+        }
     }
 
     return (
@@ -34,6 +55,7 @@ export default function Comment({comment}) {
                 <input
                     className='editCommentInput'
                     value={editInputValue}
+                    onKeyDown={event => handleEditInputKeys(event)}
                     onChange={event => setEditInputValue(event.target.value)}/> :
                 <div className='commentText'>
                     {comment.text}
