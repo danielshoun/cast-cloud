@@ -49,7 +49,8 @@ export default function PodcastDetails() {
                         <EpisodeList
                             podcastTitle={podcastData.title}
                             artworkUrl={podcastData.artworkUrl}
-                            itunesId={itunesId}/>}
+                            itunesId={itunesId}
+                        />}
                 </div>
             </div>
         )

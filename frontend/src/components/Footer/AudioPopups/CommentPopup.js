@@ -8,9 +8,8 @@ export default function CommentPopup() {
 
     useEffect(() => {
         async function fetchData() {
-            const res = await fetch(`/api/episodes/${audioState.queue[audioState.currentTrack].id}/comments`);
+            const res = await fetch(`/api/episodes/${audioState.queue[audioState.currentTrack].guid}/comments`);
             const data = await res.json();
-            console.log(data);
             setComments(data);
         }
         if(audioState.currentTrack !== null) {
