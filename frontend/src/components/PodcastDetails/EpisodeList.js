@@ -2,7 +2,7 @@ import React, {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {addToQueue, changeTrack, togglePlaying} from "../../store/audio";
 
-export default function EpisodeList({ itunesId, podcastTitle, artworkUrl }) {
+export default function EpisodeList({ podcastData, podcastTitle, artworkUrl }) {
     const audioState = useSelector(state => state.audio);
     const dispatch = useDispatch();
     const [episodeList, setEpisodeList] = useState([]);
@@ -10,12 +10,12 @@ export default function EpisodeList({ itunesId, podcastTitle, artworkUrl }) {
 
     useEffect(() => {
         async function fetchData() {
-            const res = await fetch(`/api/podcasts/${itunesId}/episodes`);
+            const res = await fetch(`/api/podcasts/${podcastData.id}/episodes`);
             const data = await res.json();
             setEpisodeList(data);
         }
         fetchData().then();
-    }, [itunesId])
+    }, [podcastData])
 
     if(episodeList.length === 0) {
         return (<></>)
@@ -31,10 +31,15 @@ export default function EpisodeList({ itunesId, podcastTitle, artworkUrl }) {
 
     function playTrack(e, episode) {
         e.stopPropagation();
-        if(audioState.queue[audioState.currentTrack]?.url === episode.enclosure.url) {
+        if(audioState.queue[audioState.currentTrack]?.url === episode.url) {
             dispatch(togglePlaying(true));
         } else {
-            dispatch(changeTrack({podcastTitle, artworkUrl, itunesId, title: episode.title, url: episode.enclosure.url, type: episode.enclosure.type, guid: episode.guid}))
+            dispatch(changeTrack({
+                podcastTitle,
+                artworkUrl,
+                itunesId: podcastData.itunesId,
+                ...episode
+            }))
         }
     }
 
@@ -46,15 +51,20 @@ export default function EpisodeList({ itunesId, podcastTitle, artworkUrl }) {
     function addTrack(e, episode) {
         e.stopPropagation();
         if(!audioState.queue.find(el => el.guid === episode.guid)) {
-            dispatch(addToQueue({podcastTitle, artworkUrl, itunesId, title: episode.title, url: episode.enclosure.url, type: episode.enclosure.type, guid: episode.guid}));
+            dispatch(addToQueue({
+                podcastTitle,
+                artworkUrl,
+                itunesId: podcastData.itunesId,
+                ...episode
+            }));
         }
     }
 
     return (
         <>
-            {episodeList.items.map(episode => {
+            {episodeList.map((episode, i) => {
                 return (
-                    <div key={episode.guid} className='episodeContainer'>
+                    <div key={i} className='episodeContainer'>
                         <div className={`episodeHeader${activeEpisode === episode.guid ? ' activeEpisode' : ''}`} onClick={() => handleActive(episode)}>
                             <span className='episodeTitle'>
                                 {activeEpisode === episode.guid ? <i className="fas fa-angle-down titleCaret"/> :
@@ -62,7 +72,7 @@ export default function EpisodeList({ itunesId, podcastTitle, artworkUrl }) {
                                 {episode.title}
                             </span>
                             <div className='episodeControls'>
-                                {audioState.queue[audioState.currentTrack]?.url === episode.enclosure.url && audioState.playing ?
+                                {audioState.queue[audioState.currentTrack]?.url === episode.url && audioState.playing ?
                                     <i className={`fas fa-pause-circle episodeButton`} onClick={(e) => pauseTrack(e)}/> :
                                     <i className={`fas fa-play-circle episodeButton`} onClick={(e) => playTrack(e, episode)}/>}
                                 <i className="fas fa-plus-circle episodeButton" onClick={(e) => addTrack(e, episode)}/>
@@ -71,7 +81,7 @@ export default function EpisodeList({ itunesId, podcastTitle, artworkUrl }) {
                         </div>
                         {activeEpisode === episode.guid && (
                             <div>
-                                <div className='episodeDescription'>{episode.itunes.summary || episode.contentSnippet}</div>
+                                <div className='episodeDescription'>{episode.description || episode.description}</div>
                             </div>
                         )}
                     </div>

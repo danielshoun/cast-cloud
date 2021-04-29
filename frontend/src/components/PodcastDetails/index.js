@@ -45,11 +45,11 @@ export default function PodcastDetails() {
                     <span className='podcastTab' onClick={() => setTabOption('reviews')}>Reviews</span>
                 </div>
                 <div className='podcastList'>
-                    {tabOption === 'reviews' ? <ReviewList itunesId={itunesId}/> :
+                    {tabOption === 'reviews' ? <ReviewList podcastData={podcastData}/> :
                         <EpisodeList
                             podcastTitle={podcastData.title}
                             artworkUrl={podcastData.artworkUrl}
-                            itunesId={itunesId}
+                            podcastData={podcastData}
                         />}
                 </div>
             </div>
