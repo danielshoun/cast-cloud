@@ -9,7 +9,8 @@ export default function QueuePopup() {
     const audioState = useSelector(state => state.audio);
     const dispatch = useDispatch();
 
-    function handleDelete(i) {
+    function handleDelete(e, i) {
+        e.stopPropagation();
         console.log('Deleting at ', i);
         dispatch(removeFromQueue(i));
     }
@@ -25,17 +26,15 @@ export default function QueuePopup() {
                     <div className='queueListContainer'>
                         {audioState.queue.map((episode, i) => {
                             return (
-                                <div key={episode.guid} className={`queueListItem${audioState.currentTrack === i ? ' activeItem' : ''}`}>
-                                    <div className='clickSpace' onClick={() => dispatch(skipToSong(i))}>
-                                        <img alt='Album Artwork' className='queueItemImage' src={episode.artworkUrl}/>
-                                        <div className='queueItemText'>
-                                            <div className='queueItemTitle'>{episode.title}</div>
-                                            <div className='queueItemArtist'>{episode.podcastTitle}</div>
-                                        </div>
+                                <div key={episode.guid} className={`queueListItem${audioState.currentTrack === i ? ' activeItem' : ''}`} onClick={() => dispatch(skipToSong(i))}>
+                                    <img alt='Album Artwork' className='queueItemImage' src={episode.artworkUrl}/>
+                                    <div className='queueItemText'>
+                                        <div className='queueItemTitle'>{episode.title}</div>
+                                        <div className='queueItemArtist'>{episode.podcastTitle}</div>
                                     </div>
                                     <div className='queueItemActions'>
                                         <i className="fas fa-ellipsis-v queueItemButton"/>
-                                        <i className="fas fa-trash-alt queueItemButton" onClick={() => handleDelete(i)}/>
+                                        <i className="fas fa-trash-alt queueItemButton" onClick={(e) => handleDelete(e, i)}/>
                                     </div>
                                 </div>
                             )
