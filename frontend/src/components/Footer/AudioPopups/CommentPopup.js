@@ -47,8 +47,14 @@ export default function CommentPopup() {
                     </div> :
                     comments.map(comment => {
                         return (
-                            <div key={comment.id}>
-                                {comment.text}
+                            <div key={comment.id} className='commentListItem'>
+                                <div className='commentItemHeader'>
+                                    <span className='commentUser'>{comment.User.username}</span>
+                                    <span className='commentTimestamp'>{comment.timestamp}</span>
+                                </div>
+                                <div className='commentText'>
+                                    {comment.text}
+                                </div>
                             </div>
                         )
                     })

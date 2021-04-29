@@ -18,6 +18,7 @@
 }
 
 .commentContent {
+    padding: 0 16px;
     flex: 1;
     overflow-y: scroll;
 }
@@ -28,11 +29,20 @@
     text-align: center;
 }
 
+.commentListItem {
+    border-bottom: 1px solid #a1a1a1;
+    padding: 8px 0;
+}
+
+.commentItemHeader {
+    display: flex;
+    justify-content: space-between;
+}
+
 .newCommentContainer {
     margin: 16px;
     display: flex;
     flex-flow: row nowrap;
-
 }
 
 .commentInput {

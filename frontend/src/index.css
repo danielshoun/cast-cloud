@@ -21,3 +21,7 @@ html {
     color: #f18701;
     border: 1px solid #f18701;
 }
+
+i {
+    cursor: pointer;
+}
