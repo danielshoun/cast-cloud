@@ -1,5 +1,6 @@
 import React, {useState} from "react";
 import {useSelector} from "react-redux";
+import {csrfFetch} from "../../../store/csrf";
 
 export default function Comment({comment, handleEditComment}) {
     const userState = useSelector(state => state.session);
@@ -19,10 +20,9 @@ export default function Comment({comment, handleEditComment}) {
     async function handleEditInputKeys(event) {
         if(event.key === 'Enter') {
             const updatedComment = {
-                commentId: comment.id,
                 text: editInputValue
             }
-            const res = await fetch(`/comments/${comment.id}`, {
+            const res = await csrfFetch(`/api/comments/${comment.id}`, {
                 method: 'PUT',
                 body: JSON.stringify(updatedComment),
                 headers: {
@@ -30,7 +30,8 @@ export default function Comment({comment, handleEditComment}) {
                 }
             })
             const data = await res.json();
-            handleEditComment(data)
+            handleEditComment(data);
+            setIsEditing(false);
         } else if(event.key === 'Escape') {
             setIsEditing(false);
             setEditInputValue(comment.text);
