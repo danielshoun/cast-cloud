@@ -20,6 +20,7 @@ router.post('/:episodeId/comments', requireAuth, asyncHandler(async (req, res) =
         timestamp: req.body.timestamp,
         text: req.body.text
     });
+    newComment.dataValues.User = await User.findByPk(userId);
 
     return res.json(newComment);
 }));

@@ -39,11 +39,9 @@ export default function AudioPlayer() {
                 time = time - hours * 3600;
                 let minutes = Math.floor(time / 60);
                 let seconds = Math.floor(time - minutes * 60);
-                let timeString = `${hours < 10 ? '0' + hours.toString(10) : hours}:` +
+                return `${hours < 10 ? '0' + hours.toString(10) : hours}:` +
                     `${minutes < 10 ? '0' + minutes.toString(10) : minutes}:` +
                     `${seconds < 10 ? '0' + seconds.toString(10) : seconds}`;
-                setCurTime(timeString);
-                return timeString;
             }
 
             function readyPlayerState() {

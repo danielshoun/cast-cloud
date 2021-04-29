@@ -45,7 +45,11 @@ export default function CommentPopup() {
             }
         })
         const data = await res.json();
+        const insertPoint = comments.findIndex(el => el.timestamp > data.timestamp) - 1;
+        setComments(prevState => [...prevState.slice(0, insertPoint), data, ...prevState.slice(insertPoint, prevState.length)]);
     }
+
+    console.log(comments);
 
     return (
         <div className='commentPopupContainer'>
