@@ -41,13 +41,22 @@
     margin-bottom: 8px;
 }
 
+.commentUserButtonContainer {
+    margin: 0 8px;
+}
+
+.commentUserButton {
+    margin-left: 8px;
+}
+
 .newCommentContainer {
     margin: 16px;
     display: flex;
     flex-flow: row nowrap;
 }
 
-.commentInput {
+.commentInput,
+.editCommentInput{
     height: 24px;
     padding-left: 8px;
     background-color: #46464c;
@@ -55,7 +64,14 @@
     border: 1px solid #f0f3f5;
     border-radius: 3px;
     transition: border 0.25s ease, color 0.25s ease;
+}
+
+.commentInput {
     flex: 1;
+}
+
+.editCommentInput {
+    width: 100%;
 }
 
 .commentInput:placeholder-shown {
