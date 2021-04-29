@@ -1,6 +1,6 @@
 import React, {useEffect, useRef, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {goToNextSong, togglePlaying} from "../../../store/audio";
+import {goToNextSong, togglePlaying, updateTimestamp} from "../../../store/audio";
 import './AudioPlayer.css';
 import ProgressBar from "./ProgressBar";
 import PlaybackController from "./PlaybackController";
@@ -57,6 +57,7 @@ export default function AudioPlayer() {
             function updateTime(e) {
                 setPercentListened(e.target.currentTime / e.target.duration * 100)
                 setCurTime(getTime(e.target.currentTime));
+                dispatch(updateTimestamp(e.target.currentTime));
             }
 
             function nextSong() {

@@ -3,8 +3,10 @@ import React, {useEffect, useState} from "react";
 import {useSelector} from "react-redux";
 
 export default function CommentPopup() {
+    const userState = useSelector(state => state.session);
     const audioState = useSelector(state => state.audio);
     const [comments, setComments] = useState([]);
+    const [newCommentText, setNewCommentText] = useState('');
 
     useEffect(() => {
         async function fetchData() {
@@ -16,6 +18,16 @@ export default function CommentPopup() {
             fetchData().then();
         }
     }, [audioState.queue[audioState.currentTrack]])
+
+    async function sendComment() {
+        const comment = {
+            userId: userState.user.id,
+            episodeId: audioState.queue[audioState.currentTrack].id,
+            text: newCommentText,
+            timestamp: audioState.timestamp
+        }
+        console.log(comment);
+    }
 
     return (
         <div className='commentPopupContainer'>
@@ -30,8 +42,8 @@ export default function CommentPopup() {
                 }
             </div>
             <div className='newCommentContainer'>
-                <input className='commentInput' type='text' placeholder='Type a comment...'/>
-                <button className='newCommentButton'>Submit</button>
+                <input className='commentInput' type='text' placeholder='Type a comment...' value={newCommentText} onChange={event => setNewCommentText(event.target.value)}/>
+                <button className='newCommentButton' onClick={sendComment}>Submit</button>
             </div>
         </div>
     )

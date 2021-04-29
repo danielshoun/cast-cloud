@@ -1,5 +1,6 @@
 const CHANGE_TRACK = 'audio/changeTrack';
 const TOGGLE_AUDIO_PLAYING = 'audio/togglePlaying';
+const UPDATE_TIMESTAMP = 'audio/updateTimestamp';
 const ADD_TO_QUEUE = 'audio/addToQueue';
 const GO_TO_NEXT = 'audio/goToNextSong';
 const REMOVE_FROM_QUEUE = 'audio/removeFromQueue';
@@ -16,6 +17,13 @@ export const togglePlaying = (playing) => {
     return {
         type: TOGGLE_AUDIO_PLAYING,
         playing
+    }
+}
+
+export const updateTimestamp = (newTime) => {
+    return {
+        type: UPDATE_TIMESTAMP,
+        newTime
     }
 }
 
@@ -46,7 +54,7 @@ export const skipToSong = (index) => {
     }
 }
 
-export default function audioReducer(state = { currentTrack: null, playing: false, queue: []}, action) {
+export default function audioReducer(state = { currentTrack: null, timestamp: 0, playing: false, queue: []}, action) {
     let newState = Object.assign({}, state);
     switch(action.type) {
         case CHANGE_TRACK:
@@ -55,6 +63,9 @@ export default function audioReducer(state = { currentTrack: null, playing: fals
             return newState;
         case TOGGLE_AUDIO_PLAYING:
             newState.playing = action.playing;
+            return newState;
+        case UPDATE_TIMESTAMP:
+            newState.timestamp = action.newTime;
             return newState;
         case ADD_TO_QUEUE:
             newState.queue.push(action.track);
