@@ -1,11 +1,12 @@
 const express = require('express');
-const asyncHandler = require('express-async-handler');
+const asyncHandler = require('express-async-handler')
+const { Comment, User } = require('../../db/models');
 
 const router = express.Router();
 
-router.get('/:episodeGuid/comments', asyncHandler(async (req, res) => {
-    const episodeGuid = req.params.episodeGuid;
-    let comments = [];
+router.get('/:episodeId/comments', asyncHandler(async (req, res) => {
+    const episodeId = req.params.episodeId;
+    const comments = await Comment.findAll({where: {episodeId}, include: User})
     return res.json(comments);
 }))
 
