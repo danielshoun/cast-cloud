@@ -35,7 +35,7 @@ export default function CommentPopup() {
             <div className='commentContent'>
                 {comments.length === 0 ?
                     <div className='emptyCommentContent'>
-                        {audioState.currentTrack !== null ? 'No comments for this song yet.' : 'You must select a song first.'}
+                        {audioState.currentTrack !== null ? 'No comments for this episode yet.' : 'You must select an episode first.'}
                     </div> :
                     <div>
                     </div>
