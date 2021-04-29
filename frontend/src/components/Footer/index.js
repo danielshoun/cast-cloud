@@ -6,16 +6,19 @@ import AudioPopups from "./AudioPopups";
 export default function Footer() {
 
     return (
-        <div id='footer' className='footer'>
-            <div className='footerDiv'>
-                <AudioInfo/>
+        <>
+            <div className='push'/>
+            <div id='footer' className='footer'>
+                <div className='footerDiv'>
+                    <AudioInfo/>
+                </div>
+                <div className='footerDiv'>
+                    <AudioPlayer/>
+                </div>
+                <div className='footerDiv rightFooter'>
+                    <AudioPopups/>
+                </div>
             </div>
-            <div className='footerDiv'>
-                <AudioPlayer/>
-            </div>
-            <div className='footerDiv rightFooter'>
-                <AudioPopups/>
-            </div>
-        </div>
+        </>
     )
 }

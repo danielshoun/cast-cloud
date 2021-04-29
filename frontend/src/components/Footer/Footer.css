@@ -10,6 +10,10 @@
     align-items: center;
 }
 
+.push {
+    height: 64px;
+}
+
 .footerIcon {
     font-size: 40px;
     color: #f35b04;
