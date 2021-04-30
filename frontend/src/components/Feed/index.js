@@ -23,7 +23,7 @@ export default function Feed() {
 
     useEffect(() => {
         async function fetchOnePodcast() {
-            const res = await fetch(`/api/podcasts/${subscriptions[selectedList].Podcast.id}/episodes`);
+            const res = await fetch(`/api/podcasts/${subscriptions[selectedList].Podcast.id}/episodes?subscription=1`);
             const data = await res.json();
             setEpisodes(data);
         }

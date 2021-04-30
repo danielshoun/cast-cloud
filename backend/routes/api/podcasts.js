@@ -84,6 +84,40 @@ router.get('/:itunesId', asyncHandler(async (req, res) => {
 
 router.get('/:id/episodes', asyncHandler(async (req, res) => {
     const podcastId = req.params.id;
+    if(req.query.subscription === '1') {
+        const podcast = await Podcast.findByPk(podcastId);
+        const headRes = await fetch(podcast.rssUrl, {
+            method: 'HEAD',
+            headers: {
+                'If-Modified-Since': new Date(podcast.updatedAt).toUTCString()
+            }
+        });
+        let feedData;
+        if(new Date(headRes.headers.get('last-modified')) > new Date(podcast.updatedAt)) {
+            const parser = new Parser();
+            feedData = await parser.parseURL(podcast.rssUrl);
+        } else {
+            feedData = {items: []};
+        }
+
+        const newEpisodes = [];
+        for(let i = 0; i < feedData.items.length; i++) {
+            let item = feedData.items[i];
+            if(new Date(item.isoDate) < new Date(podcast.updatedAt)) break;
+            const episode = {
+                podcastId: podcast.id,
+                title: item.title,
+                description: item.itunes.summary || item.contentSnippet,
+                url: item.enclosure.url,
+                releaseDate: item.isoDate,
+                guid: item.guid
+            };
+            newEpisodes.push(episode);
+        }
+        await Episode.bulkCreate(newEpisodes);
+        podcast.updatedAt = new Date();
+        await podcast.save();
+    }
     const episodes = await Episode.findAll({
         where: {podcastId},
         order: [['releaseDate', 'DESC']]
