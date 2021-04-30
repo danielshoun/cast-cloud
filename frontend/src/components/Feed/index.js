@@ -72,12 +72,19 @@ export default function Feed() {
         }
     }
 
+    function handleSelected(i) {
+        if(i !== selectedList) {
+            setEpisodes([]);
+            setSelectedList(i);
+        }
+    }
+
     return (
         <div className='feedContainer'>
             <div className='feedListContainer'>
                 <div
                     className={`feedList feedListUnwatched${selectedList === -1 ? ' selectedUnwatched' : ''}`}
-                    onClick={() => setSelectedList(-1)}
+                    onClick={() => handleSelected(-1)}
                 >
                     All Unplayed
                 </div>
@@ -86,7 +93,7 @@ export default function Feed() {
                         <div
                             className={`listImgContainer${selectedList === i ? ` selectedList${i === subscriptions.length - 1 ? 'Last' : ''}` : ''}${i === subscriptions.length - 1 ? ' lastList' : ''}`}
                             key={subscription.id}
-                            onClick={() => setSelectedList(i)}
+                            onClick={() => handleSelected(i)}
                         >
                             <img className='feedListImage' src={subscription.Podcast.artworkUrl}/>
                         </div>
