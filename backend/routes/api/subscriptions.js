@@ -18,4 +18,12 @@ router.post('/', requireAuth, asyncHandler(async (req, res) => {
     return res.json(subscription);
 }))
 
+router.delete('/subscriptionId:', requireAuth, asyncHandler(async (req, res) => {
+    let subscription = await Subscription.findByPk(req.params.subscriptionId);
+    if(req.user.id === subscription.userId) {
+        await subscription.destroy();
+        return res.sendStatus(200);
+    }
+}))
+
 module.exports = router;
