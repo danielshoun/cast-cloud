@@ -2,7 +2,7 @@ const express = require('express');
 const asyncHandler = require('express-async-handler');
 const fetch = require("node-fetch");
 const Parser = require('rss-parser');
-const { Podcast, Episode, Review, User, Subscription } = require('../../db/models');
+const { Podcast, Episode, Review, User, Subscription, EpisodeProgress } = require('../../db/models');
 const { requireAuth } = require('../../utils/auth');
 
 const router = express.Router();
@@ -123,6 +123,19 @@ router.get('/:id/episodes', asyncHandler(async (req, res) => {
         order: [['releaseDate', 'DESC']]
     })
 
+    return res.json(episodes);
+}))
+
+router.get('/:podcastId/episodes/watched', requireAuth, asyncHandler(async (req, res) => {
+    const userId = req.user.id;
+    const episodes = await Episode.findAll({
+        where: {podcastId},
+        order: [['releaseDate', 'DESC']],
+        include: {
+            model: EpisodeProgress,
+            where: {userId}
+        }
+    });
     return res.json(episodes);
 }))
 
