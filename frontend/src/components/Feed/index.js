@@ -1,10 +1,13 @@
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {Redirect} from "react-router-dom";
 import './Feed.css';
-import {useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
+import {addToQueue, changeTrack, togglePlaying} from "../../store/audio";
 
 export default function Feed() {
     const sessionUser = useSelector(state => state.session.user);
+    const audioState = useSelector(state => state.audio);
+    const dispatch = useDispatch();
     const [selectedList, setSelectedList] = useState(-1);
     const [subscriptions, setSubscriptions] = useState([]);
     const [episodes, setEpisodes] = useState([]);
@@ -38,6 +41,37 @@ export default function Feed() {
 
     if(!sessionUser) return (<Redirect to='/login'/>)
 
+    function playTrack(e, episode) {
+        e.stopPropagation();
+        if(audioState.queue[audioState.currentTrack]?.url === episode.url) {
+            dispatch(togglePlaying(true));
+        } else {
+            dispatch(changeTrack({
+                podcastTitle: subscriptions[selectedList].Podcast.podcastTitle,
+                artworkUrl: subscriptions[selectedList].Podcast.artworkUrl,
+                itunesId: subscriptions[selectedList].Podcast.itunesId,
+                ...episode
+            }))
+        }
+    }
+
+    function pauseTrack(e) {
+        e.stopPropagation();
+        dispatch(togglePlaying(false));
+    }
+
+    function addTrack(e, episode) {
+        e.stopPropagation();
+        if(!audioState.queue.find(el => el.guid === episode.guid)) {
+            dispatch(addToQueue({
+                podcastTitle: subscriptions[selectedList].Podcast.podcastTitle,
+                artworkUrl: subscriptions[selectedList].Podcast.artworkUrl,
+                itunesId: subscriptions[selectedList].Podcast.itunesId,
+                ...episode
+            }));
+        }
+    }
+
     return (
         <div className='feedContainer'>
             <div className='feedListContainer'>
@@ -45,7 +79,7 @@ export default function Feed() {
                     className={`feedList feedListUnwatched${selectedList === -1 ? ' selectedUnwatched' : ''}`}
                     onClick={() => setSelectedList(-1)}
                 >
-                    All Unlistened
+                    All Unplayed
                 </div>
                 {subscriptions.map((subscription, i) => {
                     return (
@@ -62,8 +96,20 @@ export default function Feed() {
             <div className='feedContent'>
                 {episodes.map((episode, i) => {
                     return (
-                        <div>
-                            {episode.title}
+                        <div key={i} className='feedEpisodeContainer'>
+                            <div className='feedEpisodeStatic'>
+                                <img className='feedEpisodeImage' src={subscriptions[selectedList].Podcast.artworkUrl}/>
+                                <div className='feedEpisodeInfo'>
+                                    <div className='feedEpisodeTitle'>{episode.title}</div>
+                                    <div className='feedEpisodeArtist'>{subscriptions[selectedList].Podcast.title}</div>
+                                </div>
+                            </div>
+                            <div className='feedEpisodeActions'>
+                                {audioState.queue[audioState.currentTrack]?.url === episode.url && audioState.playing ?
+                                    <i className={`fas fa-pause-circle episodeButton`} onClick={(e) => pauseTrack(e)}/> :
+                                    <i className={`fas fa-play-circle episodeButton`} onClick={(e) => playTrack(e, episode)}/>}
+                                <i className="fas fa-plus-circle episodeButton" onClick={(e) => addTrack(e, episode)}/>
+                            </div>
                         </div>
                     )
                 })}

@@ -61,3 +61,46 @@
 .selectedListLast:hover {
     margin: 14px 0 0 0;
 }
+
+.feedContent {
+    flex: 1;
+    max-width: 85%;
+}
+
+.feedEpisodeContainer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 0;
+    border-top: 1px solid #46464c;
+    flex-flow: row nowrap;
+}
+
+.feedEpisodeStatic {
+    display: flex;
+    align-items: center;
+    max-width: 90%;
+}
+
+.feedEpisodeImage {
+    width: 50px;
+    height: 50px;
+}
+
+.feedEpisodeInfo {
+    margin-left: 8px;
+    overflow: hidden;
+}
+
+.feedEpisodeTitle {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.feedEpisodeArtist {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    color: #46464c;
+}
