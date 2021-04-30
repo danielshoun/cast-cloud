@@ -3,6 +3,7 @@ const asyncHandler = require('express-async-handler');
 const fetch = require("node-fetch");
 const Parser = require('rss-parser');
 const { Podcast, Episode, Review, User } = require('../../db/models');
+const { requireAuth } = require('../../utils/auth');
 
 const parser = new Parser();
 
@@ -82,6 +83,19 @@ router.get('/:podcastId/reviews', asyncHandler(async (req, res) => {
     const podcastId = req.params.podcastId;
     const reviews = await Review.findAll({where: {podcastId}, include: User, order: [['createdAt', 'DESC']]});
     return res.json(reviews);
+}))
+
+router.post('/:podcastId/reviews', requireAuth, asyncHandler(async (req, res) => {
+    let newReview = {
+        userId: req.user.id,
+        podcastId: req.params.podcastId,
+        rating: req.body.rating,
+        text: req.body.text
+    }
+    newReview = await Review.create(newReview);
+    newReview.dataValues.User = await User.findByPk(req.user.id);
+
+    return res.json(newReview);
 }))
 
 
