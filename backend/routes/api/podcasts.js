@@ -2,7 +2,7 @@ const express = require('express');
 const asyncHandler = require('express-async-handler');
 const fetch = require("node-fetch");
 const Parser = require('rss-parser');
-const { Podcast, Episode, Review, User } = require('../../db/models');
+const { Podcast, Episode, Review, User, Subscription } = require('../../db/models');
 const { requireAuth } = require('../../utils/auth');
 
 const router = express.Router();
@@ -109,6 +109,14 @@ router.post('/:podcastId/reviews', requireAuth, asyncHandler(async (req, res) =>
     newReview.dataValues.User = await User.findByPk(req.user.id);
 
     return res.json(newReview);
+}))
+
+router.post('/:podcastId/subscribe', requireAuth, asyncHandler(async (req, res) => {
+    const subscription = await Subscription.create({
+        userId: req.user.id,
+        podcastId: req.params.podcastId
+    })
+    return res.json(subscription);
 }))
 
 

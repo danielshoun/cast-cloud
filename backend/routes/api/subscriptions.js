@@ -10,16 +10,13 @@ router.get('/', requireAuth, asyncHandler(async (req, res) => {
     return res.json(subscriptions);
 }))
 
-router.post('/', requireAuth, asyncHandler(async (req, res) => {
-    const subscription = await Subscription.create({
-        userId: req.user.id,
-        podcastId: req.query.podcastId
-    })
+router.get('/:podcastId', requireAuth, asyncHandler(async (req, res) => {
+    const subscription = await Subscription.findOne({where: {userId: req.user.id, podcastId: req.params.podcastId}});
     return res.json(subscription);
 }))
 
-router.delete('/subscriptionId:', requireAuth, asyncHandler(async (req, res) => {
-    let subscription = await Subscription.findByPk(req.params.subscriptionId);
+router.delete('/:podcastId', requireAuth, asyncHandler(async (req, res) => {
+    let subscription = await Subscription.findOne({where: {userId: req.user.id, podcastId: req.params.podcastId}})
     if(req.user.id === subscription.userId) {
         await subscription.destroy();
         return res.sendStatus(200);
