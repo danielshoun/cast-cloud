@@ -16,15 +16,18 @@ export default function ReviewList({podcastData}) {
             const res = await fetch(`/api/podcasts/${podcastData.id}/reviews`);
             const data = await res.json();
             setReviewList(data);
-            const ownReview = data.find(review => review.userId === userState.user.id);
-            if(ownReview) {
-                setOwnReview(ownReview);
-                setOwnReviewText(ownReview.text)
-                setSelectedStar(ownReview.rating);
+            if(userState.user) {
+                const ownReview = data.find(review => review.userId === userState.user.id);
+
+                if(ownReview) {
+                    setOwnReview(ownReview);
+                    setOwnReviewText(ownReview.text)
+                    setSelectedStar(ownReview.rating);
+                }
             }
         }
         fetchData().then();
-    }, [podcastData, userState.user.id])
+    }, [podcastData, userState.user])
 
     async function handleSubmitReview() {
         const body = {
