@@ -89,3 +89,56 @@
     margin: 0 4px;
     font-size: 20px;
 }
+
+.reviewInput {
+    box-sizing: border-box;
+    margin: 16px 0;
+    width: 100%;
+    min-height: 200px;
+    padding: 8px 0 8px 8px;
+    background-color: #1e1e24;
+    color: #f0f3f5;
+    border: 1px solid #46464c;
+    border-radius: 3px;
+    transition: border 0.25s ease, color 0.25s ease;
+    font-family: 'Roboto', sans-serif;
+}
+
+.reviewInput:placeholder-shown {
+    color: #46464c;
+}
+
+.reviewInput:hover {
+    border: 1px solid #f0f3f5;
+    border-radius: 3px;
+    color: #f0f3f5;
+}
+
+.reviewInput:focus {
+    border: 1px solid #f0f3f5;
+    border-radius: 3px;
+    outline: none;
+    color: #f0f3f5;
+}
+
+.reviewSubmitButton {
+    background-color: #1e1e24;
+    color: #46464c;
+    border: 1px solid #46464c;
+    border-radius: 3px;
+    transition: border 0.25s ease, color 0.25s ease;
+}
+
+.reviewSubmitButton:hover {
+    border: 1px solid #f0f3f5;
+    color: #f0f3f5;
+}
+
+.reviewStar {
+    padding-right: 4px;
+    color: #46464c;
+}
+
+.highlightedStar {
+    color: #f35b04;
+}

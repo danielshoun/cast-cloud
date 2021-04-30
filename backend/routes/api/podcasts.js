@@ -2,7 +2,7 @@ const express = require('express');
 const asyncHandler = require('express-async-handler');
 const fetch = require("node-fetch");
 const Parser = require('rss-parser');
-const { Podcast, Episode, Review } = require('../../db/models');
+const { Podcast, Episode, Review, User } = require('../../db/models');
 
 const parser = new Parser();
 
@@ -80,7 +80,7 @@ router.get('/:id/episodes', asyncHandler(async (req, res) => {
 
 router.get('/:podcastId/reviews', asyncHandler(async (req, res) => {
     const podcastId = req.params.podcastId;
-    const reviews = await Review.findAll({where: {podcastId}, order: [['createdAt', 'DESC']]});
+    const reviews = await Review.findAll({where: {podcastId}, include: User, order: [['createdAt', 'DESC']]});
     return res.json(reviews);
 }))
 
