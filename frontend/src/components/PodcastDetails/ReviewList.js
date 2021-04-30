@@ -45,6 +45,23 @@ export default function ReviewList({podcastData}) {
                 <div className='ownReviewContainer'>
                     {ownReview ?
                         <>
+                            <div className='reviewListDivider'>Your Review</div>
+                            <div className='reviewContainer'>
+                                <div className='reviewHeader'>
+                            <span>
+                                <span className='reviewUser'>{ownReview.User.username}</span>
+                                <span className='reviewDate'>({new Date(ownReview.createdAt).toLocaleString('en-US', {month: 'short', day: 'numeric', hour: '2-digit', minute:'2-digit'})})</span>
+                            </span>
+                                    <span className='reviewRating'>
+                                <i className={`fas fa-star reviewStar staticStar${ownReview.rating >= 1 ? ' highlightedStar' : ''}`}/>
+                                <i className={`fas fa-star reviewStar staticStar${ownReview.rating >= 2 ? ' highlightedStar' : ''}`}/>
+                                <i className={`fas fa-star reviewStar staticStar${ownReview.rating >= 3 ? ' highlightedStar' : ''}`}/>
+                                <i className={`fas fa-star reviewStar staticStar${ownReview.rating >= 4 ? ' highlightedStar' : ''}`}/>
+                                <i className={`fas fa-star reviewStar staticStar${ownReview.rating >= 5 ? ' highlightedStar' : ''}`}/>
+                            </span>
+                                </div>
+                                <div className='reviewText'>{ownReview.text}</div>
+                            </div>
                         </> :
                         <>
                             <div className='ratingContainer'>
@@ -85,6 +102,7 @@ export default function ReviewList({podcastData}) {
                     }
                 </div>
             }
+            <div className='reviewListDivider'>All Reviews</div>
             {reviewList.map(review => {
                 return (
                     <div key={review.id} className='reviewContainer'>

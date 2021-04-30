@@ -147,6 +147,11 @@
     margin-right: 16px;
 }
 
+.reviewListDivider {
+    margin: 32px 0 8px 0;
+    color: #46464c;
+}
+
 .reviewContainer {
     padding: 16px 0;
     border-top: 1px solid #46464c;
