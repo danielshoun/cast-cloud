@@ -8,6 +8,7 @@ import Navigation from "./components/Navigation";
 import SearchResults from "./components/SearchResults";
 import PodcastDetails from "./components/PodcastDetails";
 import Footer from "./components/Footer";
+import Feed from "./components/Feed";
 
 function App() {
 	const [isLoaded, setIsLoaded] = useState(false);
@@ -27,6 +28,9 @@ function App() {
 				</Route>
 				<Route path='/search'>
 					<SearchResults/>
+				</Route>
+				<Route path='/feed'>
+					<Feed/>
 				</Route>
 				<Route path='/login'>
 					<LoginFormPage/>

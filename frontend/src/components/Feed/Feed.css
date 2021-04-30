@@ -1,0 +1,63 @@
+.feedContainer {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 32px;
+    border: 1px solid #46464c;
+    border-radius: 5px;
+    display: flex;
+    flex-flow: row nowrap;
+}
+
+.feedListContainer {
+    margin-right: 32px;
+    /*padding-right: 32px;*/
+    /*border-right: 1px solid #46464c;*/
+}
+
+.feedListUnwatched {
+    padding-bottom: 8px;
+    border-bottom: 1px solid #46464c;
+    text-align: center;
+}
+
+.selectedUnwatched {
+    color: #f35b04;
+}
+
+.listImgContainer {
+    width: 100px;
+    height: 100px;
+    margin: 16px 2px 2px 2px;
+    display: flex;
+    align-items: center;
+}
+
+.listImgContainer:hover {
+    margin: 14px 0 -2px 0;
+    border-radius: 5px;
+    border: 2px solid #46464c;
+}
+
+.feedListImage {
+    width: 100px;
+    height: 100px;
+    border-radius: 5px;
+}
+
+.selectedList,
+.selectedListLast,
+.selectedList:hover,
+.selectedListLast:hover {
+    margin: 14px 0 -2px 0;
+    border-radius: 5px;
+    border: 2px solid #f35b04;
+}
+
+.lastList:hover {
+    margin: 14px 0 0 0;
+}
+
+.selectedListLast,
+.selectedListLast:hover {
+    margin: 14px 0 0 0;
+}
