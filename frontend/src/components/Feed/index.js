@@ -60,8 +60,12 @@ export default function Feed() {
                 })}
             </div>
             <div className='feedContent'>
-                {episodes.map(episode => {
-
+                {episodes.map((episode, i) => {
+                    return (
+                        <div>
+                            {episode.title}
+                        </div>
+                    )
                 })}
             </div>
         </div>
