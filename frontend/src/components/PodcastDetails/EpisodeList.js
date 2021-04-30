@@ -1,11 +1,7 @@
 import React, {useEffect, useState} from "react";
-import {useDispatch, useSelector} from "react-redux";
-import {addToQueue, changeTrack, togglePlaying} from "../../store/audio";
 import EpisodeItem from "./EpisodeItem";
 
-export default function EpisodeList({ podcastData, podcastTitle, artworkUrl }) {
-    const audioState = useSelector(state => state.audio);
-    const dispatch = useDispatch();
+export default function EpisodeList({ podcastData }) {
     const [episodeList, setEpisodeList] = useState([]);
     const [activeEpisode, setActiveEpisode] = useState(null);
 
