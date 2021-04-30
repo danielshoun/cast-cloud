@@ -26,6 +26,16 @@ export default function EpisodeList({ podcastData }) {
         }
     }
 
+    function modifyEpisodeProgress(newEpisodeProgress) {
+        const replacePoint = episodeList.findIndex(episode => episode.id === newEpisodeProgress.episodeId);
+        console.log(replacePoint);
+        const episode = Object.assign({}, episodeList[replacePoint]);
+        console.log(episode);
+        episode.EpisodeProgresses[0] = newEpisodeProgress;
+        setEpisodeList(prevState => [...prevState.slice(0, replacePoint), episode, ...prevState.slice(replacePoint + 1, prevState.length)]);
+
+    }
+
     return (
         <>
             {episodeList.map((episode, i) => {
@@ -36,6 +46,7 @@ export default function EpisodeList({ podcastData }) {
                         handleActive={handleActive}
                         episode={episode}
                         podcastData={podcastData}
+                        modifyEpisodeProgress={modifyEpisodeProgress}
                     />
                 )
             })}

@@ -105,8 +105,9 @@
 }
 
 .episodeButton {
-    margin: 0 4px;
+    margin: 0 2px;
     font-size: 20px;
+    width: 25px;
 }
 
 .reviewInput {

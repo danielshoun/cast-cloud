@@ -42,7 +42,7 @@ router.post('/:episodeId/progress', requireAuth, asyncHandler(async (req, res) =
     const episodeId = req.params.episodeId;
     const userId = req.user.id;
     const { timestamp, played } = req.body;
-    let episodeProgress = await EpisodeProgress.findOrCreate({where: {userId, episodeId}});
+    let episodeProgress = await EpisodeProgress.findOne({where: {userId, episodeId}});
     if(!episodeProgress) {
         episodeProgress = await EpisodeProgress.create({
             userId,
