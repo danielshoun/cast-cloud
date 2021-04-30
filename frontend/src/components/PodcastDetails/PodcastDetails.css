@@ -134,6 +134,20 @@
     color: #f0f3f5;
 }
 
+.reviewEditButton {
+    background-color: #1e1e24;
+    color: #46464c;
+    border: 1px solid #46464c;
+    border-radius: 3px;
+    transition: border 0.25s ease, color 0.25s ease;
+    margin-left: 16px;
+}
+
+.reviewEditButton:hover {
+    color: #ba1b1d;
+    border: 1px solid #ba1b1d;
+}
+
 .reviewStar {
     padding-right: 4px;
     color: #46464c;
@@ -150,6 +164,21 @@
 .reviewListDivider {
     margin: 32px 0 8px 0;
     color: #46464c;
+    display: flex;
+    justify-content: space-between;
+}
+
+.topDivider {
+    margin: 0 0 8px 0;
+}
+
+.reviewButton {
+    margin-left: 16px;
+}
+
+.reviewButton:hover {
+    transition: color 0.25s ease;
+    color: #f0f3f5;
 }
 
 .reviewContainer {

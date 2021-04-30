@@ -1,4 +1,4 @@
-import {useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import {useSelector} from "react-redux";
 import {csrfFetch} from "../../store/csrf";
 
@@ -9,6 +9,7 @@ export default function ReviewList({podcastData}) {
     const [hoverStar, setHoverStar] = useState(null);
     const [selectedStar, setSelectedStar] = useState(null);
     const [ownReviewText, setOwnReviewText] = useState('');
+    const [isEditing, setIsEditing] = useState(false);
 
     useEffect(() => {
         async function fetchData() {
@@ -17,6 +18,8 @@ export default function ReviewList({podcastData}) {
             setReviewList(data);
             const ownReview = data.find(review => review.userId === userState.user.id);
             setOwnReview(ownReview);
+            setOwnReviewText(ownReview.text)
+            setSelectedStar(ownReview.rating);
         }
         fetchData().then();
     }, [podcastData, userState.user.id])
@@ -38,15 +41,42 @@ export default function ReviewList({podcastData}) {
         setReviewList(prevState => [data, ...prevState]);
         setOwnReview(data);
         setOwnReviewText(data.text);
+        setSelectedStar(ownReview.rating);
+    }
+
+    function handleEditReview() {
+
+    }
+
+    function handleCancelEdit() {
+        setIsEditing(false);
+        setOwnReviewText(ownReview.text);
+        setSelectedStar(ownReview.rating);
+    }
+
+    function handleDelete() {
+
     }
 
     return (
         <>
             {userState.user &&
                 <div className='ownReviewContainer'>
-                    {ownReview ?
+                    {ownReview && !isEditing ?
                         <>
-                            <div className='reviewListDivider'>Your Review</div>
+                            <div className='reviewListDivider topDivider'>
+                                <span>Your Review</span>
+                                <span>
+                                    <i
+                                        className="fas fa-pencil-alt reviewButton"
+                                        onClick={() => setIsEditing(true)}
+                                    />
+                                    <i
+                                        className="fas fa-times reviewButton"
+                                        onClick={() => handleDelete()}
+                                    />
+                                </span>
+                            </div>
                             <div className='reviewContainer'>
                                 <div className='reviewHeader'>
                             <span>
@@ -65,8 +95,21 @@ export default function ReviewList({podcastData}) {
                             </div>
                         </> :
                         <>
-                            <div className='reviewListDivider'>Write A Review</div>
-                            <div className='reviewContainer'>
+                            <div className='reviewListDivider topDivider'>{isEditing ?
+                                <>
+                                    <span>Your Review</span>
+                                    <span>
+                                        <i
+                                            className="fas fa-pencil-alt reviewButton"
+                                            onClick={() => setIsEditing(true)}
+                                        />
+                                        <i
+                                            className="fas fa-times reviewButton"
+                                            onClick={() => handleDelete()}
+                                        />
+                                    </span>
+                                </> : 'Write A Review'}</div>
+                            <div className='reviewContainer topDivider'>
                                 <div className='ratingContainer'>
                                     <span className='ratingText'>Choose a rating:</span>
                                     <i
@@ -100,7 +143,8 @@ export default function ReviewList({podcastData}) {
                                     />
                                 </div>
                                 <textarea className='reviewInput' placeholder='Write your review...' value={ownReviewText} onChange={event => setOwnReviewText(event.target.value)}/>
-                                <button className='reviewSubmitButton' onClick={handleSubmitReview}>Submit</button>
+                                <button className='reviewSubmitButton' onClick={isEditing ? handleEditReview : handleSubmitReview}>Submit</button>
+                                {isEditing && <button className='reviewEditButton' onClick={handleCancelEdit}>Cancel</button>}
                             </div>
 
                         </>
