@@ -57,7 +57,7 @@ export default function PodcastDetails() {
                         <div className='podcastInfoHeader'>
                             <span className='podcastTitle'>{podcastData.title}</span>
                             <span className='podcastArtist'>{podcastData.artist}</span>
-                            {userState.user && <button onClick={handleSubscribe}>{isSubscribed ? 'Unsubscribe' : 'Subscribe'}</button>}
+                            {userState.user && <button className={`buttonPrimary subscribeButton${isSubscribed ? ' buttonDelete' : ''}`} onClick={handleSubscribe}>{isSubscribed ? 'Unsubscribe' : 'Subscribe'}</button>}
                         </div>
                         <div className='podcastInfoFooter'>
                             <span className='podcastDescription'>{podcastData.description}</span>

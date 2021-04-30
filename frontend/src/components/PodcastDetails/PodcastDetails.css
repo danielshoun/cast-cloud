@@ -12,7 +12,7 @@
 
 .podcastArtwork {
     width: 200px;
-    height: auto;
+    height: 200px;
 }
 
 .podcastInfo {
@@ -32,8 +32,27 @@
     color: #46464c;
 }
 
+.subscribeButton {
+    min-width: 100px;
+    border-radius: 3px;
+    margin-top: 8px;
+    font-size: 16px;
+}
+
+.buttonDelete {
+    color: #46464c;
+    border: 1px solid #46464c;
+    transition: color 0.25s ease, border 0.25s ease;
+}
+
+.buttonDelete:hover {
+    color: #ba1b1d;
+    border: 1px solid #ba1b1d;
+}
+
 .podcastDescription {
     display: block;
+    margin-top: 16px;
 }
 
 .podcastTabMenu {
