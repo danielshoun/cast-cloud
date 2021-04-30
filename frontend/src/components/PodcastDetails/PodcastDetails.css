@@ -146,3 +146,30 @@
 .ratingText {
     margin-right: 16px;
 }
+
+.reviewContainer {
+    padding: 16px 0;
+    border-top: 1px solid #46464c;
+}
+
+.reviewHeader {
+    display: flex;
+    justify-content: space-between;
+}
+
+.reviewUser {
+    padding-right: 16px;
+}
+
+.reviewDate {
+    color: #46464c;
+    font-size: 14px;
+}
+
+.staticStar {
+    cursor: default;
+}
+
+.reviewText {
+    margin-top: 16px;
+}

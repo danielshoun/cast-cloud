@@ -45,7 +45,6 @@ export default function ReviewList({podcastData}) {
                 <div className='ownReviewContainer'>
                     {ownReview ?
                         <>
-                            Edit Review
                         </> :
                         <>
                             <div className='ratingContainer'>
@@ -88,7 +87,22 @@ export default function ReviewList({podcastData}) {
             }
             {reviewList.map(review => {
                 return (
-                    <div key={review.id}>{review.text}</div>
+                    <div key={review.id} className='reviewContainer'>
+                        <div className='reviewHeader'>
+                            <span>
+                                <span className='reviewUser'>{review.User.username}</span>
+                                <span className='reviewDate'>({new Date(review.createdAt).toLocaleString('en-US', {month: 'short', day: 'numeric', hour: '2-digit', minute:'2-digit'})})</span>
+                            </span>
+                            <span className='reviewRating'>
+                                <i className={`fas fa-star reviewStar staticStar${review.rating >= 1 ? ' highlightedStar' : ''}`}/>
+                                <i className={`fas fa-star reviewStar staticStar${review.rating >= 2 ? ' highlightedStar' : ''}`}/>
+                                <i className={`fas fa-star reviewStar staticStar${review.rating >= 3 ? ' highlightedStar' : ''}`}/>
+                                <i className={`fas fa-star reviewStar staticStar${review.rating >= 4 ? ' highlightedStar' : ''}`}/>
+                                <i className={`fas fa-star reviewStar staticStar${review.rating >= 5 ? ' highlightedStar' : ''}`}/>
+                            </span>
+                        </div>
+                        <div className='reviewText'>{review.text}</div>
+                    </div>
                 )
             })}
         </>
