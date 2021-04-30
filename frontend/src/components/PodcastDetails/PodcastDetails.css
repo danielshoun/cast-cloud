@@ -142,3 +142,7 @@
 .highlightedStar {
     color: #f35b04;
 }
+
+.ratingText {
+    margin-right: 16px;
+}

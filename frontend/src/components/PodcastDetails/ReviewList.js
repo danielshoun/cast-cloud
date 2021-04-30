@@ -30,6 +30,7 @@ export default function ReviewList({podcastData}) {
                         </> :
                         <>
                             <div className='ratingContainer'>
+                                <span className='ratingText'>Choose a rating:</span>
                                 <i
                                     className={`fas fa-star reviewStar${(hoverStar >= 1) ? ' highlightedStar' : (!hoverStar && selectedStar >= 1 ? ' highlightedStar' : '')}`}
                                     onMouseOver={() => setHoverStar(1)}
