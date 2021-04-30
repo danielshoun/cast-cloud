@@ -1,5 +1,6 @@
 import {useEffect, useState} from "react";
 import {useSelector} from "react-redux";
+import {csrfFetch} from "../../store/csrf";
 
 export default function ReviewList({podcastData}) {
     const userState = useSelector(state => state.session)
@@ -19,6 +20,24 @@ export default function ReviewList({podcastData}) {
         }
         fetchData().then();
     }, [podcastData, userState.user.id])
+
+    async function handleSubmitReview() {
+        const body = {
+            rating: selectedStar,
+            text: ownReviewText
+        }
+        const res = await csrfFetch(`/api/podcasts/${podcastData.id}/reviews`, {
+            method: 'POST',
+            body: JSON.stringify(body),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+        const data = res.json();
+        setReviewList(prevState => [data, ...prevState]);
+        setOwnReview(data);
+        setOwnReviewText(data.text);
+    }
 
     return (
         <>
@@ -62,14 +81,14 @@ export default function ReviewList({podcastData}) {
                                 />
                             </div>
                             <textarea className='reviewInput' placeholder='Write your review...' value={ownReviewText} onChange={event => setOwnReviewText(event.target.value)}/>
-                            <button className='reviewSubmitButton'>Submit</button>
+                            <button className='reviewSubmitButton' onClick={handleSubmitReview}>Submit</button>
                         </>
                     }
                 </div>
             }
             {reviewList.map(review => {
                 return (
-                    <div key={review.id}>review.text</div>
+                    <div key={review.id}>{review.text}</div>
                 )
             })}
         </>
