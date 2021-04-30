@@ -17,9 +17,11 @@ export default function ReviewList({podcastData}) {
             const data = await res.json();
             setReviewList(data);
             const ownReview = data.find(review => review.userId === userState.user.id);
-            setOwnReview(ownReview);
-            setOwnReviewText(ownReview.text)
-            setSelectedStar(ownReview.rating);
+            if(ownReview) {
+                setOwnReview(ownReview);
+                setOwnReviewText(ownReview.text)
+                setSelectedStar(ownReview.rating);
+            }
         }
         fetchData().then();
     }, [podcastData, userState.user.id])
@@ -41,11 +43,30 @@ export default function ReviewList({podcastData}) {
         setReviewList(prevState => [data, ...prevState]);
         setOwnReview(data);
         setOwnReviewText(data.text);
-        setSelectedStar(ownReview.rating);
+        setSelectedStar(data.rating);
     }
 
-    function handleEditReview() {
+    async function handleEditReview() {
+        const body = {
+            rating: selectedStar,
+            text: ownReviewText
+        }
+        const res = await csrfFetch(`/api/reviews/${ownReview.id}`, {
+            method: 'PUT',
+            body: JSON.stringify(body),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+        const data = await res.json();
 
+        setIsEditing(false);
+        setOwnReview(data);
+        setOwnReviewText(data.text);
+        setSelectedStar(data.rating);
+
+        const replacePoint = reviewList.findIndex(el => el.id === data.id);
+        setReviewList(prevState => [...prevState.slice(0, replacePoint), data, ...prevState.slice(replacePoint + 1, prevState.length)]);
     }
 
     function handleCancelEdit() {
@@ -54,8 +75,17 @@ export default function ReviewList({podcastData}) {
         setSelectedStar(ownReview.rating);
     }
 
-    function handleDelete() {
+    async function handleDelete() {
+        const res = await csrfFetch(`/api/reviews/${ownReview.id}`, {
+            method: 'DELETE'
+        })
 
+        setOwnReview(null);
+        setOwnReviewText('');
+        setSelectedStar(null);
+
+        const deletePoint = reviewList.findIndex(el => el.id === ownReview.id);
+        setReviewList(prevState => [...prevState.slice(0, deletePoint), ...prevState.slice(deletePoint + 1, prevState.length)]);
     }
 
     return (

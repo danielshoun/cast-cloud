@@ -7,8 +7,10 @@ const router = express.Router();
 
 router.put('/:reviewId', requireAuth, asyncHandler(async (req, res) => {
     let review = await Review.findByPk(req.params.reviewId, {include: User});
+    console.log(req.body.text);
     if(review.userId === req.user.id) {
         review.text = req.body.text;
+        review.rating = req.body.rating;
         await review.save();
         return res.json(review);
     }
