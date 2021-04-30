@@ -12,7 +12,7 @@ export default function EpisodeItem({activeEpisode, handleActive, episode, podca
             dispatch(togglePlaying(true));
         } else {
             dispatch(changeTrack({
-                podcastTitle: podcastData.podcastTitle,
+                podcastTitle: podcastData.title,
                 artworkUrl: podcastData.artworkUrl,
                 itunesId: podcastData.itunesId,
                 ...episode
@@ -29,7 +29,7 @@ export default function EpisodeItem({activeEpisode, handleActive, episode, podca
         e.stopPropagation();
         if(!audioState.queue.find(el => el.guid === episode.guid)) {
             dispatch(addToQueue({
-                podcastTitle: podcastData.podcastTitle,
+                podcastTitle: podcastData.title,
                 artworkUrl: podcastData.artworkUrl,
                 itunesId: podcastData.itunesId,
                 ...episode

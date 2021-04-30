@@ -13,6 +13,7 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
       Episode.belongsTo(models.Podcast, {foreignKey: 'podcastId'});
       Episode.hasMany(models.Comment, {foreignKey: 'episodeId'});
+      Episode.hasMany(models.EpisodeProgress, {foreignKey: 'episodeId'});
     }
   };
   Episode.init({

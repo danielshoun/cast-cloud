@@ -8,6 +8,7 @@ html {
     color: #f0f3f5;
     max-width: 1400px;
     margin: 0 auto;
+    overflow-y: scroll;
 }
 
 .buttonPrimary {

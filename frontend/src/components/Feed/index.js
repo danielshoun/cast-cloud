@@ -47,7 +47,7 @@ export default function Feed() {
             dispatch(togglePlaying(true));
         } else {
             dispatch(changeTrack({
-                podcastTitle: subscriptions[selectedList].Podcast.podcastTitle,
+                podcastTitle: subscriptions[selectedList].Podcast.title,
                 artworkUrl: subscriptions[selectedList].Podcast.artworkUrl,
                 itunesId: subscriptions[selectedList].Podcast.itunesId,
                 ...episode
@@ -64,7 +64,7 @@ export default function Feed() {
         e.stopPropagation();
         if(!audioState.queue.find(el => el.guid === episode.guid)) {
             dispatch(addToQueue({
-                podcastTitle: subscriptions[selectedList].Podcast.podcastTitle,
+                podcastTitle: subscriptions[selectedList].Podcast.title,
                 artworkUrl: subscriptions[selectedList].Podcast.artworkUrl,
                 itunesId: subscriptions[selectedList].Podcast.itunesId,
                 ...episode

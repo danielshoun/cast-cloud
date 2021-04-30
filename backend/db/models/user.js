@@ -16,6 +16,7 @@ module.exports = (sequelize, DataTypes) => {
 			// define association here
 			User.hasMany(models.Comment, {foreignKey: 'userId'});
 			User.hasMany(models.Review, {foreignKey: 'userId'});
+			User.hasMany(models.EpisodeProgress, {foreignKey: 'userId'});
 		}
 	}
 	User.init({
