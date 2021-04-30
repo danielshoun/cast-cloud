@@ -3,7 +3,7 @@ const asyncHandler = require('express-async-handler');
 const fetch = require("node-fetch");
 const Parser = require('rss-parser');
 const { Podcast, Episode, Review, User, Subscription, EpisodeProgress } = require('../../db/models');
-const { requireAuth } = require('../../utils/auth');
+const { requireAuth, restoreUser } = require('../../utils/auth');
 
 const router = express.Router();
 const parser = new Parser();
@@ -82,7 +82,7 @@ router.get('/:itunesId', asyncHandler(async (req, res) => {
     return res.json(podcast);
 }))
 
-router.get('/:id/episodes', asyncHandler(async (req, res) => {
+router.get('/:id/episodes', restoreUser, asyncHandler(async (req, res) => {
     const podcastId = req.params.id;
     if(req.query.subscription === '1') {
         const podcast = await Podcast.findByPk(podcastId);
@@ -118,24 +118,20 @@ router.get('/:id/episodes', asyncHandler(async (req, res) => {
         podcast.updatedAt = new Date();
         await podcast.save();
     }
-    const episodes = await Episode.findAll({
-        where: {podcastId},
-        order: [['releaseDate', 'DESC']]
-    })
-
-    return res.json(episodes);
-}))
-
-router.get('/:podcastId/episodes/watched', requireAuth, asyncHandler(async (req, res) => {
-    const userId = req.user.id;
+    let include = {};
+    if(req.user) {
+        include = {
+            model: EpisodeProgress,
+            required: false,
+            where: {userId: req.user.id}
+        }
+    }
     const episodes = await Episode.findAll({
         where: {podcastId},
         order: [['releaseDate', 'DESC']],
-        include: {
-            model: EpisodeProgress,
-            where: {userId}
-        }
-    });
+        include
+    })
+
     return res.json(episodes);
 }))
 
