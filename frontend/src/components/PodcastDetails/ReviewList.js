@@ -33,7 +33,8 @@ export default function ReviewList({podcastData}) {
                 'Content-Type': 'application/json'
             }
         })
-        const data = res.json();
+        const data = await res.json();
+        console.log(data);
         setReviewList(prevState => [data, ...prevState]);
         setOwnReview(data);
         setOwnReviewText(data.text);
@@ -50,7 +51,7 @@ export default function ReviewList({podcastData}) {
                                 <div className='reviewHeader'>
                             <span>
                                 <span className='reviewUser'>{ownReview.User.username}</span>
-                                <span className='reviewDate'>({new Date(ownReview.createdAt).toLocaleString('en-US', {month: 'short', day: 'numeric', hour: '2-digit', minute:'2-digit'})})</span>
+                                <span className='reviewDate'>({new Date(ownReview.createdAt).toLocaleString('en-US', {month: 'short', day: 'numeric', year: 'numeric', hour: '2-digit', minute:'2-digit'})})</span>
                             </span>
                                     <span className='reviewRating'>
                                 <i className={`fas fa-star reviewStar staticStar${ownReview.rating >= 1 ? ' highlightedStar' : ''}`}/>
@@ -64,52 +65,56 @@ export default function ReviewList({podcastData}) {
                             </div>
                         </> :
                         <>
-                            <div className='ratingContainer'>
-                                <span className='ratingText'>Choose a rating:</span>
-                                <i
-                                    className={`fas fa-star reviewStar${(hoverStar >= 1) ? ' highlightedStar' : (!hoverStar && selectedStar >= 1 ? ' highlightedStar' : '')}`}
-                                    onMouseOver={() => setHoverStar(1)}
-                                    onMouseLeave={() => setHoverStar(null)}
-                                    onClick={() => setSelectedStar(1)}
-                                />
-                                <i
-                                    className={`fas fa-star reviewStar${(hoverStar >= 2) ? ' highlightedStar' : (!hoverStar && selectedStar >= 2 ? ' highlightedStar' : '')}`}
-                                    onMouseOver={() => setHoverStar(2)}
-                                    onMouseLeave={() => setHoverStar(null)}
-                                    onClick={() => setSelectedStar(2)}
-                                />
-                                <i
-                                    className={`fas fa-star reviewStar${(hoverStar >= 3) ? ' highlightedStar' : (!hoverStar && selectedStar >= 3 ? ' highlightedStar' : '')}`}
-                                    onMouseOver={() => setHoverStar(3)}
-                                    onClick={() => setSelectedStar(3)}
-                                />
-                                <i
-                                    className={`fas fa-star reviewStar${(hoverStar >= 4) ? ' highlightedStar' : (!hoverStar && selectedStar >= 4 ? ' highlightedStar' : '')}`}
-                                    onMouseOver={() => setHoverStar(4)}
-                                    onMouseLeave={() => setHoverStar(null)}
-                                    onClick={() => setSelectedStar(4)}
-                                />
-                                <i
-                                    className={`fas fa-star reviewStar${(hoverStar >= 5) ? ' highlightedStar' : (!hoverStar && selectedStar >= 5 ? ' highlightedStar' : '')}`}
-                                    onMouseOver={() => setHoverStar(5)}
-                                    onMouseLeave={() => setHoverStar(null)}
-                                    onClick={() => setSelectedStar(5)}
-                                />
+                            <div className='reviewListDivider'>Write A Review</div>
+                            <div className='reviewContainer'>
+                                <div className='ratingContainer'>
+                                    <span className='ratingText'>Choose a rating:</span>
+                                    <i
+                                        className={`fas fa-star reviewStar${(hoverStar >= 1) ? ' highlightedStar' : (!hoverStar && selectedStar >= 1 ? ' highlightedStar' : '')}`}
+                                        onMouseOver={() => setHoverStar(1)}
+                                        onMouseLeave={() => setHoverStar(null)}
+                                        onClick={() => setSelectedStar(1)}
+                                    />
+                                    <i
+                                        className={`fas fa-star reviewStar${(hoverStar >= 2) ? ' highlightedStar' : (!hoverStar && selectedStar >= 2 ? ' highlightedStar' : '')}`}
+                                        onMouseOver={() => setHoverStar(2)}
+                                        onMouseLeave={() => setHoverStar(null)}
+                                        onClick={() => setSelectedStar(2)}
+                                    />
+                                    <i
+                                        className={`fas fa-star reviewStar${(hoverStar >= 3) ? ' highlightedStar' : (!hoverStar && selectedStar >= 3 ? ' highlightedStar' : '')}`}
+                                        onMouseOver={() => setHoverStar(3)}
+                                        onClick={() => setSelectedStar(3)}
+                                    />
+                                    <i
+                                        className={`fas fa-star reviewStar${(hoverStar >= 4) ? ' highlightedStar' : (!hoverStar && selectedStar >= 4 ? ' highlightedStar' : '')}`}
+                                        onMouseOver={() => setHoverStar(4)}
+                                        onMouseLeave={() => setHoverStar(null)}
+                                        onClick={() => setSelectedStar(4)}
+                                    />
+                                    <i
+                                        className={`fas fa-star reviewStar${(hoverStar >= 5) ? ' highlightedStar' : (!hoverStar && selectedStar >= 5 ? ' highlightedStar' : '')}`}
+                                        onMouseOver={() => setHoverStar(5)}
+                                        onMouseLeave={() => setHoverStar(null)}
+                                        onClick={() => setSelectedStar(5)}
+                                    />
+                                </div>
+                                <textarea className='reviewInput' placeholder='Write your review...' value={ownReviewText} onChange={event => setOwnReviewText(event.target.value)}/>
+                                <button className='reviewSubmitButton' onClick={handleSubmitReview}>Submit</button>
                             </div>
-                            <textarea className='reviewInput' placeholder='Write your review...' value={ownReviewText} onChange={event => setOwnReviewText(event.target.value)}/>
-                            <button className='reviewSubmitButton' onClick={handleSubmitReview}>Submit</button>
+
                         </>
                     }
                 </div>
             }
             <div className='reviewListDivider'>All Reviews</div>
-            {reviewList.map(review => {
+            {reviewList.length > 0 ? reviewList.map(review => {
                 return (
                     <div key={review.id} className='reviewContainer'>
                         <div className='reviewHeader'>
                             <span>
                                 <span className='reviewUser'>{review.User.username}</span>
-                                <span className='reviewDate'>({new Date(review.createdAt).toLocaleString('en-US', {month: 'short', day: 'numeric', hour: '2-digit', minute:'2-digit'})})</span>
+                                <span className='reviewDate'>({new Date(review.createdAt).toLocaleString('en-US', {month: 'short', day: 'numeric', year: 'numeric', hour: '2-digit', minute:'2-digit'})})</span>
                             </span>
                             <span className='reviewRating'>
                                 <i className={`fas fa-star reviewStar staticStar${review.rating >= 1 ? ' highlightedStar' : ''}`}/>
@@ -121,8 +126,9 @@ export default function ReviewList({podcastData}) {
                         </div>
                         <div className='reviewText'>{review.text}</div>
                     </div>
-                )
-            })}
+                )}) :
+                <div className='emptyReviewText'>There are no reviews for this podcast yet.</div>
+            }
         </>
     )
 }
