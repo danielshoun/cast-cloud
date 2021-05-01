@@ -1,5 +1,8 @@
 const express = require('express');
-const asyncHandler = require('express-async-handler')
+const asyncHandler = require('express-async-handler');
+const fetch = require('node-fetch');
+const Parser = require('rss-parser');
+const getNewEpisodes = require('../../utils/getNewEpisodes');
 const {requireAuth} = require("../../utils/auth");
 const { Comment, User, EpisodeProgress, Episode, Podcast, Subscription } = require('../../db/models');
 
@@ -19,28 +22,35 @@ router.get('/', requireAuth, asyncHandler(async (req, res) => {
             }
         }});
     const episodes = [];
-    subscriptions.forEach((subscription) => {
+    for (const subscription of subscriptions) {
+        const podcast = subscription.getDataValue('Podcast');
+        const newEpisodes = await getNewEpisodes(podcast);
+        (await Episode.bulkCreate(newEpisodes)).forEach(episode => {
+            let insertPoint = episodes.findIndex(el => new Date(el.getDataValue('releaseDate')) < new Date(episode.getDataValue('releaseDate')));
+            if(insertPoint === -1) insertPoint = episodes.length - 1;
+            subscription.getDataValue('Podcast').setDataValue('Episodes', undefined);
+            episode.setDataValue('Podcast', subscription.getDataValue('Podcast'));
+            episodes.splice(insertPoint, 0, episode);
+        });
+        podcast.updatedAt = new Date();
+        await podcast.save();
+
         subscription.getDataValue('Podcast').getDataValue('Episodes').forEach((episode) => {
             if(episode.EpisodeProgresses[0] === undefined) {
                 let insertPoint = episodes.findIndex(el => new Date(el.getDataValue('releaseDate')) < new Date(episode.getDataValue('releaseDate')));
-                console.log(insertPoint);
                 if(insertPoint === -1) insertPoint = episodes.length - 1;
                 subscription.getDataValue('Podcast').setDataValue('Episodes', undefined);
                 episode.setDataValue('Podcast', subscription.getDataValue('Podcast'));
                 episodes.splice(insertPoint, 0, episode);
             } else if(!episode.EpisodeProgresses[0].played) {
                 let insertPoint = episodes.findIndex(el => new Date(el.getDataValue('releaseDate')) < new Date(episode.getDataValue('releaseDate')));
-                console.log(insertPoint);
                 if(insertPoint === -1) insertPoint = episodes.length - 1;
                 subscription.getDataValue('Podcast').setDataValue('Episodes', undefined);
                 episode.setDataValue('Podcast', subscription.getDataValue('Podcast'));
                 episodes.splice(insertPoint, 0, episode);
             }
         })
-        console.log('Left episode loop.')
-    })
-    console.log('Left subscription loop.')
-    console.log(episodes.length);
+    }
     return res.json(episodes);
 }))
 

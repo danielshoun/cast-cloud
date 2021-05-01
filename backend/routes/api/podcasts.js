@@ -4,6 +4,7 @@ const fetch = require("node-fetch");
 const Parser = require('rss-parser');
 const { Podcast, Episode, Review, User, Subscription, EpisodeProgress } = require('../../db/models');
 const { requireAuth, restoreUser } = require('../../utils/auth');
+const getNewEpisodes = require('../../utils/getNewEpisodes');
 
 const router = express.Router();
 const parser = new Parser();
@@ -37,47 +38,11 @@ router.get('/:itunesId', asyncHandler(async (req, res) => {
             rssUrl: itunesPodcast.feedUrl
         })
         newPodcast = true;
-    } else {
-        rssUrl = podcast.rssUrl;
-        const headRes = await fetch(podcast.rssUrl, {
-            method: 'HEAD',
-            headers: {
-                'If-Modified-Since': new Date(podcast.updatedAt).toUTCString()
-            }
-        })
-        console.log('HEAD RES BELOW')
-        console.log(headRes.headers.get('last-modified'));
-        console.log('HERES THE MOST RECENT DATE');
-        console.log(new Date(podcast.updatedAt).toUTCString());
-        if(new Date(headRes.headers.get('last-modified')) > new Date(podcast.updatedAt)) {
-            feedData = await parser.parseURL(rssUrl);
-        } else {
-            feedData = {items: []};
-            console.log('NO NEED TO UPDATE');
-        }
     }
-
-
-
-    const newEpisodes = [];
-    for(let i = 0; i < feedData.items.length; i++) {
-        let item = feedData.items[i];
-        if(!newPodcast && new Date(item.isoDate) < new Date(podcast.updatedAt)) break;
-        const episode = {
-            podcastId: podcast.id,
-            title: item.title,
-            description: item.itunes.summary || item.contentSnippet,
-            url: item.enclosure.url,
-            releaseDate: item.isoDate,
-            guid: item.guid
-        };
-        newEpisodes.push(episode);
-    }
+    const newEpisodes = await getNewEpisodes(podcast, newPodcast);
     await Episode.bulkCreate(newEpisodes);
-    if(!newPodcast) {
-        podcast.updatedAt = new Date();
-        await podcast.save();
-    }
+    podcast.updatedAt = new Date();
+    await podcast.save();
 
     return res.json(podcast);
 }))
@@ -86,34 +51,7 @@ router.get('/:id/episodes', restoreUser, asyncHandler(async (req, res) => {
     const podcastId = req.params.id;
     if(req.query.subscription === '1') {
         const podcast = await Podcast.findByPk(podcastId);
-        const headRes = await fetch(podcast.rssUrl, {
-            method: 'HEAD',
-            headers: {
-                'If-Modified-Since': new Date(podcast.updatedAt).toUTCString()
-            }
-        });
-        let feedData;
-        if(new Date(headRes.headers.get('last-modified')) > new Date(podcast.updatedAt)) {
-            const parser = new Parser();
-            feedData = await parser.parseURL(podcast.rssUrl);
-        } else {
-            feedData = {items: []};
-        }
-
-        const newEpisodes = [];
-        for(let i = 0; i < feedData.items.length; i++) {
-            let item = feedData.items[i];
-            if(new Date(item.isoDate) < new Date(podcast.updatedAt)) break;
-            const episode = {
-                podcastId: podcast.id,
-                title: item.title,
-                description: item.itunes.summary || item.contentSnippet,
-                url: item.enclosure.url,
-                releaseDate: item.isoDate,
-                guid: item.guid
-            };
-            newEpisodes.push(episode);
-        }
+        const newEpisodes = await getNewEpisodes(podcast);
         await Episode.bulkCreate(newEpisodes);
         podcast.updatedAt = new Date();
         await podcast.save();
