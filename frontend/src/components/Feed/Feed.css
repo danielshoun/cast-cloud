@@ -117,3 +117,7 @@
     text-align: center;
     padding: 32px 0;
 }
+
+.playedHeader {
+    margin-top: 32px;
+}

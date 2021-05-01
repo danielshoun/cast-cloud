@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import EpisodeItem from "./EpisodeItem";
 
-export default function EpisodeList({ podcastData }) {
+export default function EpisodeList({ podcastData, isSubscribed }) {
     const [episodeList, setEpisodeList] = useState([]);
     const [activeEpisode, setActiveEpisode] = useState(null);
 
@@ -13,6 +13,17 @@ export default function EpisodeList({ podcastData }) {
         }
         fetchData().then();
     }, [podcastData])
+
+    useEffect(() => {
+        if(isSubscribed) {
+            async function fetchData() {
+                const res = await fetch(`/api/podcasts/${podcastData.id}/episodes`);
+                const data = await res.json();
+                setEpisodeList(data);
+            }
+            fetchData().then();
+        }
+    }, [isSubscribed])
 
     if(episodeList.length === 0) {
         return (<></>)

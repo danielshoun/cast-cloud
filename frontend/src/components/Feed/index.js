@@ -111,7 +111,7 @@ export default function Feed() {
                             return (
                                 <FeedEpisode key={i} deletePoint={i} podcast={episode.Podcast} episode={episode} modifyEpisodeProgress={modifyEpisodeProgress}/>
                             )
-                        }) : <div className='emptyFeedContent'>{episodesLoaded ? "You don't have any unplayed episodes for this podcast." : 'Loading podcast episodes...'}</div>}
+                        }) : <div className='emptyFeedContent'>{episodesLoaded ? "You don't have anything new to listen to!" : 'Loading podcast episodes...'}</div>}
                     </>:
                     <>
                         <div className='feedContentHeader'>Unplayed Episodes</div>
@@ -120,7 +120,7 @@ export default function Feed() {
                                 <FeedEpisode key={i} deletePoint={i} podcast={subscriptions[selectedList].Podcast} episode={episode} modifyEpisodeProgress={modifyEpisodeProgress}/>
                             )
                         }) : <div className='emptyFeedContent'>{episodesLoaded ? "You don't have any unplayed episodes for this podcast." : 'Loading podcast episodes...'}</div>}
-                        <div className='feedContentHeader'>Played Episodes</div>
+                        <div className='feedContentHeader playedHeader'>Played Episodes</div>
                         {playedEpisodes.length > 0 ? playedEpisodes.map((episode, i) => {
                             return (
                                 <FeedEpisode key={i} deletePoint={i} podcast={subscriptions[selectedList].Podcast} episode={episode} modifyEpisodeProgress={modifyEpisodeProgress}/>

@@ -5,6 +5,7 @@ import './AudioPlayer.css';
 import ProgressBar from "./ProgressBar";
 import PlaybackController from "./PlaybackController";
 import VolumeController from "./VolumeController";
+import {csrfFetch} from "../../../store/csrf";
 
 export default function AudioPlayer() {
     const audioState = useSelector(state => state.audio);
@@ -58,10 +59,20 @@ export default function AudioPlayer() {
                 dispatch(updateTimestamp(e.target.currentTime));
             }
 
-            function nextSong() {
+            async function nextSong() {
                 setPercentListened(0);
                 setCurTime(null);
                 setDuration(null);
+                const body = {
+                    played: true
+                }
+                await csrfFetch(`/api/episodes/${audioState.queue[audioState.currentTrack].id}/progress`, {
+                    method: 'POST',
+                    body: JSON.stringify(body),
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                })
                 dispatch(goToNextSong());
             }
 

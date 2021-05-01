@@ -74,6 +74,7 @@ export default function PodcastDetails() {
                             podcastTitle={podcastData.title}
                             artworkUrl={podcastData.artworkUrl}
                             podcastData={podcastData}
+                            isSubscribed={isSubscribed}
                         />}
                 </div>
             </div>
