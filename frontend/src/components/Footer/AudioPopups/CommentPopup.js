@@ -24,7 +24,7 @@ export default function CommentPopup() {
         const comment = {
             episodeId: audioState.queue[audioState.currentTrack].id,
             text: newCommentText,
-            timestamp: audioState.timestamp
+            timestamp: audioState.currentAudioRef.currentTime
         }
         const res = await csrfFetch(`/api/episodes/${audioState.queue[audioState.currentTrack].id}/comments`, {
             method: 'POST',

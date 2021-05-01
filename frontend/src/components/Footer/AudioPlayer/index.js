@@ -1,6 +1,6 @@
 import React, {useEffect, useRef, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {goToNextSong, togglePlaying, updateTimestamp} from "../../../store/audio";
+import {goToNextSong, setAudioRef, togglePlaying, updateTimestamp} from "../../../store/audio";
 import './AudioPlayer.css';
 import ProgressBar from "./ProgressBar";
 import PlaybackController from "./PlaybackController";
@@ -9,6 +9,7 @@ import {csrfFetch} from "../../../store/csrf";
 
 export default function AudioPlayer() {
     const audioState = useSelector(state => state.audio);
+    const currentEpisode = audioState.queue[audioState.currentTrack];
     const dispatch = useDispatch();
     const audioRef = useRef(null);
     const[duration, setDuration] = useState(null);
@@ -25,7 +26,7 @@ export default function AudioPlayer() {
     }, [audioState.playing])
 
     useEffect(() => {
-        if(!audioState.queue[audioState.currentTrack]) {
+        if(!currentEpisode) {
             setPercentListened(0);
             setCurTime(null);
             setDuration(null);
@@ -34,6 +35,7 @@ export default function AudioPlayer() {
 
         if(audioRef.current) {
             const currentAudioRef = audioRef.current;
+            dispatch(setAudioRef(currentAudioRef));
 
             function getTime(time) {
                 let hours = Math.floor(time / 3600);
@@ -53,12 +55,6 @@ export default function AudioPlayer() {
                 currentAudioRef.removeEventListener('canplay', readyPlayerState);
             }
 
-            function updateTime(e) {
-                setPercentListened(e.target.currentTime / e.target.duration * 100)
-                setCurTime(getTime(e.target.currentTime));
-                dispatch(updateTimestamp(e.target.currentTime));
-            }
-
             async function nextSong() {
                 setPercentListened(0);
                 setCurTime(null);
@@ -66,7 +62,7 @@ export default function AudioPlayer() {
                 const body = {
                     played: true
                 }
-                await csrfFetch(`/api/episodes/${audioState.queue[audioState.currentTrack].id}/progress`, {
+                await csrfFetch(`/api/episodes/${currentEpisode.id}/progress`, {
                     method: 'POST',
                     body: JSON.stringify(body),
                     headers: {
@@ -84,16 +80,14 @@ export default function AudioPlayer() {
             currentAudioRef.load();
             currentAudioRef.addEventListener('canplay', readyPlayerState);
             currentAudioRef.addEventListener('durationchange', changeDuration);
-            currentAudioRef.addEventListener('timeupdate', updateTime);
             currentAudioRef.addEventListener('ended', nextSong);
 
             return () => {
                 currentAudioRef.removeEventListener('durationchange', changeDuration);
-                currentAudioRef.removeEventListener('timeupdate', updateTime);
                 currentAudioRef.removeEventListener('ended', nextSong);
             }
         }
-    }, [audioState.queue[audioState.currentTrack], dispatch])
+    }, [currentEpisode, dispatch])
 
     function playAudio() {
         if(audioState.currentTrack !== null && audioState.playing) {
@@ -107,7 +101,7 @@ export default function AudioPlayer() {
         <div className='audioPlayerContainer'>
             {audioState.currentTrack !== null &&
                 <audio ref={audioRef}>
-                    <source id='footerPlayer' src={audioState.queue[audioState.currentTrack].url}/>
+                    <source id='footerPlayer' src={currentEpisode.url}/>
                 </audio>
             }
             <PlaybackController

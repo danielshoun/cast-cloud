@@ -1,10 +1,10 @@
 const CHANGE_TRACK = 'audio/changeTrack';
 const TOGGLE_AUDIO_PLAYING = 'audio/togglePlaying';
-const UPDATE_TIMESTAMP = 'audio/updateTimestamp';
 const ADD_TO_QUEUE = 'audio/addToQueue';
 const GO_TO_NEXT = 'audio/goToNextSong';
 const REMOVE_FROM_QUEUE = 'audio/removeFromQueue';
 const SKIP_TO_SONG = 'audio/skipToSong';
+const SET_AUDIO_REF = 'audio/setAudioRef';
 
 export const changeTrack = (newSrc) => {
     return {
@@ -17,13 +17,6 @@ export const togglePlaying = (playing) => {
     return {
         type: TOGGLE_AUDIO_PLAYING,
         playing
-    }
-}
-
-export const updateTimestamp = (newTime) => {
-    return {
-        type: UPDATE_TIMESTAMP,
-        newTime
     }
 }
 
@@ -54,7 +47,14 @@ export const skipToSong = (index) => {
     }
 }
 
-export default function audioReducer(state = { currentTrack: null, timestamp: 0, playing: false, queue: []}, action) {
+export const setAudioRef = (audioRef) => {
+    return {
+        type: SET_AUDIO_REF,
+        audioRef
+    }
+}
+
+export default function audioReducer(state = { currentTrack: null, timestamp: 0, playing: false, queue: [], currentAudioRef: null}, action) {
     let newState = Object.assign({}, state);
     switch(action.type) {
         case CHANGE_TRACK:
@@ -63,9 +63,6 @@ export default function audioReducer(state = { currentTrack: null, timestamp: 0,
             return newState;
         case TOGGLE_AUDIO_PLAYING:
             newState.playing = action.playing;
-            return newState;
-        case UPDATE_TIMESTAMP:
-            newState.timestamp = action.newTime;
             return newState;
         case ADD_TO_QUEUE:
             newState.queue.push(action.track);
@@ -106,6 +103,9 @@ export default function audioReducer(state = { currentTrack: null, timestamp: 0,
             return newState;
         case SKIP_TO_SONG:
             newState.currentTrack = action.index;
+            return newState;
+        case SET_AUDIO_REF:
+            newState.currentAudioRef = action.audioRef;
             return newState;
         default:
             return state;

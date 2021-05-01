@@ -25,6 +25,7 @@ export function PlayedButton({ played, handlePlayedToggle }) {
 
 export default function EpisodeItem({activeEpisode, handleActive, episode, podcastData, modifyEpisodeProgress}) {
     const audioState = useSelector(state => state.audio);
+    const currentEpisode = audioState.queue[audioState.currentTrack];
     const dispatch = useDispatch();
     const [played, setPlayed] = useState(episode.EpisodeProgresses[0]?.played);
 
@@ -32,9 +33,20 @@ export default function EpisodeItem({activeEpisode, handleActive, episode, podca
         setPlayed(episode.EpisodeProgresses[0]?.played);
     }, [episode.EpisodeProgresses[0]?.played])
 
+    useEffect(() => {
+        if(currentEpisode?.id === episode.id && audioState.currentAudioRef) {
+            function handleEnd() {
+                setPlayed(true);
+                modifyEpisodeProgress({...(episode.EpisodeProgresses[0]), played: true});
+            }
+            audioState.currentAudioRef.addEventListener('ended', handleEnd);
+            return () => audioState.currentAudioRef.removeEventListener('ended', handleEnd);
+        }
+    }, [audioState.currentAudioRef, currentEpisode, episode.id])
+
     function playTrack(e, episode) {
         e.stopPropagation();
-        if(audioState.queue[audioState.currentTrack]?.url === episode.url) {
+        if(currentEpisode?.url === episode.url) {
             dispatch(togglePlaying(true));
         } else {
             dispatch(changeTrack({
@@ -90,7 +102,7 @@ export default function EpisodeItem({activeEpisode, handleActive, episode, podca
                                 {episode.title}
                             </span>
                 <div className='episodeControls'>
-                    {audioState.queue[audioState.currentTrack]?.url === episode.url && audioState.playing ?
+                    {currentEpisode?.url === episode.url && audioState.playing ?
                         <i className={`fas fa-pause-circle episodeButton`} onClick={(e) => pauseTrack(e)}/> :
                         <i className={`fas fa-play-circle episodeButton`} onClick={(e) => playTrack(e, episode)}/>}
                     <i className="fas fa-plus-circle episodeButton" onClick={(e) => addTrack(e, episode)}/>

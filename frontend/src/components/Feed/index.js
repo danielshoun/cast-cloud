@@ -69,13 +69,15 @@ export default function Feed() {
             const episode = Object.assign({}, unplayedEpisodes[deletePoint]);
             episode.EpisodeProgresses = [newEpisodeProgress];
             setUnplayedEpisodes(prevState => [...prevState.slice(0, deletePoint), ...prevState.slice(deletePoint + 1, prevState.length)]);
-            const insertPoint = playedEpisodes.findIndex(el => el.timestamp > episode.timestamp) - 1;
+            let insertPoint = playedEpisodes.findIndex(el => el.releaseDate < episode.releaseDate);
+            if(insertPoint === -1) insertPoint = playedEpisodes.length - 1;
             setPlayedEpisodes(prevState => [...prevState.slice(0, insertPoint), episode, ...prevState.slice(insertPoint, prevState.length)]);
         } else {
             const episode = Object.assign({}, playedEpisodes[deletePoint]);
             episode.EpisodeProgresses = [newEpisodeProgress];
             setPlayedEpisodes(prevState => [...prevState.slice(0, deletePoint), ...prevState.slice(deletePoint + 1, prevState.length)]);
-            const insertPoint = unplayedEpisodes.findIndex(el => el.timestamp > episode.timestamp) - 1;
+            let insertPoint = unplayedEpisodes.findIndex(el => el.releaseDate < episode.releaseDate);
+            if(insertPoint === -1) insertPoint = unplayedEpisodes.length - 1;
             setUnplayedEpisodes(prevState => [...prevState.slice(0, insertPoint), episode, ...prevState.slice(insertPoint, prevState.length)]);
         }
     }
