@@ -1,9 +1,11 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import EpisodeItem from "./EpisodeItem";
 
 export default function EpisodeList({ podcastData, isSubscribed }) {
-    const [episodeList, setEpisodeList] = useState([]);
+    const [listLoaded , setListLoaded] = useState(false);
+    const [episodeList, setEpisodeList] = useState(null);
     const [activeEpisode, setActiveEpisode] = useState(null);
+    const firstRender = useRef(true);
 
     useEffect(() => {
         async function fetchData() {
@@ -11,7 +13,7 @@ export default function EpisodeList({ podcastData, isSubscribed }) {
             const data = await res.json();
             setEpisodeList(data);
         }
-        fetchData().then();
+        fetchData().then(() => setListLoaded(true));
     }, [podcastData])
 
     useEffect(() => {
@@ -24,10 +26,6 @@ export default function EpisodeList({ podcastData, isSubscribed }) {
             fetchData().then();
         }
     }, [isSubscribed, podcastData.id])
-
-    if(episodeList.length === 0) {
-        return (<></>)
-    }
 
     function handleActive(episode) {
         if(activeEpisode === episode.guid) {
@@ -45,9 +43,12 @@ export default function EpisodeList({ podcastData, isSubscribed }) {
 
     }
 
+    console.log(listLoaded);
+    console.log(episodeList);
+
     return (
         <>
-            {episodeList.map((episode, i) => {
+            {episodeList?.length > 0 ? episodeList.map((episode, i) => {
                 return (
                     <EpisodeItem
                         key={i}
@@ -58,7 +59,14 @@ export default function EpisodeList({ podcastData, isSubscribed }) {
                         modifyEpisodeProgress={modifyEpisodeProgress}
                     />
                 )
-            })}
+            }) : listLoaded ?
+                    <div className='emptyListContent'>
+                        This podcast's RSS feed is either unavailable or it does not follow standard formatting.
+                    </div> :
+                    <div className='emptyListContent'>
+                        Loading podcast episodes...
+                    </div>
+            }
         </>
     )
 }

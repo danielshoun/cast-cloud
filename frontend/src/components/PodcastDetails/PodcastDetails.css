@@ -242,3 +242,9 @@
     color: #46464c;
 }
 
+.emptyListContent {
+    border-top: 1px solid #46464c;
+    color: #46464c;
+    text-align: center;
+    padding: 32px 0;
+}

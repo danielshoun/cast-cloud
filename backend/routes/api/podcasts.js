@@ -2,6 +2,7 @@ const express = require('express');
 const asyncHandler = require('express-async-handler');
 const fetch = require("node-fetch");
 const { check } = require('express-validator');
+const Parser = require('rss-parser');
 const { handleValidationErrors } = require('../../utils/validation');
 const { Podcast, Episode, Review, User, Subscription, EpisodeProgress } = require('../../db/models');
 const { requireAuth, restoreUser } = require('../../utils/auth');
@@ -9,6 +10,7 @@ const getNewEpisodes = require('../../utils/getNewEpisodes');
 const Sequelize = require('sequelize');
 
 const router = express.Router();
+const parser = new Parser();
 
 const reviewValidators = [
     check('text')
@@ -78,6 +80,7 @@ router.get('/:itunesId', asyncHandler(async (req, res) => {
         })
         newPodcast = true;
     }
+
     const newEpisodes = await getNewEpisodes(podcast, newPodcast);
     await Episode.bulkCreate(newEpisodes);
     podcast.updatedAt = new Date();
