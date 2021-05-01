@@ -16,8 +16,6 @@ export default function Home() {
         fetchData().then();
     }, [])
 
-    console.log(podcasts);
-
     return (
         <div className='homeContainer'>
             <img className='homeLogo' alt='CastCloud Logo' src='/logo.png'/>

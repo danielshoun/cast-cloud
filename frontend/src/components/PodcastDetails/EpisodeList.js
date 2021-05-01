@@ -43,9 +43,6 @@ export default function EpisodeList({ podcastData, isSubscribed }) {
 
     }
 
-    console.log(listLoaded);
-    console.log(episodeList);
-
     return (
         <>
             {episodeList?.length > 0 ? episodeList.map((episode, i) => {
