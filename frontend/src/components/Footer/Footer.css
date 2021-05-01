@@ -31,3 +31,18 @@
 .rightFooter {
     margin-right: 16px;
 }
+
+.aboutInfo {
+    text-align: center;
+    margin: 64px;
+    color: #a1a1a1;
+}
+
+.aboutIcon {
+    margin-left: 8px;
+    color: #f35b04;
+}
+
+.emailLink {
+    color: #f35b04;
+}
