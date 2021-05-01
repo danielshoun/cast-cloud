@@ -16,7 +16,6 @@ export default function SearchResults() {
         async function fetchData() {
             const res = await fetch(`/api/podcasts/search?term=${term}`);
             const data = await res.json();
-            console.log(data);
             setPodcasts(data);
         }
         fetchData().then();

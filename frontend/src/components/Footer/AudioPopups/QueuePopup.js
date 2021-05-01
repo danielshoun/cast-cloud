@@ -9,7 +9,6 @@ export default function QueuePopup() {
 
     function handleDelete(e, i) {
         e.stopPropagation();
-        console.log('Deleting at ', i);
         dispatch(removeFromQueue(i));
     }
 

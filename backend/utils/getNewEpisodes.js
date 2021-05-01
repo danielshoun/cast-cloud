@@ -10,11 +10,9 @@ async function getNewEpisodes(podcast, newPodcast) {
     });
     let feedData;
     if(new Date(headRes.headers.get('last-modified')) > new Date(podcast.updatedAt) || newPodcast) {
-        console.log('Is New Podcast');
         const parser = new Parser();
         feedData = await parser.parseURL(podcast.rssUrl);
     } else {
-        console.log('Is Not New Podcast');
         feedData = {items: []};
     }
 

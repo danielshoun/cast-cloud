@@ -88,7 +88,7 @@ export default function FeedEpisode({deletePoint, podcast, episode, modifyEpisod
                     <i className={`fas fa-pause-circle episodeButton`} onClick={(e) => pauseTrack(e)}/> :
                     <i className={`fas fa-play-circle episodeButton`} onClick={(e) => playTrack(e, episode)}/>}
                 <i className="fas fa-plus-circle episodeButton" onClick={(e) => addTrack(e, episode)}/>
-                <PlayedButton played={episode.EpisodeProgresses[0]?.played} handlePlayedToggle={handlePlayedToggle}/>
+                <PlayedButton played={played} handlePlayedToggle={handlePlayedToggle}/>
             </div>
         </div>
     )

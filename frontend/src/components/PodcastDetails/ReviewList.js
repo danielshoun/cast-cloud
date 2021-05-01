@@ -42,7 +42,6 @@ export default function ReviewList({podcastData}) {
             }
         })
         const data = await res.json();
-        console.log(data);
         setReviewList(prevState => [data, ...prevState]);
         setOwnReview(data);
         setOwnReviewText(data.text);
