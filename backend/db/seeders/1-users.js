@@ -11,15 +11,17 @@ const users = [{
 let usedEmails = new Set();
 let usedUsernames = new Set();
 
-for(let i = 0; i < 1000; i++) {
+for(let i = 0; i < 100; i++) {
 	let email = faker.internet.email();
 	while(usedEmails.has(email) || email.length > 256) {
 		email = faker.internet.email();
 	}
+	usedEmails.add(email);
 	let username = faker.internet.userName();
 	while(usedUsernames.has(username) || username.length > 30 || username.length < 4) {
 		username = faker.internet.username();
 	}
+	usedUsernames.add(username);
 	users.push({
 		email,
 		username,

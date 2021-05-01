@@ -80,7 +80,7 @@
 .feedEpisodeStatic {
     display: flex;
     align-items: center;
-    max-width: 90%;
+    max-width: 85%;
 }
 
 .feedEpisodeImage {

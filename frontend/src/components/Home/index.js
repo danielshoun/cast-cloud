@@ -31,7 +31,7 @@ export default function Home() {
             <div className='popularContainer'>
                 {podcasts.map(podcast => {
                     return (
-                        <div className='podcastContainer'>
+                        <div key={podcast.id} className='podcastContainer'>
                             <Link to={`/podcasts/${podcast.itunesId}`}>
                                 <img className='homePodcastImage' alt={podcast.title} src={podcast.artworkUrl}/>
                             </Link>

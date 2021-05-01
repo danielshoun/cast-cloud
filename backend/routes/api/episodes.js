@@ -49,7 +49,7 @@ router.get('/', requireAuth, asyncHandler(async (req, res) => {
         podcast.updatedAt = new Date();
         await podcast.save();
 
-        subscription.getDataValue('Podcast').getDataValue('Episodes').forEach((episode) => {
+        subscription.getDataValue('Podcast').getDataValue('Episodes')?.forEach((episode) => {
             if(episode.EpisodeProgresses[0] === undefined) {
                 insertEpisode(episode, subscription);
             } else if(!episode.EpisodeProgresses[0].played) {

@@ -1,11 +1,10 @@
-import React, {useEffect, useRef, useState} from "react";
+import React, {useEffect, useState} from "react";
 import EpisodeItem from "./EpisodeItem";
 
 export default function EpisodeList({ podcastData, isSubscribed }) {
     const [listLoaded , setListLoaded] = useState(false);
     const [episodeList, setEpisodeList] = useState(null);
     const [activeEpisode, setActiveEpisode] = useState(null);
-    const firstRender = useRef(true);
 
     useEffect(() => {
         async function fetchData() {
