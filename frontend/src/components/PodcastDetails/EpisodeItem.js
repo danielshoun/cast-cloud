@@ -2,6 +2,7 @@ import React, {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {addToQueue, changeTrack, togglePlaying} from "../../store/audio";
 import {csrfFetch} from "../../store/csrf";
+import ReactHtmlParser from "react-html-parser";
 
 export function PlayedButton({ played, handlePlayedToggle }) {
     return (
@@ -112,7 +113,7 @@ export default function EpisodeItem({activeEpisode, handleActive, episode, podca
             </div>
             {activeEpisode === episode.guid && (
                 <div>
-                    <div className='episodeDescription'>{episode.description || episode.description}</div>
+                    <div className='episodeDescription'>{ReactHtmlParser(episode.description)}</div>
                 </div>
             )}
         </div>

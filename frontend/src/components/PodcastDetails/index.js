@@ -5,6 +5,7 @@ import ReviewList from "./ReviewList";
 import EpisodeList from "./EpisodeList";
 import { csrfFetch } from '../../store/csrf';
 import {useSelector} from "react-redux";
+import ReactHtmlParser from 'react-html-parser';
 
 export default function PodcastDetails() {
     const userState = useSelector(state => state.session)
@@ -60,7 +61,7 @@ export default function PodcastDetails() {
                             {userState.user && <button className={`buttonPrimary subscribeButton${isSubscribed ? ' buttonDelete' : ''}`} onClick={handleSubscribe}>{isSubscribed ? 'Unsubscribe' : 'Subscribe'}</button>}
                         </div>
                         <div className='podcastInfoFooter'>
-                            <span className='podcastDescription'>{podcastData.description}</span>
+                            <span className='podcastDescription'>{ReactHtmlParser(podcastData.description)}</span>
                         </div>
                     </div>
                 </div>
