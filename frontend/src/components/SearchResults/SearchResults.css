@@ -1,7 +1,24 @@
+.searchResultContainer {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 32px;
+    border: 1px solid #46464c;
+    border-radius: 5px;
+}
+
 .searchResultTable {
     border-collapse: separate;
     border-spacing: 16px;
     margin: 0 auto;
+    width: 100%;
+}
+
+.imageCell {
+    width: 100px;
+}
+
+.episodeCell {
+    width: 52px;
 }
 
 .tableTitle {

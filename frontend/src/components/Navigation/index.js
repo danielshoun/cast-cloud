@@ -11,6 +11,7 @@ export default function Navigation({ isLoaded }) {
 
     async function handleSearch() {
         history.push(`/search?term=${searchTerm}`);
+        setSearchTerm('');
     }
 
     return (

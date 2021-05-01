@@ -21,31 +21,33 @@ export default function SearchResults() {
         fetchData().then();
     }, [term])
     return (
-        <table className='searchResultTable'>
-            <thead>
-                <tr className='resultRow'>
-                    <th>Artwork</th>
-                    <th>Title</th>
-                    <th>Episodes</th>
-                </tr>
-            </thead>
-            <tbody>
-                {podcasts.map(podcast => {
-                    return (
-                        <tr key={podcast.collectionId} className='resultRow' onClick={() => history.push(`/podcasts/${podcast.collectionId}`)}>
-                            <td>
-                                <img src={podcast.artworkUrl100} alt={podcast.collectionName}/>
-                            </td>
-                            <td>
-                                <span className='tableTitle'>{podcast.collectionName}</span>
-                            </td>
-                            <td>
-                                <span className='tableCount'>{podcast.trackCount}</span>
-                            </td>
-                        </tr>
-                    )
-                })}
-            </tbody>
-        </table>
+        <div className='searchResultContainer'>
+            <table className='searchResultTable'>
+                <thead>
+                    <tr className='resultRow'>
+                        <th>Artwork</th>
+                        <th>Title</th>
+                        <th>Episodes</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {podcasts.map(podcast => {
+                        return (
+                            <tr key={podcast.collectionId} className='resultRow' onClick={() => history.push(`/podcasts/${podcast.collectionId}`)}>
+                                <td className='imageCell'>
+                                    <img src={podcast.artworkUrl100} alt={podcast.collectionName}/>
+                                </td>
+                                <td className='titleCell'>
+                                    <span className='tableTitle'>{podcast.collectionName}</span>
+                                </td>
+                                <td className='episodeCell'>
+                                    <span className='tableCount'>{podcast.trackCount}</span>
+                                </td>
+                            </tr>
+                        )
+                    })}
+                </tbody>
+            </table>
+        </div>
     )
 }
