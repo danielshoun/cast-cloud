@@ -77,6 +77,7 @@ export default function AudioPlayer() {
 
             function updateTime() {
                 setCurTime(getTime(currentAudioRef.currentTime));
+                setPercentListened((currentAudioRef.currentTime / currentAudioRef.duration) * 100);
             }
 
             dispatch(togglePlaying(false))
