@@ -45,7 +45,10 @@ export default function Navigation({ isLoaded }) {
                         <li className='navItem'>
                             <NavLink className='navLink' to='/feed'>Feed</NavLink>
                         </li>
-                        <li className='navItem'><ProfileButton user={sessionUser}/></li>
+                        <li className='navItem'>
+                            {/*<ProfileButton user={sessionUser}/>*/}
+                            <NavLink className='navLink' to='/logout'>Log Out</NavLink>
+                        </li>
                     </>
                      :
                     <>

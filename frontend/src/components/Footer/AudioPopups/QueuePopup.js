@@ -30,7 +30,7 @@ export default function QueuePopup() {
                                         <div className='queueItemArtist'>{episode.podcastTitle}</div>
                                     </div>
                                     <div className='queueItemActions'>
-                                        <i className="fas fa-ellipsis-v queueItemButton"/>
+                                        {/*<i className="fas fa-ellipsis-v queueItemButton"/>*/}
                                         <i className="fas fa-trash-alt queueItemButton" onClick={(e) => handleDelete(e, i)}/>
                                     </div>
                                 </div>
