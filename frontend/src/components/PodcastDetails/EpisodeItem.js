@@ -26,6 +26,7 @@ export function PlayedButton({ played, handlePlayedToggle }) {
 
 export default function EpisodeItem({activeEpisode, handleActive, episode, podcastData, modifyEpisodeProgress}) {
     const audioState = useSelector(state => state.audio);
+    const userState = useSelector(state => state.session);
     const currentEpisode = audioState.queue[audioState.currentTrack];
     const dispatch = useDispatch();
     const [played, setPlayed] = useState(episode.EpisodeProgresses[0]?.played);
@@ -107,7 +108,7 @@ export default function EpisodeItem({activeEpisode, handleActive, episode, podca
                         <i className={`fas fa-pause-circle episodeButton`} onClick={(e) => pauseTrack(e)}/> :
                         <i className={`fas fa-play-circle episodeButton`} onClick={(e) => playTrack(e, episode)}/>}
                     <i className="fas fa-plus-circle episodeButton" onClick={(e) => addTrack(e, episode)}/>
-                    <PlayedButton played={played} handlePlayedToggle={handlePlayedToggle}/>
+                    {userState.user && <PlayedButton played={played} handlePlayedToggle={handlePlayedToggle}/>}
                 </div>
 
             </div>

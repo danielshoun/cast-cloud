@@ -2,9 +2,18 @@
 
 ![CastCloudHomePage](https://i.imgur.com/7IEmDy3.png)
 
+## Table of Contents
+- [Summary](#summary)
+- [Technologies](#technologies)
+- [Components](#components)
+- [Installation](#installation)
+- [Technical Challenges](#technical-challenges)
+
 ## Summary
 
 [CastCloud](https://cast-cloud-js.herokuapp.com) is a podcast streaming application that draws inspiration from SoundCloud. It was developed using Express, React, and PostgresSQL. It uses the iTunes API to provide access to over 500,000 podcasts and RSS Feed parsing to continuously provide an updated episode list.
+
+Feel free to visit the [project wiki](https://github.com/danielshoun/cast-cloud/wiki/) for specifics of the [MVP Feature List](https://github.com/danielshoun/cast-cloud/wiki/MVP-Feature-List), [DB Schema](https://github.com/danielshoun/cast-cloud/wiki/Database-Schema), [Routes](https://github.com/danielshoun/cast-cloud/wiki/Routes), [Components](https://github.com/danielshoun/cast-cloud/wiki/Components), and [State](https://github.com/danielshoun/cast-cloud/wiki/Redux-Store-Tree).
 
 ## Technologies
 
