@@ -22,32 +22,29 @@ router.get('/', requireAuth, asyncHandler(async (req, res) => {
             }
         }});
     const episodes = [];
+
+    function insertEpisode(episode, subscription) {
+        let insertPoint = episodes.findIndex(el => new Date(el.getDataValue('releaseDate')) < new Date(episode.getDataValue('releaseDate')));
+        if(insertPoint === -1) insertPoint = episodes.length - 1;
+        subscription.getDataValue('Podcast').setDataValue('Episodes', undefined);
+        episode.setDataValue('Podcast', subscription.getDataValue('Podcast'));
+        episodes.splice(insertPoint, 0, episode);
+    }
+
     for (const subscription of subscriptions) {
         const podcast = subscription.getDataValue('Podcast');
         const newEpisodes = await getNewEpisodes(podcast);
         (await Episode.bulkCreate(newEpisodes)).forEach(episode => {
-            let insertPoint = episodes.findIndex(el => new Date(el.getDataValue('releaseDate')) < new Date(episode.getDataValue('releaseDate')));
-            if(insertPoint === -1) insertPoint = episodes.length - 1;
-            subscription.getDataValue('Podcast').setDataValue('Episodes', undefined);
-            episode.setDataValue('Podcast', subscription.getDataValue('Podcast'));
-            episodes.splice(insertPoint, 0, episode);
+            insertEpisode(episode, subscription);
         });
         podcast.updatedAt = new Date();
         await podcast.save();
 
         subscription.getDataValue('Podcast').getDataValue('Episodes').forEach((episode) => {
             if(episode.EpisodeProgresses[0] === undefined) {
-                let insertPoint = episodes.findIndex(el => new Date(el.getDataValue('releaseDate')) < new Date(episode.getDataValue('releaseDate')));
-                if(insertPoint === -1) insertPoint = episodes.length - 1;
-                subscription.getDataValue('Podcast').setDataValue('Episodes', undefined);
-                episode.setDataValue('Podcast', subscription.getDataValue('Podcast'));
-                episodes.splice(insertPoint, 0, episode);
+                insertEpisode(episode, subscription);
             } else if(!episode.EpisodeProgresses[0].played) {
-                let insertPoint = episodes.findIndex(el => new Date(el.getDataValue('releaseDate')) < new Date(episode.getDataValue('releaseDate')));
-                if(insertPoint === -1) insertPoint = episodes.length - 1;
-                subscription.getDataValue('Podcast').setDataValue('Episodes', undefined);
-                episode.setDataValue('Podcast', subscription.getDataValue('Podcast'));
-                episodes.splice(insertPoint, 0, episode);
+                insertEpisode(episode, subscription);
             }
         })
     }

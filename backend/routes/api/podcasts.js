@@ -97,6 +97,31 @@ router.post('/:podcastId/subscribe', requireAuth, asyncHandler(async (req, res) 
         userId: req.user.id,
         podcastId: req.params.podcastId
     })
+    const episodes = await Episode.findAll({where: {podcastId: req.params.podcastId}, order: [['releaseDate', 'DESC']]});
+    for (let i = 0; i < episodes.length; i++) {
+        const episode = episodes[i];
+        if(episode.getDataValue('title') === 'Ep. 257 – clockstoppers') {
+        }
+        if(i > 2) {
+            let progress = await EpisodeProgress.findOne({where: {
+                userId: req.user.id,
+                episodeId: episode.getDataValue('id')
+            }})
+            if(!progress) {
+                await EpisodeProgress.create({
+                    userId: req.user.id,
+                    episodeId: episode.getDataValue('id'),
+                    played: true
+                })
+            } else {
+                progress.played = true;
+                await progress.save();
+            }
+
+        } else {
+        }
+    }
+
     return res.json(subscription);
 }))
 

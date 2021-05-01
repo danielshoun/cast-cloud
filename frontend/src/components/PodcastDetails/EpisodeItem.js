@@ -27,7 +27,10 @@ export default function EpisodeItem({activeEpisode, handleActive, episode, podca
     const audioState = useSelector(state => state.audio);
     const dispatch = useDispatch();
     const [played, setPlayed] = useState(episode.EpisodeProgresses[0]?.played);
-    const firstRender = useRef(true);
+
+    useEffect(() => {
+        setPlayed(episode.EpisodeProgresses[0]?.played);
+    }, [episode.EpisodeProgresses[0]?.played])
 
     function playTrack(e, episode) {
         e.stopPropagation();
@@ -62,29 +65,21 @@ export default function EpisodeItem({activeEpisode, handleActive, episode, podca
 
     async function handlePlayedToggle(e) {
         e.stopPropagation();
-        setPlayed(prevState => !prevState);
-    }
-
-    useEffect(() => {
-        if(firstRender.current) firstRender.current = false;
-        else {
-            async function fetchData() {
-                const body = {
-                    played
-                }
-                const res = await csrfFetch(`/api/episodes/${episode.id}/progress`, {
-                    method: 'POST',
-                    body: JSON.stringify(body),
-                    headers: {
-                        'Content-Type': 'application/json'
-                    }
-                })
-                const data = await res.json();
-                modifyEpisodeProgress(data);
-            }
-            fetchData().then();
+        const newPlayed = !played;
+        setPlayed(newPlayed);
+        const body = {
+            played: newPlayed
         }
-    }, [played])
+        const res = await csrfFetch(`/api/episodes/${episode.id}/progress`, {
+            method: 'POST',
+            body: JSON.stringify(body),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+        const data = await res.json();
+        modifyEpisodeProgress(data);
+    }
 
     return (
         <div className='episodeContainer'>
