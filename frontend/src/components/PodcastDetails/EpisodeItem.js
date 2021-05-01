@@ -29,10 +29,10 @@ export default function EpisodeItem({activeEpisode, handleActive, episode, podca
     const userState = useSelector(state => state.session);
     const currentEpisode = audioState.queue[audioState.currentTrack];
     const dispatch = useDispatch();
-    const [played, setPlayed] = useState(episode.EpisodeProgresses[0]?.played);
+    const [played, setPlayed] = useState(episode.EpisodeProgresses ? episode.EpisodeProgresses[0]?.played : false);
 
     useEffect(() => {
-        setPlayed(episode.EpisodeProgresses[0]?.played);
+        setPlayed(episode.EpisodeProgresses ? episode.EpisodeProgresses[0]?.played : false);
     }, [episode.EpisodeProgresses])
 
     useEffect(() => {

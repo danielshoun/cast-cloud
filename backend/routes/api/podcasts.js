@@ -98,19 +98,23 @@ router.get('/:id/episodes', restoreUser, asyncHandler(async (req, res) => {
         podcast.updatedAt = new Date();
         await podcast.save();
     }
-    let include = {};
+    let episodes;
     if(req.user) {
-        include = {
-            model: EpisodeProgress,
-            required: false,
-            where: {userId: req.user.id}
-        }
+        episodes = await Episode.findAll({
+            where: {podcastId},
+            order: [['releaseDate', 'DESC']],
+            include: {
+                model: EpisodeProgress,
+                required: false,
+                where: {userId: req.user.id}
+            }
+        })
+    } else {
+        episodes = await Episode.findAll({
+            where: {podcastId},
+            order: [['releaseDate', 'DESC']]
+        })
     }
-    const episodes = await Episode.findAll({
-        where: {podcastId},
-        order: [['releaseDate', 'DESC']],
-        include
-    })
 
     return res.json(episodes);
 }))
