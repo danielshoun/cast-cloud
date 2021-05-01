@@ -30,6 +30,7 @@ export default function ReviewList({podcastData}) {
     }, [podcastData, userState.user])
 
     async function handleSubmitReview() {
+        if(!ownReviewText || !selectedStar) return;
         const body = {
             rating: selectedStar,
             text: ownReviewText
@@ -49,6 +50,7 @@ export default function ReviewList({podcastData}) {
     }
 
     async function handleEditReview() {
+        if(!ownReviewText || !selectedStar) return;
         const body = {
             rating: selectedStar,
             text: ownReviewText
@@ -174,7 +176,7 @@ export default function ReviewList({podcastData}) {
                                         onClick={() => setSelectedStar(5)}
                                     />
                                 </div>
-                                <textarea className='reviewInput' placeholder='Write your review...' value={ownReviewText} onChange={event => setOwnReviewText(event.target.value)}/>
+                                <textarea maxLength={2000} className='reviewInput' placeholder='Write your review...' value={ownReviewText} onChange={event => setOwnReviewText(event.target.value)}/>
                                 <button className='reviewSubmitButton' onClick={isEditing ? handleEditReview : handleSubmitReview}>Submit</button>
                                 {isEditing && <button className='reviewEditButton' onClick={handleCancelEdit}>Cancel</button>}
                             </div>

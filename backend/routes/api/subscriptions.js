@@ -1,7 +1,5 @@
 const express = require('express');
 const asyncHandler = require('express-async-handler');
-const Parser = require("rss-parser");
-const fetch = require('node-fetch');
 const { requireAuth } = require('../../utils/auth');
 const { Subscription, Podcast , Episode } = require('../../db/models');
 

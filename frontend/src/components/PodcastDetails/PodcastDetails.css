@@ -62,10 +62,17 @@
 
 .podcastTab {
     margin: 32px 24px;
+    color: #46464c;
+    transition: color 0.25s ease;
 }
 
 .podcastTab:hover {
     cursor: pointer;
+    color: #f35b04;
+}
+
+.activeTab {
+    color: #f35b04;
 }
 
 .episodeContainer {
@@ -234,3 +241,4 @@
     text-align: center;
     color: #46464c;
 }
+

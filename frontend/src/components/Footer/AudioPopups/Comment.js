@@ -18,7 +18,7 @@ export default function Comment({comment, handleEditComment, handleDeleteComment
     }
 
     async function handleEditInputKeys(event) {
-        if(event.key === 'Enter') {
+        if(event.key === 'Enter' && editInputValue) {
             const updatedComment = {
                 text: editInputValue
             }
@@ -70,7 +70,9 @@ export default function Comment({comment, handleEditComment, handleDeleteComment
                     className='editCommentInput'
                     value={editInputValue}
                     onKeyDown={event => handleEditInputKeys(event)}
-                    onChange={event => setEditInputValue(event.target.value)}/> :
+                    onChange={event => setEditInputValue(event.target.value)}
+                    maxLength={500}
+                /> :
                 <div className='commentText'>
                     {comment.text}
                 </div>

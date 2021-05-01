@@ -22,6 +22,7 @@ export default function CommentPopup() {
     }, [currentEpisode, audioState.currentTrack])
 
     async function sendComment() {
+        if(!newCommentText) return;
         const comment = {
             episodeId: currentEpisode.id,
             text: newCommentText,
@@ -37,6 +38,7 @@ export default function CommentPopup() {
         const data = await res.json();
         const insertPoint = comments.findIndex(el => el.timestamp > data.timestamp) - 1;
         setComments(prevState => [...prevState.slice(0, insertPoint), data, ...prevState.slice(insertPoint, prevState.length)]);
+        setNewCommentText('');
     }
 
     function handleEditComment(data) {
@@ -70,8 +72,13 @@ export default function CommentPopup() {
                 }
             </div>
             <div className='newCommentContainer'>
-                <input className='commentInput' type='text' placeholder='Type a comment...' value={newCommentText} onChange={event => setNewCommentText(event.target.value)}/>
-                <button className='newCommentButton' onClick={sendComment}>Submit</button>
+                {currentEpisode ?
+                    <>
+                        <input className='commentInput' type='text' placeholder='Type a comment...' value={newCommentText} maxLength={500} onChange={event => setNewCommentText(event.target.value)}/>
+                        <button className='newCommentButton' onClick={sendComment}>Submit</button>
+                    </>
+                    : <></>}
+
             </div>
         </div>
     )

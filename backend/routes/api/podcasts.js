@@ -1,14 +1,23 @@
 const express = require('express');
 const asyncHandler = require('express-async-handler');
 const fetch = require("node-fetch");
-const Parser = require('rss-parser');
+const { check } = require('express-validator');
+const { handleValidationErrors } = require('../../utils/validation');
 const { Podcast, Episode, Review, User, Subscription, EpisodeProgress } = require('../../db/models');
 const { requireAuth, restoreUser } = require('../../utils/auth');
 const getNewEpisodes = require('../../utils/getNewEpisodes');
 const Sequelize = require('sequelize');
 
 const router = express.Router();
-const parser = new Parser();
+
+const reviewValidators = [
+    check('text')
+        .exists({checkFalsy: true})
+        .withMessage('NO REVIEW TEXT')
+        .isLength({max: 2000})
+        .withMessage('REVIEW TOO LONG'),
+    handleValidationErrors
+]
 
 router.get('/', asyncHandler(async (req, res) => {
     const podcasts = await Podcast.findAll({
@@ -107,7 +116,7 @@ router.get('/:podcastId/reviews', asyncHandler(async (req, res) => {
     return res.json(reviews);
 }))
 
-router.post('/:podcastId/reviews', requireAuth, asyncHandler(async (req, res) => {
+router.post('/:podcastId/reviews', reviewValidators, requireAuth, asyncHandler(async (req, res) => {
     let newReview = {
         userId: req.user.id,
         podcastId: req.params.podcastId,

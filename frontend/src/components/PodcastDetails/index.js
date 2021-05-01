@@ -65,8 +65,8 @@ export default function PodcastDetails() {
                     </div>
                 </div>
                 <div className='podcastTabMenu'>
-                    <span className='podcastTab' onClick={() => setTabOption('episodes')}>Episodes</span>
-                    <span className='podcastTab' onClick={() => setTabOption('reviews')}>Reviews</span>
+                    <span className={`podcastTab${tabOption === 'episodes' ? ' activeTab' : ''}`} onClick={() => setTabOption('episodes')}>Episodes</span>
+                    <span className={`podcastTab${tabOption === 'reviews' ? ' activeTab' : ''}`} onClick={() => setTabOption('reviews')}>Reviews</span>
                 </div>
                 <div className='podcastList'>
                     {tabOption === 'reviews' ? <ReviewList podcastData={podcastData}/> :

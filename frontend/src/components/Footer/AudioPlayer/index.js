@@ -16,7 +16,6 @@ export default function AudioPlayer() {
     const [curTime, setCurTime] = useState(null);
     const [percentListened, setPercentListened] = useState(0);
 
-
     useEffect(() => {
         if(audioState.playing && audioRef.current) {
             audioRef.current.play();
@@ -76,14 +75,20 @@ export default function AudioPlayer() {
                 setDuration(getTime(currentAudioRef.duration))
             }
 
+            function updateTime() {
+                setCurTime(getTime(currentAudioRef.currentTime));
+            }
+
             dispatch(togglePlaying(false))
             currentAudioRef.load();
             currentAudioRef.addEventListener('canplay', readyPlayerState);
+            currentAudioRef.addEventListener('timeupdate', updateTime)
             currentAudioRef.addEventListener('durationchange', changeDuration);
             currentAudioRef.addEventListener('ended', nextSong);
 
             return () => {
                 currentAudioRef.removeEventListener('durationchange', changeDuration);
+                currentAudioRef.removeEventListener('timeupdate', updateTime)
                 currentAudioRef.removeEventListener('ended', nextSong);
             }
         }

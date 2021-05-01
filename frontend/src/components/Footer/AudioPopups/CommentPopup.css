@@ -53,6 +53,7 @@
     margin: 16px;
     display: flex;
     flex-flow: row nowrap;
+    min-height: 28px;
 }
 
 .commentInput,
@@ -88,4 +89,8 @@
     color: #f0f3f5;
     border: 1px solid #f0f3f5;
     border-radius: 3px;
+}
+
+.commentText {
+    overflow-wrap: break-word;
 }

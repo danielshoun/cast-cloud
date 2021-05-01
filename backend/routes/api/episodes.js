@@ -1,12 +1,21 @@
 const express = require('express');
 const asyncHandler = require('express-async-handler');
-const fetch = require('node-fetch');
-const Parser = require('rss-parser');
+const { check } = require('express-validator');
+const { handleValidationErrors } = require('../../utils/validation');
 const getNewEpisodes = require('../../utils/getNewEpisodes');
 const {requireAuth} = require("../../utils/auth");
 const { Comment, User, EpisodeProgress, Episode, Podcast, Subscription } = require('../../db/models');
 
 const router = express.Router();
+
+const commentValidators = [
+    check('text')
+        .exists({checkFalsy: true})
+        .withMessage('NO COMMENT TEXT')
+        .isLength({max: 500})
+        .withMessage('COMMENT TOO LONG'),
+    handleValidationErrors
+]
 
 router.get('/', requireAuth, asyncHandler(async (req, res) => {
     const subscriptions = await Subscription.findAll({
@@ -57,7 +66,7 @@ router.get('/:episodeId/comments', asyncHandler(async (req, res) => {
     return res.json(comments);
 }))
 
-router.post('/:episodeId/comments', requireAuth, asyncHandler(async (req, res) => {
+router.post('/:episodeId/comments', requireAuth, commentValidators, asyncHandler(async (req, res) => {
     const episodeId = req.params.episodeId;
     const userId = req.user.id;
     const newComment = await Comment.create({
