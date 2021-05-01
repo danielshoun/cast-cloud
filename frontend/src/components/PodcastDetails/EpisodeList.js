@@ -28,10 +28,8 @@ export default function EpisodeList({ podcastData }) {
 
     function modifyEpisodeProgress(newEpisodeProgress) {
         const replacePoint = episodeList.findIndex(episode => episode.id === newEpisodeProgress.episodeId);
-        console.log(replacePoint);
         const episode = Object.assign({}, episodeList[replacePoint]);
-        console.log(episode);
-        episode.EpisodeProgresses[0] = newEpisodeProgress;
+        episode.EpisodeProgresses = [newEpisodeProgress];
         setEpisodeList(prevState => [...prevState.slice(0, replacePoint), episode, ...prevState.slice(replacePoint + 1, prevState.length)]);
 
     }

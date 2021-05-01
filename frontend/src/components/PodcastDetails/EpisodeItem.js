@@ -3,6 +3,26 @@ import {useDispatch, useSelector} from "react-redux";
 import {addToQueue, changeTrack, togglePlaying} from "../../store/audio";
 import {csrfFetch} from "../../store/csrf";
 
+export function PlayedButton({ played, handlePlayedToggle }) {
+    return (
+        <>
+            {played ?
+                (<i
+                    className="far fa-eye episodeButton"
+                    onClick={(e) => handlePlayedToggle(e)}
+                    onMouseOver={(e) => e.target.classList = 'far fa-eye-slash episodeButton'}
+                    onMouseLeave={(e) => e.target.classList = 'far fa-eye episodeButton'}
+                />) :
+                (<i
+                    className="far fa-eye-slash episodeButton"
+                    onClick={(e) => handlePlayedToggle(e)}
+                    onMouseOver={(e) => e.target.classList = 'far fa-eye episodeButton'}
+                    onMouseLeave={(e) => e.target.classList = 'far fa-eye-slash episodeButton'}
+                />)}
+        </>
+    )
+}
+
 export default function EpisodeItem({activeEpisode, handleActive, episode, podcastData, modifyEpisodeProgress}) {
     const audioState = useSelector(state => state.audio);
     const dispatch = useDispatch();
@@ -79,20 +99,7 @@ export default function EpisodeItem({activeEpisode, handleActive, episode, podca
                         <i className={`fas fa-pause-circle episodeButton`} onClick={(e) => pauseTrack(e)}/> :
                         <i className={`fas fa-play-circle episodeButton`} onClick={(e) => playTrack(e, episode)}/>}
                     <i className="fas fa-plus-circle episodeButton" onClick={(e) => addTrack(e, episode)}/>
-                    {played ?
-                        <i
-                            className="far fa-eye episodeButton"
-                            onClick={(e) => handlePlayedToggle(e)}
-                            onMouseOver={(e) => e.target.classList = 'far fa-eye-slash episodeButton'}
-                            onMouseLeave={(e) => e.target.classList = 'far fa-eye episodeButton'}
-                        /> :
-                        <i
-                            className="far fa-eye-slash episodeButton"
-                            onClick={(e) => handlePlayedToggle(e)}
-                            onMouseOver={(e) => e.target.classList = 'far fa-eye episodeButton'}
-                            onMouseLeave={(e) => e.target.classList = 'far fa-eye-slash episodeButton'}
-                        />
-                    }
+                    <PlayedButton played={played} handlePlayedToggle={handlePlayedToggle}/>
                 </div>
 
             </div>

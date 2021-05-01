@@ -18,6 +18,12 @@
     padding-bottom: 8px;
     border-bottom: 1px solid #46464c;
     text-align: center;
+    color: #46464c;
+    transition: color 0.25s ease;
+}
+
+.feedListUnwatched:hover {
+    color: #f35b04;
 }
 
 .selectedUnwatched {
@@ -27,13 +33,14 @@
 .listImgContainer {
     width: 100px;
     height: 100px;
-    margin: 16px 2px 2px 2px;
+    margin: 14px 0 -2px 0;
     display: flex;
     align-items: center;
+    transition: border 0.25s ease;
+    border: 2px solid #1e1e24;
 }
 
 .listImgContainer:hover {
-    margin: 14px 0 -2px 0;
     border-radius: 5px;
     border: 2px solid #46464c;
 }
@@ -48,17 +55,11 @@
 .selectedListLast,
 .selectedList:hover,
 .selectedListLast:hover {
-    margin: 14px 0 -2px 0;
     border-radius: 5px;
     border: 2px solid #f35b04;
 }
 
-.lastList:hover {
-    margin: 14px 0 0 0;
-}
-
-.selectedListLast,
-.selectedListLast:hover {
+.lastList {
     margin: 14px 0 0 0;
 }
 
@@ -103,4 +104,16 @@
     overflow: hidden;
     text-overflow: ellipsis;
     color: #46464c;
+}
+
+.feedContentHeader {
+    padding-bottom: 8px;
+    color: #46464c;
+}
+
+.emptyFeedContent {
+    border-top: 1px solid #46464c;
+    color: #46464c;
+    text-align: center;
+    padding: 32px 0;
 }

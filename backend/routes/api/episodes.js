@@ -50,6 +50,10 @@ router.post('/:episodeId/progress', requireAuth, asyncHandler(async (req, res) =
             timestamp,
             played
         })
+    } else {
+        if(typeof played === 'boolean') episodeProgress.played = played;
+        if(timestamp) episodeProgress.timestamp = timestamp;
+        await episodeProgress.save();
     }
     return res.json(episodeProgress);
 

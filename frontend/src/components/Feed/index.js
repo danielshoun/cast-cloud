@@ -1,16 +1,16 @@
-import {useDispatch, useSelector} from "react-redux";
+import {useSelector} from "react-redux";
 import {Redirect} from "react-router-dom";
 import './Feed.css';
 import React, {useEffect, useState} from "react";
-import {addToQueue, changeTrack, togglePlaying} from "../../store/audio";
+import FeedEpisode from "./FeedEpisode";
 
 export default function Feed() {
     const sessionUser = useSelector(state => state.session.user);
-    const audioState = useSelector(state => state.audio);
-    const dispatch = useDispatch();
     const [selectedList, setSelectedList] = useState(-1);
     const [subscriptions, setSubscriptions] = useState([]);
-    const [episodes, setEpisodes] = useState([]);
+    const [playedEpisodes, setPlayedEpisodes] = useState([]);
+    const [unplayedEpisodes, setUnplayedEpisodes] = useState([]);
+    const [episodesLoaded, setEpisodesLoaded] = useState(false);
 
     useEffect(() => {
         async function fetchData() {
@@ -25,7 +25,18 @@ export default function Feed() {
         async function fetchOnePodcast() {
             const res = await fetch(`/api/podcasts/${subscriptions[selectedList].Podcast.id}/episodes?subscription=1`);
             const data = await res.json();
-            setEpisodes(data);
+            const played = [];
+            const unplayed = [];
+            data.forEach(episode => {
+                if(episode.EpisodeProgresses[0]?.played) {
+                    played.push(episode);
+                } else {
+                    unplayed.push(episode);
+                }
+            })
+            setPlayedEpisodes(played);
+            setUnplayedEpisodes(unplayed);
+
         }
 
         async function fetchUnwatched() {
@@ -33,49 +44,37 @@ export default function Feed() {
         }
 
         if(selectedList !== -1) {
-            fetchOnePodcast().then()
+            setEpisodesLoaded(false);
+            fetchOnePodcast().then(() => setEpisodesLoaded(true))
         } else {
-            fetchUnwatched().then();
+            setEpisodesLoaded(false);
+            fetchUnwatched().then(() => setEpisodesLoaded(true));
         }
     }, [selectedList, subscriptions])
 
     if(!sessionUser) return (<Redirect to='/login'/>)
 
-    function playTrack(e, episode) {
-        e.stopPropagation();
-        if(audioState.queue[audioState.currentTrack]?.url === episode.url) {
-            dispatch(togglePlaying(true));
-        } else {
-            dispatch(changeTrack({
-                podcastTitle: subscriptions[selectedList].Podcast.title,
-                artworkUrl: subscriptions[selectedList].Podcast.artworkUrl,
-                itunesId: subscriptions[selectedList].Podcast.itunesId,
-                ...episode
-            }))
-        }
-    }
-
-    function pauseTrack(e) {
-        e.stopPropagation();
-        dispatch(togglePlaying(false));
-    }
-
-    function addTrack(e, episode) {
-        e.stopPropagation();
-        if(!audioState.queue.find(el => el.guid === episode.guid)) {
-            dispatch(addToQueue({
-                podcastTitle: subscriptions[selectedList].Podcast.title,
-                artworkUrl: subscriptions[selectedList].Podcast.artworkUrl,
-                itunesId: subscriptions[selectedList].Podcast.itunesId,
-                ...episode
-            }));
-        }
-    }
-
     function handleSelected(i) {
         if(i !== selectedList) {
-            setEpisodes([]);
+            setPlayedEpisodes([]);
+            setUnplayedEpisodes([]);
             setSelectedList(i);
+        }
+    }
+
+    function modifyEpisodeProgress(newEpisodeProgress, deletePoint) {
+        if(newEpisodeProgress.played) {
+            const episode = Object.assign({}, unplayedEpisodes[deletePoint]);
+            episode.EpisodeProgresses = [newEpisodeProgress];
+            setUnplayedEpisodes(prevState => [...prevState.slice(0, deletePoint), ...prevState.slice(deletePoint + 1, prevState.length)]);
+            const insertPoint = playedEpisodes.findIndex(el => el.timestamp > episode.timestamp) - 1;
+            setPlayedEpisodes(prevState => [...prevState.slice(0, insertPoint), episode, ...prevState.slice(insertPoint, prevState.length)]);
+        } else {
+            const episode = Object.assign({}, playedEpisodes[deletePoint]);
+            episode.EpisodeProgresses = [newEpisodeProgress];
+            setPlayedEpisodes(prevState => [...prevState.slice(0, deletePoint), ...prevState.slice(deletePoint + 1, prevState.length)]);
+            const insertPoint = unplayedEpisodes.findIndex(el => el.timestamp > episode.timestamp) - 1;
+            setUnplayedEpisodes(prevState => [...prevState.slice(0, insertPoint), episode, ...prevState.slice(insertPoint, prevState.length)]);
         }
     }
 
@@ -101,25 +100,25 @@ export default function Feed() {
                 })}
             </div>
             <div className='feedContent'>
-                {episodes.map((episode, i) => {
-                    return (
-                        <div key={i} className='feedEpisodeContainer'>
-                            <div className='feedEpisodeStatic'>
-                                <img className='feedEpisodeImage' src={subscriptions[selectedList].Podcast.artworkUrl}/>
-                                <div className='feedEpisodeInfo'>
-                                    <div className='feedEpisodeTitle'>{episode.title}</div>
-                                    <div className='feedEpisodeArtist'>{subscriptions[selectedList].Podcast.title}</div>
-                                </div>
-                            </div>
-                            <div className='feedEpisodeActions'>
-                                {audioState.queue[audioState.currentTrack]?.url === episode.url && audioState.playing ?
-                                    <i className={`fas fa-pause-circle episodeButton`} onClick={(e) => pauseTrack(e)}/> :
-                                    <i className={`fas fa-play-circle episodeButton`} onClick={(e) => playTrack(e, episode)}/>}
-                                <i className="fas fa-plus-circle episodeButton" onClick={(e) => addTrack(e, episode)}/>
-                            </div>
-                        </div>
-                    )
-                })}
+                {selectedList === -1 ?
+                    <>
+                    </>:
+                    <>
+                        <div className='feedContentHeader'>Unplayed Episodes</div>
+                        {unplayedEpisodes.length > 0 ? unplayedEpisodes.map((episode, i) => {
+                            return (
+                                <FeedEpisode key={i} deletePoint={i} podcast={subscriptions[selectedList].Podcast} episode={episode} modifyEpisodeProgress={modifyEpisodeProgress}/>
+                            )
+                        }) : <div className='emptyFeedContent'>{episodesLoaded ? "You don't have any unplayed episodes for this podcast." : 'Loading podcast episodes...'}</div>}
+                        <div className='feedContentHeader'>Played Episodes</div>
+                        {playedEpisodes.length > 0 ? playedEpisodes.map((episode, i) => {
+                            return (
+                                <FeedEpisode key={i} deletePoint={i} podcast={subscriptions[selectedList].Podcast} episode={episode} modifyEpisodeProgress={modifyEpisodeProgress}/>
+                            )
+                        }) : <div className='emptyFeedContent'>{episodesLoaded ? "You don't have any played episodes for this podcast." : 'Loading podcast episodes...'}</div>}
+                    </>
+                }
+
             </div>
         </div>
     )
