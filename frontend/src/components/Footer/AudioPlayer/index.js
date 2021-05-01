@@ -1,6 +1,6 @@
 import React, {useEffect, useRef, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {goToNextSong, setAudioRef, togglePlaying, updateTimestamp} from "../../../store/audio";
+import {goToNextSong, setAudioRef, togglePlaying} from "../../../store/audio";
 import './AudioPlayer.css';
 import ProgressBar from "./ProgressBar";
 import PlaybackController from "./PlaybackController";

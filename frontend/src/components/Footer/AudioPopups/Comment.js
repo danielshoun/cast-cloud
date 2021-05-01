@@ -39,7 +39,7 @@ export default function Comment({comment, handleEditComment, handleDeleteComment
     }
 
     async function handleDeleteButton(comment) {
-        const res = await csrfFetch(`/api/comments/${comment.id}`, {
+        await csrfFetch(`/api/comments/${comment.id}`, {
             method: 'DELETE'
         })
         handleDeleteComment(comment);

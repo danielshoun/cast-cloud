@@ -6,27 +6,28 @@ import Comment from "./Comment";
 
 export default function CommentPopup() {
     const audioState = useSelector(state => state.audio);
+    const currentEpisode = audioState.queue[audioState.currentTrack]
     const [comments, setComments] = useState([]);
     const [newCommentText, setNewCommentText] = useState('');
 
     useEffect(() => {
         async function fetchData() {
-            const res = await fetch(`/api/episodes/${audioState.queue[audioState.currentTrack].id}/comments`);
+            const res = await fetch(`/api/episodes/${currentEpisode.id}/comments`);
             const data = await res.json();
             setComments(data);
         }
         if(audioState.currentTrack !== null) {
             fetchData().then();
         }
-    }, [audioState.queue[audioState.currentTrack]])
+    }, [currentEpisode, audioState.currentTrack])
 
     async function sendComment() {
         const comment = {
-            episodeId: audioState.queue[audioState.currentTrack].id,
+            episodeId: currentEpisode.id,
             text: newCommentText,
             timestamp: audioState.currentAudioRef.currentTime
         }
-        const res = await csrfFetch(`/api/episodes/${audioState.queue[audioState.currentTrack].id}/comments`, {
+        const res = await csrfFetch(`/api/episodes/${currentEpisode.id}/comments`, {
             method: 'POST',
             body: JSON.stringify(comment),
             headers: {
@@ -47,8 +48,6 @@ export default function CommentPopup() {
         const deletePoint = comments.findIndex(el => el.id === comment.id);
         setComments(prevState => [...prevState.slice(0, deletePoint), ...prevState.slice(deletePoint + 1, prevState.length)]);
     }
-
-    console.log(comments);
 
     return (
         <div className='commentPopupContainer'>

@@ -26,16 +26,16 @@ export default function PodcastDetails() {
             }
         }
         fetchData().then();
-    }, [itunesId]);
+    }, [itunesId, userState.user]);
 
     async function handleSubscribe() {
         if(isSubscribed) {
-            const res = await csrfFetch(`/api/subscriptions/${podcastData.id}`, {
+            await csrfFetch(`/api/subscriptions/${podcastData.id}`, {
                 method: 'DELETE'
             });
             setIsSubscribed(false);
         } else {
-            const res = await csrfFetch(`/api/podcasts/${podcastData.id}/subscribe`, {
+            await csrfFetch(`/api/podcasts/${podcastData.id}/subscribe`, {
                 method: 'POST'
             })
             setIsSubscribed(true);

@@ -1,5 +1,5 @@
 import {PlayedButton} from "../PodcastDetails/EpisodeItem";
-import React, {useEffect, useRef, useState} from "react";
+import React, {useEffect, useState} from "react";
 import {addToQueue, changeTrack, togglePlaying} from "../../store/audio";
 import {useDispatch, useSelector} from "react-redux";
 import {csrfFetch} from "../../store/csrf";
@@ -23,7 +23,7 @@ export default function FeedEpisode({deletePoint, podcast, episode, modifyEpisod
             audioState.currentAudioRef.addEventListener('ended', handleEnd);
             return () => audioState.currentAudioRef.removeEventListener('ended', handleEnd);
         }
-    }, [audioState.currentAudioRef, currentEpisode, episode.id])
+    }, [audioState.currentAudioRef, currentEpisode, episode.id, deletePoint, episode.EpisodeProgresses, modifyEpisodeProgress])
 
     function playTrack(e, episode) {
         e.stopPropagation();
@@ -77,7 +77,7 @@ export default function FeedEpisode({deletePoint, podcast, episode, modifyEpisod
     return (
         <div className='feedEpisodeContainer'>
             <div className='feedEpisodeStatic'>
-                <img className='feedEpisodeImage' src={podcast.artworkUrl}/>
+                <img alt={podcast.title} className='feedEpisodeImage' src={podcast.artworkUrl}/>
                 <div className='feedEpisodeInfo'>
                     <div className='feedEpisodeTitle'>{episode.title}</div>
                     <div className='feedEpisodeArtist'>{podcast.title}</div>

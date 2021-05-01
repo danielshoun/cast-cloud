@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from "react";
+import React, {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {addToQueue, changeTrack, togglePlaying} from "../../store/audio";
 import {csrfFetch} from "../../store/csrf";
@@ -31,7 +31,7 @@ export default function EpisodeItem({activeEpisode, handleActive, episode, podca
 
     useEffect(() => {
         setPlayed(episode.EpisodeProgresses[0]?.played);
-    }, [episode.EpisodeProgresses[0]?.played])
+    }, [episode.EpisodeProgresses])
 
     useEffect(() => {
         if(currentEpisode?.id === episode.id && audioState.currentAudioRef) {
@@ -42,7 +42,7 @@ export default function EpisodeItem({activeEpisode, handleActive, episode, podca
             audioState.currentAudioRef.addEventListener('ended', handleEnd);
             return () => audioState.currentAudioRef.removeEventListener('ended', handleEnd);
         }
-    }, [audioState.currentAudioRef, currentEpisode, episode.id])
+    }, [audioState.currentAudioRef, currentEpisode, episode.id, episode.EpisodeProgresses, modifyEpisodeProgress])
 
     function playTrack(e, episode) {
         e.stopPropagation();

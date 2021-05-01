@@ -82,8 +82,6 @@ export default function Feed() {
         }
     }
 
-    console.log(unplayedEpisodes);
-
     return (
         <div className='feedContainer'>
             <div className='feedListContainer'>
@@ -100,7 +98,7 @@ export default function Feed() {
                             key={subscription.id}
                             onClick={() => handleSelected(i)}
                         >
-                            <img className='feedListImage' src={subscription.Podcast.artworkUrl}/>
+                            <img alt={subscription.Podcast.title} className='feedListImage' src={subscription.Podcast.artworkUrl}/>
                         </div>
                     )
                 })}

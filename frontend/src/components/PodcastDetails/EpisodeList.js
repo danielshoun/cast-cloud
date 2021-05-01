@@ -23,7 +23,7 @@ export default function EpisodeList({ podcastData, isSubscribed }) {
             }
             fetchData().then();
         }
-    }, [isSubscribed])
+    }, [isSubscribed, podcastData.id])
 
     if(episodeList.length === 0) {
         return (<></>)

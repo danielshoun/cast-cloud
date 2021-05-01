@@ -79,7 +79,7 @@ export default function ReviewList({podcastData}) {
     }
 
     async function handleDelete() {
-        const res = await csrfFetch(`/api/reviews/${ownReview.id}`, {
+        await csrfFetch(`/api/reviews/${ownReview.id}`, {
             method: 'DELETE'
         })
 
