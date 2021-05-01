@@ -14,20 +14,29 @@ export default function LoginFormPage() {
 
     if(sessionUser) return (<Redirect to='/'/>)
 
-    function handleSubmit(e) {
-        e.preventDefault();
+    function handleSubmit(type) {
         setErrors([]);
-        return dispatch(sessionActions.login({ credential, password }))
-            .catch(async (res) => {
-                const data = await res.json();
-                if(data && data.errors) setErrors(data.errors);
+
+        if(type === 'demo') {
+            return dispatch(sessionActions.login({ credential: 'demo-user', password: 'password' }))
+                .catch(async (res) => {
+                    const data = await res.json();
+                    if(data && data.errors) setErrors(data.errors);
             })
+        } else {
+            return dispatch(sessionActions.login({ credential, password }))
+                .catch(async (res) => {
+                    const data = await res.json();
+                    if(data && data.errors) setErrors(data.errors);
+            })
+        }
+
     }
 
     return (
         <div className='logInContainer'>
             <div className='formLogoContainer'>CastCloud</div>
-            <form onSubmit={handleSubmit}>
+            <form>
                 <input
                     className='formInput'
                     type='text'
@@ -44,8 +53,8 @@ export default function LoginFormPage() {
                     onChange={event => setPassword(event.target.value)}
                     required
                 />
-                <button className='formButton buttonPrimary' type='submit'>Log In</button>
-                <button className='formButton buttonSecondary'>Demo</button>
+                <button className='formButton buttonPrimary' onClick={() => handleSubmit('normal')}>Log In</button>
+                <button className='formButton buttonSecondary' onClick={() => handleSubmit('demo')}>Demo</button>
                 <Link className='formLink' to='/signup'>Not registered? Go to sign up.</Link>
                 <ul>
                     {errors.map((error, idx) => <li key={idx}>{error}</li>)}

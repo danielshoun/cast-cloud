@@ -11,6 +11,10 @@ html {
     overflow-y: scroll;
 }
 
+button {
+    cursor: pointer;
+}
+
 .buttonPrimary {
     background-color: #1e1e24;
     color: #f35b04;

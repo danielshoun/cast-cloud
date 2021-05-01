@@ -1,10 +1,12 @@
 import {Link, NavLink, useHistory} from "react-router-dom";
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import ProfileButton from './ProfileButton';
 import './Navigation.css';
 import {useState} from "react";
+import * as sessionActions from "../../store/session";
 
 export default function Navigation({ isLoaded }) {
+    const dispatch = useDispatch();
     const sessionUser = useSelector(state => state.session.user);
     const [searchTerm, setSearchTerm] = useState('');
     const history = useHistory();
@@ -47,7 +49,7 @@ export default function Navigation({ isLoaded }) {
                         </li>
                         <li className='navItem'>
                             {/*<ProfileButton user={sessionUser}/>*/}
-                            <NavLink className='navLink' to='/logout'>Log Out</NavLink>
+                            <span className='navLink logOutSpan' onClick={() => dispatch(sessionActions.logout())}>Log Out</span>
                         </li>
                     </>
                      :

@@ -33,16 +33,18 @@ router.get('/', asyncHandler(async (req, res) => {
     })
 
     let random = [];
-    let used = [];
-    for(let i = 0; i < 5; i++) {
-        let randomIdx = Math.floor(Math.random() * podcasts.length);
-        while(used.includes(randomIdx)) {
-            randomIdx = Math.floor(Math.random() * podcasts.length);
+    if(podcasts.length <= 5) random = [...podcasts]
+    else {
+        let used = [];
+        for(let i = 0; i < 5; i++) {
+            let randomIdx = Math.floor(Math.random() * podcasts.length);
+            while(used.includes(randomIdx)) {
+                randomIdx = Math.floor(Math.random() * podcasts.length);
+            }
+            random.push(podcasts[randomIdx]);
+            used.push(randomIdx);
         }
-        random.push(podcasts[randomIdx]);
-        used.push(randomIdx);
     }
-
     return res.json(random);
 }))
 

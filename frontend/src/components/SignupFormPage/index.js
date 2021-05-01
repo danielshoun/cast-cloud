@@ -16,23 +16,30 @@ export default function SignupFormPage() {
 
     if(sessionUser) return (<Redirect to='/'/>)
 
-    function handleSubmit(e) {
-        e.preventDefault();
-        if(password === confirmPassword) {
-            setErrors([]);
-            return dispatch(sessionActions.signup({ email, username, password }))
+    function handleSubmit(type) {
+        if(type === 'demo') {
+            return dispatch(sessionActions.login({ credential: 'demo-user', password: 'password' }))
                 .catch(async (res) => {
                     const data = await res.json();
                     if(data && data.errors) setErrors(data.errors);
                 })
+        } else {
+            if(password === confirmPassword) {
+                setErrors([]);
+                return dispatch(sessionActions.signup({ email, username, password }))
+                    .catch(async (res) => {
+                        const data = await res.json();
+                        if(data && data.errors) setErrors(data.errors);
+                    })
+            }
+            return setErrors(['Passwords do not match.'])
         }
-        return setErrors(['Passwords do not match.'])
     }
 
     return (
         <div className='signUpContainer'>
             <div className='formLogoContainer'>CastCloud</div>
-            <form onSubmit={handleSubmit}>
+            <form>
                 <input
                     className='formInput'
                     type='text'
@@ -65,8 +72,8 @@ export default function SignupFormPage() {
                     onChange={event => setConfirmPassword(event.target.value)}
                     required
                 />
-                <button className='formButton buttonPrimary' type='submit'>Sign Up</button>
-                <button className='formButton buttonSecondary'>Demo</button>
+                <button className='formButton buttonPrimary' onClick={() => handleSubmit('normal')}>Sign Up</button>
+                <button className='formButton buttonSecondary' onClick={() => handleSubmit('demo')}>Demo</button>
                 <Link className='formLink' to='/login'>Already registered? Go to login.</Link>
                 <ul>
                     {errors.map((error, idx) => <li key={idx}>{error}</li>)}

@@ -8,10 +8,21 @@ const users = [{
 	hashedPassword: bcrypt.hashSync('password')
 }];
 
-for(let i = 0; i < 999; i++) {
+let usedEmails = new Set();
+let usedUsernames = new Set();
+
+for(let i = 0; i < 1000; i++) {
+	let email = faker.internet.email();
+	while(usedEmails.has(email) || email.length > 256) {
+		email = faker.internet.email();
+	}
+	let username = faker.internet.userName();
+	while(usedUsernames.has(username) || username.length > 30 || username.length < 4) {
+		username = faker.internet.username();
+	}
 	users.push({
-		email: faker.internet.email(),
-		username: faker.internet.userName(),
+		email,
+		username,
 		hashedPassword: bcrypt.hashSync(faker.internet.password())
 	});
 }
