@@ -1,9 +1,48 @@
 const express = require('express');
 const asyncHandler = require('express-async-handler')
 const {requireAuth} = require("../../utils/auth");
-const { Comment, User, EpisodeProgress } = require('../../db/models');
+const { Comment, User, EpisodeProgress, Episode, Podcast, Subscription } = require('../../db/models');
 
 const router = express.Router();
+
+router.get('/', requireAuth, asyncHandler(async (req, res) => {
+    const subscriptions = await Subscription.findAll({
+        where: {userId: req.user.id},
+        include: {
+            model: Podcast,
+            include: {
+                model: Episode,
+                include: {
+                    model: EpisodeProgress,
+                    required: false
+                }
+            }
+        }});
+    const episodes = [];
+    subscriptions.forEach((subscription) => {
+        subscription.getDataValue('Podcast').getDataValue('Episodes').forEach((episode) => {
+            if(episode.EpisodeProgresses[0] === undefined) {
+                let insertPoint = episodes.findIndex(el => new Date(el.getDataValue('releaseDate')) < new Date(episode.getDataValue('releaseDate')));
+                console.log(insertPoint);
+                if(insertPoint === -1) insertPoint = episodes.length - 1;
+                subscription.getDataValue('Podcast').setDataValue('Episodes', undefined);
+                episode.setDataValue('Podcast', subscription.getDataValue('Podcast'));
+                episodes.splice(insertPoint, 0, episode);
+            } else if(!episode.EpisodeProgresses[0].played) {
+                let insertPoint = episodes.findIndex(el => new Date(el.getDataValue('releaseDate')) < new Date(episode.getDataValue('releaseDate')));
+                console.log(insertPoint);
+                if(insertPoint === -1) insertPoint = episodes.length - 1;
+                subscription.getDataValue('Podcast').setDataValue('Episodes', undefined);
+                episode.setDataValue('Podcast', subscription.getDataValue('Podcast'));
+                episodes.splice(insertPoint, 0, episode);
+            }
+        })
+        console.log('Left episode loop.')
+    })
+    console.log('Left subscription loop.')
+    console.log(episodes.length);
+    return res.json(episodes);
+}))
 
 router.get('/:episodeId/comments', asyncHandler(async (req, res) => {
     const episodeId = req.params.episodeId;

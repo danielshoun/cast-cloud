@@ -40,7 +40,9 @@ export default function Feed() {
         }
 
         async function fetchUnwatched() {
-
+            const res = await fetch(`/api/episodes/`);
+            const data = await res.json();
+            setUnplayedEpisodes(data);
         }
 
         if(selectedList !== -1) {
@@ -78,6 +80,8 @@ export default function Feed() {
         }
     }
 
+    console.log(unplayedEpisodes);
+
     return (
         <div className='feedContainer'>
             <div className='feedListContainer'>
@@ -102,6 +106,12 @@ export default function Feed() {
             <div className='feedContent'>
                 {selectedList === -1 ?
                     <>
+                        <div className='feedContentHeader'>Unplayed Episodes</div>
+                        {unplayedEpisodes.length > 0 ? unplayedEpisodes.map((episode, i) => {
+                            return (
+                                <FeedEpisode key={i} deletePoint={i} podcast={episode.Podcast} episode={episode} modifyEpisodeProgress={modifyEpisodeProgress}/>
+                            )
+                        }) : <div className='emptyFeedContent'>{episodesLoaded ? "You don't have any unplayed episodes for this podcast." : 'Loading podcast episodes...'}</div>}
                     </>:
                     <>
                         <div className='feedContentHeader'>Unplayed Episodes</div>
