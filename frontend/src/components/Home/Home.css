@@ -1,0 +1,41 @@
+.homeContainer {
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
+}
+
+.homeLogo {
+    width: 400px;
+    height: 400px;
+}
+
+.welcomeHeader {
+    margin: 0;
+    font-size: 48px;
+}
+
+.siteName {
+    color: #f35b04;
+}
+
+.welcomeSubHeader {
+    text-align: center;
+    line-height: 1.5em;
+}
+
+.welcomeLink {
+    color: #f35b04;
+}
+
+.popularContainer {
+    display: flex;
+    flex-flow: row wrap;
+    margin-top: 32px;
+}
+
+.homePodcastImage {
+    width: 200px;
+    height: 200px;
+    margin: 0 24px;
+    border-radius: 5px;
+}

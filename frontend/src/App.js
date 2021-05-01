@@ -9,6 +9,7 @@ import SearchResults from "./components/SearchResults";
 import PodcastDetails from "./components/PodcastDetails";
 import Footer from "./components/Footer";
 import Feed from "./components/Feed";
+import Home from "./components/Home";
 
 function App() {
 	const [isLoaded, setIsLoaded] = useState(false);
@@ -23,6 +24,9 @@ function App() {
 		<>
 			<Navigation isLoaded={isLoaded}/>
 			<Switch>
+				<Route exact path='/'>
+					<Home/>
+				</Route>
 				<Route path='/podcasts/:itunesId'>
 					<PodcastDetails/>
 				</Route>
