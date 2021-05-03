@@ -36,7 +36,8 @@ export default function CommentPopup() {
             }
         })
         const data = await res.json();
-        const insertPoint = comments.findIndex(el => el.timestamp > data.timestamp) - 1;
+        let insertPoint = comments.findIndex(el => el.timestamp > data.timestamp);
+        if(insertPoint === -1) insertPoint = 0;
         setComments(prevState => [...prevState.slice(0, insertPoint), data, ...prevState.slice(insertPoint, prevState.length)]);
         setNewCommentText('');
     }
