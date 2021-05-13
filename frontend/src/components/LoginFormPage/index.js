@@ -14,9 +14,9 @@ export default function LoginFormPage() {
 
     if(sessionUser) return (<Redirect to='/'/>)
 
-    function handleSubmit(type) {
+    function handleSubmit(e, type) {
+        e.preventDefault();
         setErrors([]);
-
         if(type === 'demo') {
             return dispatch(sessionActions.login({ credential: 'demo-user', password: 'password' }))
                 .catch(async (res) => {
@@ -53,8 +53,8 @@ export default function LoginFormPage() {
                     onChange={event => setPassword(event.target.value)}
                     required
                 />
-                <button className='formButton buttonPrimary' onClick={() => handleSubmit('normal')}>Log In</button>
-                <button className='formButton buttonSecondary' onClick={() => handleSubmit('demo')}>Demo</button>
+                <button className='formButton buttonPrimary' onClick={(e) => handleSubmit(e, 'normal')}>Log In</button>
+                <button className='formButton buttonSecondary' onClick={(e) => handleSubmit(e, 'demo')}>Demo</button>
                 <Link className='formLink' to='/signup'>Not registered? Go to sign up.</Link>
                 <ul>
                     {errors.map((error, idx) => <li key={idx}>{error}</li>)}
